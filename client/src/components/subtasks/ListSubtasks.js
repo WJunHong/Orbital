@@ -15,7 +15,7 @@ const ListSubtasks = ({todo}) => {
     const getSubtasks = async (id) => {
         try {
             // Calls the GET all subtasks route method
-            const response = await fetch(`http://localhost:5000/subtasks/${id}`);
+            const response = await fetch(`https://tickaholic-app.herokuapp.com/subtasks/${id}`);
             const jsonData = await response.json();
             setSubtaskList(jsonData);
         } catch (err) {
@@ -29,7 +29,7 @@ const ListSubtasks = ({todo}) => {
             e.preventDefault();
             const description = document.querySelector(`#edit_subtask${subtask_id}`).value;
             const submitThis = { description };
-            const updateSubtask = await fetch(`http://localhost:5000/subtasks/${id}/${subtask_id}`, {
+            const updateSubtask = await fetch(`https://tickaholic-app.herokuapp.com/subtasks/${id}/${subtask_id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json"},
                 body: JSON.stringify(submitThis)
@@ -42,7 +42,7 @@ const ListSubtasks = ({todo}) => {
     const deleteTodo = async (id, subtask_id) => {
         try {
             // Calls the DELETE subtask route method
-            const deleteTodo = await fetch(`http://localhost:5000/subtasks/${id}/${subtask_id}`, {
+            const deleteTodo = await fetch(`https://tickaholic-app.herokuapp.com/subtasks/${id}/${subtask_id}`, {
                 method: "DELETE"
             });
             // Update subtaskList to contain subtasks which have not been deleted
