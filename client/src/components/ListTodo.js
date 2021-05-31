@@ -17,7 +17,6 @@ const ListTodo = () => {
             // Calls the GET all tasks route method
             const response = await fetch("/todos");
             const jsonData = await response.json();
-            console.log(jsonData);
             setTodos(jsonData);
         } catch (err) {
             console.error(err.message);
