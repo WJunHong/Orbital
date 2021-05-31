@@ -42,7 +42,7 @@ if (process.env.NODE_ENV === "production") {
             const allTodos = await pool.query("SELECT * FROM todo ORDER BY todo_id ASC");
             res.json(allTodos.rows);
         } catch (error) {
-            console.error(err.message);
+            console.error(error.message);
         }
     });
 
@@ -70,7 +70,7 @@ if (process.env.NODE_ENV === "production") {
 
             res.json("Todo was updated!");
         } catch (error) {
-            console.error(err.message);
+            console.error(error.message);
         }
     });
 
@@ -84,7 +84,7 @@ if (process.env.NODE_ENV === "production") {
 
             res.json("Todo was deleted!");
         } catch (error) {
-            console.error(err.message);
+            console.error(error.message);
         }
     });
 
@@ -128,7 +128,7 @@ if (process.env.NODE_ENV === "production") {
             [description, sid]);
             res.json("Subtask was updated!");
         } catch (error) {
-            console.error(err.message);
+            console.error(error.message);
         }
     });
 
@@ -141,7 +141,7 @@ if (process.env.NODE_ENV === "production") {
 
             res.json("Subtask was deleted!");
         } catch (error) {
-            console.error(err.message);
+            console.error(error.message);
         }
     });
 
