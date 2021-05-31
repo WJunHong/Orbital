@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === "production") {
 
     // Get all todos
 
-    app.get("/todos", async(req, res) => {
+    app.get("/todos", async (req, res) => {
         try {
             const allTodos = await pool.query("SELECT * FROM todo ORDER BY todo_id ASC");
             res.json(allTodos.rows);
@@ -107,7 +107,7 @@ if (process.env.NODE_ENV === "production") {
     
     // Get all subtasks related to a maintask based on its id
 
-    app.get("/subtasks/:id", async(req, res) => {
+    app.get("/subtasks/:id", async (req, res) => {
         try {
             const {id} = req.params;
             const allSubtasks = await pool.query("SELECT * FROM subtasks WHERE task_id = $1 ORDER BY subtask_id ASC", [id]);
