@@ -15,7 +15,7 @@ const ListTodo = () => {
     const getTodos = async() => {
         try {
             // Calls the GET all tasks route method
-            const response = await fetch("https://tickaholic-app.herokuapp.com/todos");
+            const response = await fetch("/todos");
             const jsonData = await response.json();
             setTodos(jsonData);
         } catch (err) {
@@ -26,7 +26,7 @@ const ListTodo = () => {
     const deleteTodo = async (id) => {
         try {
             // Calls the DELETE task route method
-            const deleteTodo = await fetch(`https://tickaholic-app.herokuapp.com/todos/${id}`, {
+            const deleteTodo = await fetch(`/todos/${id}`, {
                 method: "DELETE"
             });
 
@@ -34,7 +34,7 @@ const ListTodo = () => {
             setTodos(todos.filter(todo => todo.todo_id !== id));
 
             // Calls the DELETE subtasks route method
-            const deleteSubtasks = await fetch(`https://tickaholic-app.herokuapp.com/subtasks/${id}`, {
+            const deleteSubtasks = await fetch(`/subtasks/${id}`, {
                 method: "DELETE"
             });
 

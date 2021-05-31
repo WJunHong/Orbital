@@ -24,7 +24,7 @@ const InputSubtasks = ({todo}) => {
                 // Create new object with task_id and description
                 const body = { task_id, description };
                 // Send a request to create the new subtask to server 
-                const response = await fetch("https://tickaholic-app.herokuapp.com/subtasks", {
+                const response = await fetch("/subtasks", {
                     method: "POST",
                     headers: { "Content-Type": "application/json"},
                     body: JSON.stringify(body)

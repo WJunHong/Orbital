@@ -2,13 +2,19 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const pool = require("./db");
+const pool = require("./db1");
+const path = require("path");
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 // Connect React to Express
 app.use(cors());
 // Use req.body
 app.use(express.json());
+
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "client/build")));
+}
 
 // Routes
 
@@ -151,6 +157,6 @@ app.use(express.json());
         }
     });
 
-app.listen(process.env.PORT || '0.0.0.0', () => {
+app.listen(PORT, () => {
     console.log("server has started on port 5000")
 }); 

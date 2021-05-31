@@ -1,4 +1,4 @@
-const Pool = require('pg').Pool;
+/*const Pool = require('pg').Pool;
 
 const pool = new Pool({
     user: 'postgres',
@@ -8,4 +8,4 @@ const pool = new Pool({
     database: 'tasks'
 })
 
-module.exports = pool;
+module.exports = pool;*/

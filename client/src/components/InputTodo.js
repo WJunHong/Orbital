@@ -20,7 +20,7 @@ const InputToDo = () => {
             } else {
                 // Sends a request to create the new task in server
                 const body = { description };
-                const response = await fetch("https://tickaholic-app.herokuapp.com/todos", {
+                const response = await fetch("/todos", {
                     method: "POST",
                     headers: { "Content-Type": "application/json"},
                     body: JSON.stringify(body)
