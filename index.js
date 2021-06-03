@@ -27,7 +27,6 @@ app.use("/", require("./routes/taskpage"));
     app.post("/todos", async (req, res) => {
         try {
             const {user_id, description} = req.body;
-            console.log(user_id);
             const newTodo = await pool.query(
                 "INSERT INTO todo (user_id, description) VALUES($1, $2) RETURNING *", 
                 [user_id, description]

@@ -7,7 +7,6 @@ module.exports = function(req, res, next) {
   
     if (req.path === "/register") {
       if (![email, name, password].every(Boolean)) {
-<<<<<<< HEAD
         return res.status(401).json("Missing Credentials");
       } else if (!validEmail(email)) {
         return res.status(401).json("Invalid Email");
@@ -17,17 +16,6 @@ module.exports = function(req, res, next) {
         return res.status(401).json("Missing Credentials");
       } else if (!validEmail(email)) {
         return res.status(401).json("Invalid Email");
-=======
-        return res.json("Missing Credentials");
-      } else if (!validEmail(email)) {
-        return res.json("Invalid Email");
-      }
-    } else if (req.path === "/login") {
-      if (![email, password].every(Boolean)) {
-        return res.json("Missing Credentials");
-      } else if (!validEmail(email)) {
-        return res.json("Invalid Email");
->>>>>>> bba4e195f4795bbceaee00b81c707042598a3c4e
       }
     }
   
