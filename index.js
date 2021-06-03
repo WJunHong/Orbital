@@ -16,7 +16,10 @@ if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "client/build")));
 }
 
-// Routes
+// Routes for user login
+
+app.use("/auth", require("./routes/jwtAuth"));
+// app.use("/dashboard", require("./routes/dashboard"));
 
 // Todo Tasks
     // Creating a todo
