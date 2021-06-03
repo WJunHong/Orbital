@@ -1,6 +1,5 @@
 // Imports
 import React, { Fragment, useState } from 'react';
-<<<<<<< HEAD
 import "react-toastify/dist/ReactToastify.css";
 import {
   BrowserRouter as Router,
@@ -8,32 +7,20 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
-=======
-
->>>>>>> bba4e195f4795bbceaee00b81c707042598a3c4e
 import './App.css';
 
 // Components
-import InputToDo from './components/InputTodo';
-import ListTodo from "./components/ListTodo";
 import TaskBox from "./components/TaskBox";
 import Heading from "./components/Heading";
-import EditTodo from './components/EditTodo';
 
-<<<<<<< HEAD
 import Login from "./components/Login";
 import Register from "./components/Register";
 
-=======
->>>>>>> bba4e195f4795bbceaee00b81c707042598a3c4e
 /**
  * Functional Component of our main app
  * @returns JSX for our main app
  */
-<<<<<<< HEAD
 /*
-=======
->>>>>>> bba4e195f4795bbceaee00b81c707042598a3c4e
 function App() {
   return (
       <Fragment>
@@ -42,7 +29,6 @@ function App() {
       </Fragment>
   );
 }
-<<<<<<< HEAD
 */
 
 function App() {
@@ -88,7 +74,5 @@ function App() {
 }
 
 
-=======
->>>>>>> bba4e195f4795bbceaee00b81c707042598a3c4e
 
 export default App;
