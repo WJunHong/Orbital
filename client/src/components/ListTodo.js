@@ -12,16 +12,19 @@ const ListTodo = () => {
     // Array of main tasks
     const [todos, setTodos] = useState([]);
     
-    const getTodos = async() => {
+    const getUserId = async () => {
+        const res = await fetch("http://localhost:5000/", {
+            method: "GET",
+            headers: { token: localStorage.token }
+        });
+
+        const parseData = await res.json();
+        return parseData[1].user_id;
+    }
+    
+    const getTodos = async () => {
         try {
-
-            const res = await fetch("http://localhost:5000/", {
-                method: "GET",
-                headers: { token: localStorage.token }
-            });
-
-            const parseData = await res.json();
-            const user_id = parseData[1].user_id;
+            const user_id =  await getUserId(); 
             // Calls the GET all tasks route method
             const response = await fetch("/todos", {
                 method: "GET",

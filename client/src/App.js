@@ -1,5 +1,5 @@
 // Imports
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import "react-toastify/dist/ReactToastify.css";
 import {
   BrowserRouter as Router,
@@ -10,9 +10,7 @@ import {
 import './App.css';
 
 // Components
-import TaskBox from "./components/TaskBox";
-import Heading from "./components/Heading";
-
+import TaskPage from "./components/TaskPage";
 import Login from "./components/Login";
 import Register from "./components/Register";
 
@@ -39,6 +37,25 @@ function App() {
     setIsAuthenticated(boolean);
   };
 
+  const checkAuthenticated = async () => {
+    try {
+      const res = await fetch("/auth/verify", {
+        method: "GET",
+        headers: { token: localStorage.token }
+      });
+
+      const parseRes = await res.json();
+
+      parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    checkAuthenticated();
+  }, []);
+
   return (
     <>
       <Router>
@@ -58,10 +75,7 @@ function App() {
             />
             <Route exact path="/" render={props => 
               isAuthenticated 
-                ? <Fragment>
-                    <Heading />
-                    <TaskBox {...props} setAuth={setAuth} />
-                  </Fragment>
+                ? <TaskPage {...props} setAuth={setAuth} />
                 : <Redirect to="/login" /> 
               }
             />
@@ -72,7 +86,5 @@ function App() {
     </>
   );
 }
-
-
 
 export default App;

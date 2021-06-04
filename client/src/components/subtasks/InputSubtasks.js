@@ -21,8 +21,18 @@ const InputSubtasks = ({todo}) => {
             if (description === "") {
 
             } else {
+                const getUserId = async () => {
+                    const res = await fetch("http://localhost:5000/", {
+                        method: "GET",
+                        headers: { token: localStorage.token }
+                    });
+
+                    const parseData = await res.json();
+                    return parseData[1].user_id;
+                }
+                const user_id = await getUserId();
                 // Create new object with task_id and description
-                const body = { task_id, description };
+                const body = { user_id, task_id, description };
                 // Send a request to create the new subtask to server 
                 const response = await fetch("/subtasks", {
                     method: "POST",

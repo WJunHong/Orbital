@@ -20,10 +20,12 @@ if (process.env.NODE_ENV === "production") {
 
 app.use("/auth", require("./routes/jwtAuth"));
 app.use("/", require("./routes/taskpage"));
+app.use("/todos", require("./routes/taskRoutes"));
+app.use("/subtasks", require("./routes/subtaskRoutes"));
 
 // Todo Tasks
     // Creating a todo
-
+    /*
     app.post("/todos", async (req, res) => {
         try {
             const {user_id, description} = req.body;
@@ -50,10 +52,11 @@ app.use("/", require("./routes/taskpage"));
             console.error(error.message);
         }
     });
+    */
 
     // Get a todo
 
-    app.get("/todos/:id", async (req, res) => {
+    /*app.get("/todos/:id", async (req, res) => {
         try {
             const { id } = req.params;
             const todo = await pool.query("SELECT * FROM todo WHERE todo_id = $1", [id]);
@@ -91,11 +94,11 @@ app.use("/", require("./routes/taskpage"));
         } catch (error) {
             console.error(error.message);
         }
-    });
+    });*/
 
 // Subtasks
     // Creating a subtask
- 
+    /*
     app.post("/subtasks/", async (req, res) => {
         try {
             const {task_id, description} = req.body;
@@ -161,6 +164,7 @@ app.use("/", require("./routes/taskpage"));
             console.error(error.message);
         }
     });
+    */
 
 app.listen(PORT, () => {
     console.log("server has started on port 5000")
