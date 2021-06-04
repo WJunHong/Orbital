@@ -7,8 +7,8 @@ router.post("/", async (req, res) => {
         // Obtain the user_id and description of the task
         const {user_id, description} = req.body;
         const newTodo = await pool.query(
-            "INSERT INTO todo (user_id, description) VALUES($1, $2) RETURNING *", 
-            [user_id, description]
+            "INSERT INTO todo (user_id, description, completed) VALUES($1, $2, $3) RETURNING *", 
+            [user_id, description, false]
         );
 
         res.json(newTodo.rows[0]);
@@ -17,12 +17,12 @@ router.post("/", async (req, res) => {
     }
 });
 
-// Get all todos
+// Get all uncompleted todos
 
 router.get("/", async (req, res) => {
     try {
         const {user_id} = req.headers;
-        const allTodos = await pool.query("SELECT * FROM todo WHERE user_id = $1 ORDER BY todo_id ASC",
+        const allTodos = await pool.query("SELECT * FROM todo WHERE user_id = $1 AND completed = false ORDER BY todo_id ASC",
             [user_id]);
         res.json(allTodos.rows);
     } catch (error) {
@@ -30,6 +30,17 @@ router.get("/", async (req, res) => {
     }
 });
 
+// Get all completed todos
+router.get("/", async (req, res) => {
+    try {
+        const {user_id} = req.headers;
+        const allTodos = await pool.query("SELECT * FROM todo WHERE user_id = $1 AND completed = true ORDER BY todo_id ASC",
+            [user_id]);
+        res.json(allTodos.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
 // Get a todo
 
 router.get("/:todo_id", async (req, res) => {
@@ -48,9 +59,9 @@ router.get("/:todo_id", async (req, res) => {
 router.put("/:todo_id", async (req, res) => {
     try {
         const { todo_id } = req.params;
-        const {description} = req.body;
-        const updateTodo = await pool.query("UPDATE todo SET description = $1 WHERE todo_id = $2",
-        [description, todo_id]);
+        const {description, completed} = req.body;
+        const updateTodo = await pool.query("UPDATE todo SET description = $1, completed = $3 WHERE todo_id = $2",
+        [description, todo_id, completed]);
 
         res.json("Todo was updated!");
     } catch (error) {

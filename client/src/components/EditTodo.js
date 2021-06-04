@@ -13,6 +13,7 @@ import ListSubtasks from './subtasks/ListSubtasks';
 const EditTodo = ({todo}) => {
     // Main task description
     const [description, setDescription] = useState(todo.description);
+    const completed = todo.completed;
     
     // Update task description
     const updateDescription = async (e) => {
@@ -20,7 +21,7 @@ const EditTodo = ({todo}) => {
         e.preventDefault();
         try {
             // Sends updated description of main task to server
-            const body = { description };
+            const body = { description, completed };
             const response = await fetch(`/todos/${todo.todo_id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },

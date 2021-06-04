@@ -1,14 +1,10 @@
-// Imports
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 
+// Pop up
 import EditTodo from "./EditTodo";
 
-/**
- * A functional component representing a list of main tasks
- * @returns JSX of main tasks list
- */
-const ListTodo = () => {
-    
+const Overview = () => {
+
     // Array of main tasks
     const [todos, setTodos] = useState([]);
     
@@ -17,7 +13,7 @@ const ListTodo = () => {
             method: "GET",
             headers: { token: localStorage.token }
         });
-
+        
         const parseData = await res.json();
         return parseData[1].user_id;
     }
@@ -25,8 +21,8 @@ const ListTodo = () => {
     const getTodos = async () => {
         try {
             const user_id =  await getUserId(); 
-            // Calls the GET all tasks route method
-            const response = await fetch("/todos", {
+            // Calls the GET all tasks within a week route method
+            const response = await fetch("/filter/todos", {
                 method: "GET",
                 headers: { user_id }
             });
@@ -77,10 +73,13 @@ const ListTodo = () => {
         getTodos();
     }, [todos]);
     
-    return (<Fragment>
+    return (
+    <Fragment>
         {" "}
+        <div>
         <table className="table mt-5 text-center task_table">
             <thead>
+                <tr><th>Today</th></tr>
                 <tr>
                     <th scope="col"></th>
                     <th scope="col">Description</th>
@@ -89,7 +88,7 @@ const ListTodo = () => {
                 </tr>
             </thead>
             <tbody>
-                {todos.map(todo => (
+                {todos.filter(todo => todo.deadline === new Date().toISOString().split("T")[0]).map(todo => (
                 
                     <tr key={todo.todo_id}>
                         <td> <button className="btn btn-success complete_task" onClick={() => completeTask(todo)}>COMPLETE!</button></td>
@@ -109,7 +108,45 @@ const ListTodo = () => {
 
             </tbody>
         </table>
+        </div>
+        <div>
+        <table className="table mt-5 text-center task_table">
+            <thead>
+                <tr><th>Upcoming</th></tr>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Edit Task</th>
+                    <th scope="col">Delete Task</th>
+                </tr>
+            </thead>
+            <tbody>
+                {todos.filter(todo => {
+                    // console.log(todo.deadline.substring(0, 10)); 
+                    // console.log(new Date().toISOString().split("T")[0]); 
+                    return todo.deadline != new Date().toISOString().split("T")[0]
+                }).map(todo => (
+                
+                    <tr key={todo.todo_id}>
+                        <td> <button className="btn btn-success complete_task" onClick={() => completeTask(todo)}>COMPLETE!</button></td>
+                        <td className="task_name">{todo.description}</td>
+                        <td>
+                            <EditTodo todo={todo}/>
+                        </td>
+                        <td>
+                            <button className="btn btn-danger" 
+                            onClick={() => deleteTodo(todo.todo_id)}
+                            >
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                ))}
+
+            </tbody>
+        </table>
+        </div>
     </Fragment>);
 };
 
-export default ListTodo;
+export default Overview;

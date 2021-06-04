@@ -10,9 +10,11 @@ import {
 import './App.css';
 
 // Components
+import Heading from "./components/Heading";
 import TaskPage from "./components/TaskPage";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Overview from "./components/Overview";
 
 /**
  * Functional Component of our main app
@@ -61,11 +63,14 @@ function App() {
       <Router>
         <div className="container">
           <Switch>
-            <Route exact path="/login" render={props => 
-              !isAuthenticated 
-                ? <Login {...props} setAuth={setAuth} />
-                : <Redirect to="/" /> 
+            <Route exact path="/login" render={props => {
+              if (!isAuthenticated) {
+               return (<Login {...props} setAuth={setAuth} />);
+              } else {
+                setTimeout(3000);
+                return (<Redirect to="/" />); 
               }
+            }}
             />
             <Route exact path="/register" render={props => 
               !isAuthenticated 
@@ -73,9 +78,36 @@ function App() {
                 : <Redirect to="/" /> 
               }
             />
-            <Route exact path="/" render={props => 
+            <Route exact path="/" render={props => {
+              if (isAuthenticated) {
+                 return (<Fragment>
+                  <Heading setAuth={setAuth} />
+                  <Overview {...props} />
+                  </Fragment>);
+              } else {  
+                  setTimeout(3000);
+                  return (<Redirect to="/login" />);
+              }
+            }}
+            />
+            <Route exact path="/maintask" render={props => {
+              if (isAuthenticated) { 
+                return (<Fragment>
+                  <Heading setAuth={setAuth} />
+                  <TaskPage {...props} />
+                  </Fragment>)
+              } else {
+                setTimeout(3000);
+                return (<Redirect to="/login" />); 
+              }
+            }}
+            />
+            <Route exact path="/calendar" render={props => 
               isAuthenticated 
-                ? <TaskPage {...props} setAuth={setAuth} />
+                ? <Fragment>
+                  <Heading setAuth={setAuth} />
+                  <TaskPage {...props} />
+                  </Fragment>
                 : <Redirect to="/login" /> 
               }
             />

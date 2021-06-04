@@ -5,13 +5,13 @@ const pool = require("../db1");
 router.post("/", async (req, res) => {
     try {
         const {
-            user_id, // added
+            user_id,
             task_id,
             description
         } = req.body;
         const newTodo = await pool.query(
-            "INSERT INTO subtasks (user_id, task_id, description) VALUES($1, $2, $3) RETURNING *",
-            [user_id, task_id, description]
+            "INSERT INTO subtasks (user_id, task_id, description, completed) VALUES($1, $2, $3, $4) RETURNING *",
+            [user_id, task_id, description, false]
         );
         res.json(newTodo.rows[0]);
     } catch (err) {
@@ -53,6 +53,22 @@ router.put("/:todo_id/:sid", async (req, res) => {
     }
 });
 
+// Complete a subtask
+router.put("/:todo_id/:sid", async (req, res) => {
+    try {
+        const {
+            sid
+        } = req.params;
+        const {
+            description, completed
+        } = req.body;
+        const updateTodo = await pool.query("UPDATE subtasks SET description = $1, completed = $2 WHERE subtask_id = $3",
+            [description, completed, sid]);
+        res.json("Subtask was updated!");
+    } catch (error) {
+        console.error(error.message);
+    }
+});
 // Delete a subtask based on main task id and sub task id
 
 router.delete("/:todo_id/:sid", async (req, res) => {

@@ -45,6 +45,7 @@ function SideBar() {
               }
             ]}
           />
+          <button className="btn">Add List</button>
       </div>
     );
 }
