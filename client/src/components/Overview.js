@@ -88,7 +88,7 @@ const Overview = () => {
                 </tr>
             </thead>
             <tbody>
-                {todos.filter(todo => todo.deadline === new Date().toISOString().split("T")[0]).map(todo => (
+                {todos.filter(todo => todo.deadline.substring(0,10) === new Date().toISOString().split("T")[0]).map(todo => (
                 
                     <tr key={todo.todo_id}>
                         <td> <button className="btn btn-success complete_task" onClick={() => completeTask(todo)}>COMPLETE!</button></td>
@@ -121,26 +121,22 @@ const Overview = () => {
                 </tr>
             </thead>
             <tbody>
-                {todos.filter(todo => {
-                    // console.log(todo.deadline.substring(0, 10)); 
-                    // console.log(new Date().toISOString().split("T")[0]); 
-                    return todo.deadline != new Date().toISOString().split("T")[0]
-                }).map(todo => (
-                
-                    <tr key={todo.todo_id}>
-                        <td> <button className="btn btn-success complete_task" onClick={() => completeTask(todo)}>COMPLETE!</button></td>
-                        <td className="task_name">{todo.description}</td>
-                        <td>
-                            <EditTodo todo={todo}/>
-                        </td>
-                        <td>
-                            <button className="btn btn-danger" 
-                            onClick={() => deleteTodo(todo.todo_id)}
-                            >
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
+                {todos.filter(todo => todo.deadline.substring(0,10) != new Date().toISOString().split("T")[0])
+                    .map(todo => (
+                        <tr key={todo.todo_id}>
+                            <td> <button className="btn btn-success complete_task" onClick={() => completeTask(todo)}>COMPLETE!</button></td>
+                            <td className="task_name">{todo.description}</td>
+                            <td>
+                                <EditTodo todo={todo}/>
+                            </td>
+                            <td>
+                                <button className="btn btn-danger" 
+                                onClick={() => deleteTodo(todo.todo_id)}
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
                 ))}
 
             </tbody>

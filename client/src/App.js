@@ -32,42 +32,45 @@ function App() {
 */
 
 function App() {
-  
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const setAuth = boolean => {
-    setIsAuthenticated(boolean);
-  };
 
   const checkAuthenticated = async () => {
     try {
+      // Makes a call to verify route to check if the user is authorized to be in the website
       const res = await fetch("/auth/verify", {
         method: "GET",
+        // Sets a header called token - localStorage.token
         headers: { token: localStorage.token }
       });
 
       const parseRes = await res.json();
-
+      // Checks if token verification is correct, if yes set authentication to true for the webpage
       parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false);
     } catch (err) {
       console.error(err.message);
     }
   };
-
+  
+  // Everytime the page renders fully, call the function
   useEffect(() => {
     checkAuthenticated();
   }, []);
 
+  // TBD
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const setAuth = boolean => {
+    setIsAuthenticated(boolean);
+  };
   return (
     <>
       <Router>
         <div className="container">
           <Switch>
             <Route exact path="/login" render={props => {
+              console.log(isAuthenticated);
               if (!isAuthenticated) {
                return (<Login {...props} setAuth={setAuth} />);
               } else {
-                setTimeout(3000);
                 return (<Redirect to="/" />); 
               }
             }}
@@ -79,13 +82,13 @@ function App() {
               }
             />
             <Route exact path="/" render={props => {
+              console.log("here");
               if (isAuthenticated) {
                  return (<Fragment>
                   <Heading setAuth={setAuth} />
                   <Overview {...props} />
                   </Fragment>);
               } else {  
-                  setTimeout(3000);
                   return (<Redirect to="/login" />);
               }
             }}
@@ -97,7 +100,7 @@ function App() {
                   <TaskPage {...props} />
                   </Fragment>)
               } else {
-                setTimeout(3000);
+              
                 return (<Redirect to="/login" />); 
               }
             }}

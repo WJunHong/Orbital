@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 
+// The registration component page
 const Register = ({ setAuth }) => {
   const [inputs, setInputs] = useState({
     email: "",
@@ -17,6 +18,7 @@ const Register = ({ setAuth }) => {
     e.preventDefault();
     try {
       const body = { email, password, name };
+      // Make a post request to register route, providing all info needed
       const response = await fetch(
         "/auth/register",
         {
@@ -27,10 +29,13 @@ const Register = ({ setAuth }) => {
           body: JSON.stringify(body)
         }
       );
+      // Returns the JWT token, if the email and password are valid
       const parseRes = await response.json();
-
+      
+      // If there is a JWT token, place it in localStorage as token, and make the user authorized.
       if (parseRes.token) {
         localStorage.setItem("token", parseRes.token);
+        localStorage.setItem("auth", true);
         setAuth(true);
       } else {
         setAuth(false);

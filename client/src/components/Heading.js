@@ -10,6 +10,7 @@ const Heading = ({setAuth}) => {
         e.preventDefault();
         try {
         localStorage.removeItem("token");
+        localStorage.removeItem("auth");
         setAuth(false);
         //toast.success("Logout successfully");
         } catch (err) {

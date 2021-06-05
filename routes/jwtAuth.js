@@ -6,7 +6,7 @@ const validInfo = require("../middleware/validInfo");
 const jwtGenerator = require("../utils/jwtGenerator");
 const authorize = require("../middleware/authorization");
 
-// Registering
+// Fires route upon registration
 
 router.post("/register", validInfo, async (req, res) => {
     try {
@@ -37,6 +37,7 @@ router.post("/register", validInfo, async (req, res) => {
         // 5. Generating jwt token
         
         const token = jwtGenerator(newUser.rows[0].user_id);
+        // Return the JWT token upon registration
         return res.json({ token });
 
     } catch (error) {
@@ -45,7 +46,7 @@ router.post("/register", validInfo, async (req, res) => {
     }
 });
 
-// Login
+// Fire route upon login
 
 router.post("/login", validInfo, async (req, res) => {
   const { email, password } = req.body;
@@ -76,13 +77,15 @@ router.post("/login", validInfo, async (req, res) => {
     // 3. Generate the JWToken for the user
     const token = jwtGenerator(user.rows[0].user_id);
 
-    // 4. Return the JWT as a json object
+    // 4. Return the JWT token upon login
     return res.json({ token });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
   }
 });
+
+// Fire route upon verification
 
 router.get("/verify", authorize, (req, res) => {
   try {

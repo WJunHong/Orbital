@@ -13,9 +13,11 @@ const Login = ({ setAuth }) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
 
   const onSubmitForm = async e => {
+    // Prevent page from reloading
     e.preventDefault();
     try {
       const body = { email, password };
+      // Send a login post request with the credentials given. Initally unauthenticated
       const response = await fetch(
         "/auth/login",
         {
@@ -26,11 +28,13 @@ const Login = ({ setAuth }) => {
           body: JSON.stringify(body)
         }
       );
-
+      // Returns the JWT token
       const parseRes = await response.json();
-
+      
+      // If there is a JWT token, save it to localStorage, and make user authorized to use the web app.
       if (parseRes.token) {
         localStorage.setItem("token", parseRes.token);
+        localStorage.setItem("auth", true);
         setAuth(true);
       } else {
         setAuth(false);

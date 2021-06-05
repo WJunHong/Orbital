@@ -7,6 +7,7 @@ import InputTodo from "./InputTodo";
 import ListTodo from "./ListTodo";
 import SideBar from "./SideBar"
 
+// List have 4 definite properties, up to 8 custom properties
 const TaskPage = () => {
   return (
       <Fragment>
