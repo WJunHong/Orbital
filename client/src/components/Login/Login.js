@@ -51,7 +51,7 @@ const Login = ({ setAuth }) => {
     try {
       const body = { email, password };
       // Send a login post request with the credentials given. Initally unauthenticated
-      const response = await fetch("/auth/login", {
+      const response = await fetch("/login", {
         method: "POST",
         headers: {
           "Content-type": "application/json",

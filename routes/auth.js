@@ -2,9 +2,8 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const pool = require("../db1");
+const passport = require("passport");
 const validInfo = require("../middleware/validInfo");
-const jwtGenerator = require("../utils/jwtGenerator");
-const authorize = require("../middleware/authorization");
 
 // Fires route upon registration
 
@@ -35,10 +34,13 @@ router.post("/register", validInfo, async (req, res) => {
       [name, email, bcryptPassword]
     );
 
+    /*
     // 5. Generating jwt token
     const token = jwtGenerator(newUser.rows[0].user_id);
     // Return the JWT token upon registration
     return res.json({ token });
+    */
+    res.send("User Created");
   } catch (error) {
     res.status(500).send("Server Error");
   }
@@ -46,42 +48,21 @@ router.post("/register", validInfo, async (req, res) => {
 
 // Fire route upon login
 
-router.post("/login", validInfo, async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    // 1. Check if user has entered valid email
-
-    const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [
-      email,
-    ]);
-
-    if (user.rows.length === 0) {
-      return res.status(401).json("Invalid Credential");
+router.post("/login", validInfo, async (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) throw err;
+    if (!user) res.send("No User Exists");
+    else {
+      req.logIn(user, (err) => {
+        if (err) throw err;
+        res.send("Successfully Authenticated");
+        console.log(req.user);
+      });
     }
-
-    // 2. Check if user has typed in valid password
-
-    const validPassword = await bcrypt.compare(
-      password,
-      user.rows[0].user_password
-    );
-
-    if (!validPassword) {
-      return res.status(401).json("Invalid Credential");
-    }
-
-    // 3. Generate the JWToken for the user
-    const token = jwtGenerator(user.rows[0].user_id);
-
-    // 4. Return the JWT token upon login
-    return res.json({ token });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
-  }
+  })(req, res, next);
 });
 
+/*
 // Fire route upon verification
 
 router.get("/verify", authorize, (req, res) => {
@@ -92,5 +73,6 @@ router.get("/verify", authorize, (req, res) => {
     res.status(500).send("Server error");
   }
 });
+*/
 
 module.exports = router;
