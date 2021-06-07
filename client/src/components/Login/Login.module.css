@@ -1,0 +1,55 @@
+.paperStyle {
+  margin: 50px auto;
+  width: 70vw;
+  height: fit-content;
+  min-width: 780px;
+}
+
+.signUpHeader {
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+}
+.signedInText {
+  margin-bottom: 0;
+  font-size: 16px;
+  font-family: "Nunito", sans-serif;
+}
+
+.loginLink {
+  font-size: 16px;
+  font-family: "Nunito", sans-serif;
+}
+
+.loginLink:hover {
+  text-decoration: none;
+  font-weight: 450;
+}
+
+.signUp {
+  height: 537px;
+}
+
+.signUpBox {
+  width: max(30vw, 330px);
+}
+
+.signUpImage {
+  background-image: url("./signupimage.png");
+  height: 550px;
+  background-repeat: no-repeat;
+}
+
+.forgetPassword:hover {
+  text-decoration: none;
+}
+
+.button {
+  background-color: #1b4965;
+  color: white;
+  font-weight: bold;
+}
+.button:hover {
+  background-color: #1b4965;
+  color: white;
+  font-weight: bold;
+}

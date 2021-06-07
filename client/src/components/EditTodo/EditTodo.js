@@ -2,8 +2,8 @@
 import React, { Fragment, useState } from 'react';
 
 // Import 
-import InputSubtasks from "./subtasks/InputSubtasks";
-import ListSubtasks from './subtasks/ListSubtasks';
+import InputSubtasks from "../subtasks/InputSubtasks";
+import ListSubtasks from '../subtasks/ListSubtasks';
 
 /**
  * A functional component for inputting subtasks

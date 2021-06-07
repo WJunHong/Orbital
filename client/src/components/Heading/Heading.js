@@ -1,8 +1,8 @@
 // Imports
 import React from 'react';
-import "../design/TaskBox.css";
+import "../../design/TaskBox.css";
 import { Avatar } from '@material-ui/core';
-import profile from '../meileng.jpeg';
+import profile from '../../meileng.jpeg';
 
 const Heading = ({setAuth}) => {
 

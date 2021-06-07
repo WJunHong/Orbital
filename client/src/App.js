@@ -10,9 +10,9 @@ import {
 import './App.css';
 
 // Components
-import Heading from "./components/Heading";
+import Heading from "./components/Heading/Heading";
 import TaskPage from "./components/TaskPage";
-import Login from "./components/Login";
+import Login from "./components/Login/Login";
 import Register from "./components/Register";
 import Overview from "./components/Overview";
 
@@ -49,6 +49,23 @@ function App() {
       console.error(err.message);
     }
   };
+
+  const checkAuthenticated2 = async () => {
+    try {
+      // Makes a call to verify route to check if the user is authorized to be in the website
+      const res = await fetch("/auth/verify", {
+        method: "GET",
+        // Sets a header called token - localStorage.token
+        headers: { token: localStorage.token }
+      });
+
+      const parseRes = await res.json();
+      // Checks if token verification is correct, if yes set authentication to true for the webpage
+      return parseRes === true;
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
   
   // Everytime the page renders fully, call the function
   useEffect(() => {
@@ -67,7 +84,6 @@ function App() {
         <div className="container">
           <Switch>
             <Route exact path="/login" render={props => {
-              console.log(isAuthenticated);
               if (!isAuthenticated) {
                return (<Login {...props} setAuth={setAuth} />);
               } else {
@@ -82,7 +98,9 @@ function App() {
               }
             />
             <Route exact path="/" render={props => {
-              console.log("here");
+                            console.log("here");
+                            checkAuthenticated();
+                            console.log(isAuthenticated);
               if (isAuthenticated) {
                  return (<Fragment>
                   <Heading setAuth={setAuth} />

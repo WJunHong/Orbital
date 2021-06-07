@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
-import '../App.css';
-import "../design/TaskBox.css";
+import '../../App.css';
+import "../../design/TaskBox.css";
 
 // Components
-import InputTodo from "./InputTodo";
-import ListTodo from "./ListTodo";
-import SideBar from "./SideBar"
+import InputTodo from "../InputTodo/InputTodo";
+import ListTodo from "../ListTodo";
+import SideBar from "../SideBar/SideBar"
 
 // List have 4 definite properties, up to 8 custom properties
 const TaskPage = () => {

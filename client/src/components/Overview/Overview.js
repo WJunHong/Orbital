@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 
 // Pop up
-import EditTodo from "./EditTodo";
+import EditTodo from "../EditTodo";
 
 const Overview = () => {
 

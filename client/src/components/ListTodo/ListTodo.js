@@ -1,7 +1,7 @@
 // Imports
 import React, { Fragment, useEffect, useState } from "react";
 
-import EditTodo from "./EditTodo";
+import EditTodo from "../EditTodo";
 
 /**
  * A functional component representing a list of main tasks
