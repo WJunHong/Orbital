@@ -46,7 +46,7 @@
 .button {
   background-color: #1b4965 !important;
   color: white !important;
-  font-weight: bold !important;
+  font-weight: bold;
 }
 
 .button:hover {

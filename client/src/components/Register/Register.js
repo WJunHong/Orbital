@@ -18,17 +18,84 @@ const theme = createMuiTheme({
 });
 // The registration component page
 const Register = ({ setAuth }) => {
+  // name field
   const [name, setName] = useState("");
+  const [name_err, setNE] = useState(false);
+  const [name_label, setNL] = useState("Name");
+  // email field
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirm_password, setCP] = useState("");
   const [email_err, setEE] = useState(false);
-  const [password_err, setPE] = useState(false);
-  const [cpassword_err, setCPE] = useState(false);
   const [email_label, setEL] = useState("Email");
+  // password field
+  const [password, setPassword] = useState("");
+  const [password_err, setPE] = useState(false);
   const [password_label, setPL] = useState("Password");
+  // confirm password field
+  const [confirm_password, setCP] = useState("");
+  const [cpassword_err, setCPE] = useState(false);
   const [confirm_password_label, setCPL] = useState("Confirm Password");
-
+  const superErrorMsg = (errorMsg) => {
+    if (errorMsg === "Missing Credentials") {
+      if (name === "") {
+        setNE(true);
+        setNL("Please enter a Name");
+      } else {
+        setNE(false);
+        setNL("Name");
+      }
+      if (email === "") {
+        setEE(true);
+        setEL("Invalid Email");
+      } else {
+        setEE(false);
+        setEL("Email");
+      }
+      if (password === "") {
+        setPE(true);
+        setPL("Please enter Password");
+        setCPE(true);
+        setCPL("No Password");
+      } else {
+        if (!passwordCheck()) {
+          setCPE(true);
+          setCPL("Password Mismatch");
+          setPE(false);
+          setPL("Password");
+        } else {
+          setPE(false);
+          setPL("Password");
+          setCPE(false);
+          setCPL("Password Matched");
+        }
+      }
+    } else if (errorMsg === "Invalid Email") {
+      setEE(true);
+      setEL(errorMsg);
+      if (!passwordCheck()) {
+        setCPE(true);
+        setCPL("Password Mismatch");
+        setPE(false);
+        setPL("Password");
+      } else {
+        setPE(false);
+        setPL("Password");
+        setCPE(false);
+        setCPL("Password Matched");
+      }
+      setNE(false);
+      setNL("Name");
+    } else if (errorMsg === "User already exist") {
+      setEE(true);
+      setEL(errorMsg);
+      if (!passwordCheck()) {
+        setCPE(true);
+        setCPL("Password Mismatch");
+      }
+    }
+  };
+  const passwordCheck = () => {
+    return password == confirm_password;
+  };
   const toggleErrorMsg = () => {
     // Add error to textfields with invalid input
     if (password === "" && email === "") {
@@ -75,7 +142,8 @@ const Register = ({ setAuth }) => {
           setAuth(true);
         } else {
           setAuth(false);
-          toggleErrorMsg();
+          console.log(parseRes);
+          superErrorMsg(parseRes);
         }
       }
       // Make a post request to register route, providing all info needed
@@ -139,7 +207,8 @@ const Register = ({ setAuth }) => {
                     <Grid item>
                       <TextField
                         className={styles.signUpBox}
-                        label="Name"
+                        error={name_err}
+                        label={name_label}
                         placeholder="Name"
                         variant="outlined"
                         value={name}

@@ -21,7 +21,7 @@ router.post("/register", validInfo, async (req, res) => {
     ]);
 
     if (user.rows.length > 0) {
-      return res.status(401).json("User already exist!");
+      return res.status(401).json("User already exist");
     }
     // 3. Bcrypt the user password
 
@@ -57,7 +57,7 @@ router.post("/login", validInfo, async (req, res) => {
     ]);
 
     if (user.rows.length === 0) {
-      return res.status(401).json("Invalid Credential");
+      return res.status(401).json("user error");
     }
 
     // 2. Check if user has typed in valid password
@@ -68,7 +68,7 @@ router.post("/login", validInfo, async (req, res) => {
     );
 
     if (!validPassword) {
-      return res.status(401).json("Invalid Credential");
+      return res.status(401).json("user error");
     }
 
     // 3. Generate the JWToken for the user

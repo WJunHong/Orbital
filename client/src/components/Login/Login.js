@@ -21,25 +21,40 @@ const Login = ({ setAuth }) => {
     email: "",
     password: "",
   });
+  // email field
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [email_err, setEE] = useState(false);
-  const [password_err, setPE] = useState(false);
   const [email_label, setEL] = useState("Email");
+  // password field
+  const [password, setPassword] = useState("");
+  const [password_err, setPE] = useState(false);
   const [password_label, setPL] = useState("Password");
 
-  const toggleErrorMsg = () => {
-    // Add error to textfields with invalid input
-    if (password === "" && email === "") {
+  const toggleErrorMsg = (errorMsg) => {
+    if (errorMsg === "Missing Credentials") {
+      if (email === "") {
+        setEE(true);
+        setEL("Please enter email");
+      } else {
+        setEE(false);
+        setEL("Email");
+      }
+      if (password === "") {
+        setPE(true);
+        setPL("Please enter password");
+      } else {
+        setPE(false);
+        setPL("Password");
+      }
+    } else if (errorMsg === "Invalid Email") {
       setEE(true);
-      setPE(true);
-      setEL("Please enter email");
-      setPL("Please enter password");
+      setEL(errorMsg);
     } else {
-      setEE(true);
+      setEE(false);
+      setEL("Email");
       setPE(false);
-      setEL("Please enter valid email");
       setPL("Password");
+      document.getElementById("invalidEP").style.display = "inline";
     }
   };
   //const { email, password } = inputs;
@@ -68,7 +83,7 @@ const Login = ({ setAuth }) => {
         setAuth(true);
       } else {
         setAuth(false);
-        toggleErrorMsg();
+        toggleErrorMsg(parseRes);
       }
     } catch (err) {
       console.error(err.message);
@@ -175,6 +190,7 @@ const Login = ({ setAuth }) => {
                     container
                     direction="column"
                     justify="space-between"
+                    alignItems="center"
                     spacing={3}
                   >
                     <Grid item>
@@ -203,10 +219,23 @@ const Login = ({ setAuth }) => {
                           type="password"
                         />
                       </Grid>
-                      <Grid item>
-                        <a href="#" className={styles.forgetPassword}>
-                          Forget Password?
-                        </a>
+                      <Grid
+                        item
+                        container
+                        direction="row"
+                        justify="space-between"
+                        alignItems="stretch"
+                      >
+                        <Grid item>
+                          <a href="#" className={styles.forgetPassword}>
+                            Forget Password?
+                          </a>
+                        </Grid>
+                        <Grid item>
+                          <text id="invalidEP" className={styles.errorInput}>
+                            Invalid email or password
+                          </text>
+                        </Grid>
                       </Grid>
                     </Grid>
                     <Grid item>
