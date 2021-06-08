@@ -1,13 +1,13 @@
 // Imports
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect
+  Redirect,
 } from "react-router-dom";
-import './App.css';
+import "./App.css";
 
 // Components
 import Heading from "./components/Heading/Heading";
@@ -32,14 +32,13 @@ function App() {
 */
 
 function App() {
-
   const checkAuthenticated = async () => {
     try {
       // Makes a call to verify route to check if the user is authorized to be in the website
       const res = await fetch("/auth/verify", {
         method: "GET",
         // Sets a header called token - localStorage.token
-        headers: { token: localStorage.token }
+        headers: { token: localStorage.token },
       });
 
       const parseRes = await res.json();
@@ -56,7 +55,7 @@ function App() {
       const res = await fetch("/auth/verify", {
         method: "GET",
         // Sets a header called token - localStorage.token
-        headers: { token: localStorage.token }
+        headers: { token: localStorage.token },
       });
 
       const parseRes = await res.json();
@@ -66,7 +65,7 @@ function App() {
       console.error(err.message);
     }
   };
-  
+
   // Everytime the page renders fully, call the function
   useEffect(() => {
     checkAuthenticated();
@@ -75,67 +74,86 @@ function App() {
   // TBD
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const setAuth = boolean => {
+  const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
   };
   return (
     <>
       <Router>
-        <div className="container">
+        <div>
           <Switch>
-            <Route exact path="/login" render={props => {
-              if (!isAuthenticated) {
-               return (<Login {...props} setAuth={setAuth} />);
-              } else {
-                return (<Redirect to="/" />); 
-              }
-            }}
+            <Route
+              exact
+              path="/login"
+              render={(props) => {
+                if (!isAuthenticated) {
+                  return <Login {...props} setAuth={setAuth} />;
+                } else {
+                  return <Redirect to="/" />;
+                }
+              }}
             />
-            <Route exact path="/register" render={props => 
-              !isAuthenticated 
-                ? <Register {...props} setAuth={setAuth} />
-                : <Redirect to="/" /> 
+            <Route
+              exact
+              path="/register"
+              render={(props) =>
+                !isAuthenticated ? (
+                  <Register {...props} setAuth={setAuth} />
+                ) : (
+                  <Redirect to="/" />
+                )
               }
             />
-            <Route exact path="/" render={props => {
-                            console.log("here");
-                            checkAuthenticated();
-                            console.log(isAuthenticated);
-              if (isAuthenticated) {
-                 return (<Fragment>
-                  <Heading setAuth={setAuth} />
-                  <Overview {...props} />
-                  </Fragment>);
-              } else {  
-                  return (<Redirect to="/login" />);
-              }
-            }}
+            <Route
+              exact
+              path="/"
+              render={(props) => {
+                checkAuthenticated();
+                if (isAuthenticated) {
+                  return (
+                    <Fragment>
+                      <Heading setAuth={setAuth} />
+                      <Overview {...props} />
+                    </Fragment>
+                  );
+                } else {
+                  return <Redirect to="/login" />;
+                }
+              }}
             />
-            <Route exact path="/maintask" render={props => {
-              if (isAuthenticated) { 
-                return (<Fragment>
-                  <Heading setAuth={setAuth} />
-                  <TaskPage {...props} />
-                  </Fragment>)
-              } else {
-              
-                return (<Redirect to="/login" />); 
-              }
-            }}
+            <Route
+              exact
+              path="/maintask"
+              render={(props) => {
+                if (isAuthenticated) {
+                  return (
+                    <Fragment>
+                      <Heading setAuth={setAuth} />
+                      <TaskPage {...props} />
+                    </Fragment>
+                  );
+                } else {
+                  return <Redirect to="/login" />;
+                }
+              }}
             />
-            <Route exact path="/calendar" render={props => 
-              isAuthenticated 
-                ? <Fragment>
-                  <Heading setAuth={setAuth} />
-                  <TaskPage {...props} />
+            <Route
+              exact
+              path="/calendar"
+              render={(props) =>
+                isAuthenticated ? (
+                  <Fragment>
+                    <Heading setAuth={setAuth} />
+                    <TaskPage {...props} />
                   </Fragment>
-                : <Redirect to="/login" /> 
+                ) : (
+                  <Redirect to="/login" />
+                )
               }
             />
           </Switch>
         </div>
       </Router>
-
     </>
   );
 }
