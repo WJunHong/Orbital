@@ -1,0 +1,87 @@
+.sideBar {
+  background-color: #0f1425;
+  position: fixed;
+  height: 100vh;
+  width: 250px;
+  z-index: 2;
+  top: 64px;
+}
+
+.sideBar ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  padding-left: 15px;
+  margin-bottom: 0;
+  font-family: "Nunito", sans-serif;
+}
+
+.sideBar ul li {
+  height: 50px;
+  margin-bottom: 4px;
+}
+
+.sideBar ul a {
+  display: flex;
+  width: 220px;
+  height: 40px;
+  align-items: center;
+  color: #808080;
+  border-radius: 5px;
+}
+.sideBar ul a div {
+  padding-left: 4px;
+}
+.overview a:hover {
+  background-color: #273469;
+  text-decoration: none;
+  color: white;
+  transition: all 0.2s ease-in;
+}
+
+.calendar a:hover {
+  background-color: #192244;
+  text-decoration: none;
+  color: white;
+  transition: all 0.2s ease-in;
+}
+.mainTask a:hover {
+  background-color: #273569;
+  text-decoration: none;
+  color: white;
+  transition: all 0.2s ease-in;
+}
+.overviewIcon {
+  margin-left: 2px;
+}
+
+.calendarIcon {
+  margin-left: 2px;
+}
+
+.maintaskIcon {
+  margin-left: 2px;
+}
+
+.calendar {
+  border-bottom: 1px solid white;
+  margin-bottom: 3px;
+}
+
+.addList {
+  margin-left: 15px;
+  padding-left: 2px;
+  display: flex;
+  align-items: center;
+  width: 100px;
+  height: 30px;
+  color: #e4d9ff;
+  font-family: "Nunito", sans-serif;
+}
+
+.addList:hover {
+  cursor: pointer;
+  border: 1px solid #e4d9ff;
+  padding-left: 1px;
+  border-radius: 5px;
+}

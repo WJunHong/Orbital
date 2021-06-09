@@ -1,45 +1,5 @@
 /* Root */
-
 /* Header*/
-.header {
-  width: 100vw;
-  min-width: 800px;
-  background-color: #1e2749;
-  display: flex;
-  align-items: center;
-  height: 64px;
-  justify-content: space-between;
-}
-
-.top_nav {
-  display: flex;
-  justify-content: space-between;
-  margin-left: -400px;
-}
-
-.top_nav div {
-  padding: 20px 20px 20px 20px;
-  color: white;
-  font-family: "Nunito", sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  background-color: #244767;
-  border-style: none;
-}
-
-.top_nav div:hover {
-  padding-bottom: 17px;
-  border-bottom: 3px solid #e83e8c;
-  background-color: #373c3a;
-}
-.top_nav div:active {
-  background-color: #373c3a;
-  border-bottom: 3px solid #67e277;
-}
-
-.profile_pic {
-  display: block;
-}
 
 /* Body of page*/
 .outer_box {
@@ -181,8 +141,6 @@ th {
   background-color: #4a6fa5;
   display: inline-block;
   height: calc(100vh - 64px);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.12),
-    0 4px 4px rgba(0, 0, 0, 0.16), 0 8px 8px rgba(0, 0, 0, 0.2);
 }
 
 .btn {

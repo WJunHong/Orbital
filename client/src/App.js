@@ -15,6 +15,7 @@ import TaskPage from "./components/TaskPage";
 import Login from "./components/Login/Login";
 import Register from "./components/Register";
 import Overview from "./components/Overview";
+import SideBar from "./components/SideBar";
 
 /**
  * Functional Component of our main app
@@ -113,6 +114,7 @@ function App() {
                   return (
                     <Fragment>
                       <Heading setAuth={setAuth} />
+                      <SideBar />
                       <Overview {...props} />
                     </Fragment>
                   );
