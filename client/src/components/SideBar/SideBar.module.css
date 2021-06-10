@@ -39,11 +39,21 @@
   transition: all 0.2s ease-in;
 }
 
+.overview a:active {
+  font-weight: bold;
+  color: #d58f8f;
+}
+
 .calendar a:hover {
   background-color: #192244;
   text-decoration: none;
   color: white;
   transition: all 0.2s ease-in;
+}
+
+.calendar a:active {
+  font-weight: bold;
+  color: #52a384;
 }
 .mainTask a:hover {
   background-color: #273569;
@@ -51,6 +61,12 @@
   color: white;
   transition: all 0.2s ease-in;
 }
+
+.mainTask a:active {
+  font-weight: bold;
+  color: #b1a432;
+}
+
 .overviewIcon {
   margin-left: 2px;
 }

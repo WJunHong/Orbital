@@ -125,7 +125,7 @@ function App() {
             />
             <Route
               exact
-              path="/maintask"
+              path="/taskpage"
               render={(props) => {
                 if (isAuthenticated) {
                   return (
