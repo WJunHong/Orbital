@@ -16,8 +16,8 @@ const TaskPage = () => {
     <Background>
       <TabName name={"Main Tasks"} />
       <TabBody>
-        <InputTodo />
         <TaskTables name={"mt"} />
+        <InputTodo />
       </TabBody>
       <div className={styles.bottom}></div>
     </Background>

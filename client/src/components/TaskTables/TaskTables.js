@@ -96,6 +96,9 @@ const TaskTables = ({ name }) => {
 
   const MainTask = (
     <table className="table task_table todo_table">
+      <thead>
+        <th></th>
+      </thead>
       <tbody>
         {todos.map((todo) => (
           <tr

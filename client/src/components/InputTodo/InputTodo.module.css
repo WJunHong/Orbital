@@ -1,0 +1,22 @@
+.addTask {
+  width: calc(40vw - 40px);
+}
+
+.addButton {
+  background-color: #f2aa4cff !important;
+  color: #1d1d1d !important;
+  outline: none;
+}
+
+.addButton:hover {
+  background-color: rgb(245, 158, 46) !important;
+}
+
+.addButton:focus {
+  outline: none;
+}
+
+.addTaskMenu {
+  width: calc(40vw - 40px);
+  height: 200px;
+}
