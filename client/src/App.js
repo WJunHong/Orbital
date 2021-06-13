@@ -107,7 +107,7 @@ function App() {
             />
             <Route
               exact
-              path="/"
+              path="/o"
               render={(props) => {
                 checkAuthenticated();
                 if (isAuthenticated) {
@@ -125,12 +125,13 @@ function App() {
             />
             <Route
               exact
-              path="/taskpage"
+              path="/"
               render={(props) => {
                 if (isAuthenticated) {
                   return (
                     <Fragment>
                       <Heading setAuth={setAuth} />
+                      <SideBar />
                       <TaskPage {...props} />
                     </Fragment>
                   );

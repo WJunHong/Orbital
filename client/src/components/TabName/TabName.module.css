@@ -1,0 +1,23 @@
+.overviewName {
+  display: block;
+  margin-top: 80px;
+  margin-left: 280px;
+  width: 40vw;
+  height: 60px;
+  padding-left: 10px;
+  line-height: 60px;
+  font-size: xx-large;
+  font-weight: bolder;
+  background-color: #1d1d1d !important;
+  color: white !important;
+}
+
+.overviewBox {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-left: 280px;
+  width: 40vw;
+  background-color: #1d1d1d !important;
+  align-items: center;
+}

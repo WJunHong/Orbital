@@ -20,61 +20,178 @@
   padding-left: 0 !important;
 }
 
-.todo_table tbody td {
+.taskData td {
   border-style: none;
   padding: 0;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .taskData {
-  height: 56px;
+  height: fit-content;
   display: grid;
   padding: 16px;
+  padding-left: 0px;
   margin-bottom: 4px;
   width: calc(40vw - 40px);
-  grid-template-columns: 32px 5fr 32px 1fr 32px;
+  grid-template-columns: 1fr 5fr 1fr 1fr 1fr 1fr 1fr;
 }
 
 .taskData:hover {
-  background-color: #3a3a3a;
+  background-color: #242424;
   border-radius: 5px;
   transition: all 0.2s ease-in;
-  cursor: pointer;
 }
 
 .checkbox {
-  color: #d4d4d4;
+  color: #9c9c9c;
   cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .checkbox:hover {
-  color: green;
+  color: #e2e2e2;
+  background-color: #525252;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .task_name {
   color: white;
   font-family: "Nunito", sans-serif;
-  width: 400px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start !important;
 }
 
-.todo_table button {
-  height: 24px;
+.task_name:hover {
+  cursor: default;
 }
 
+.dropdown {
+  color: #9c9c9c;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dropdown:hover {
+  color: #e2e2e2;
+  background-color: #525252;
+  border-radius: 10px;
+}
+
+.deadline {
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.deadline div {
+  color: #9c9c9c;
+  display: flex;
+  align-items: center;
+}
+
+.todo_date text {
+  margin-left: 6px;
+  padding: 2px;
+}
+
+.todo_date text:hover {
+  color: #e2e2e2;
+  background-color: #525252;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.date {
+  color: #9c9c9c;
+  margin-left: 6px;
+  padding: 2px;
+}
+
+.date:hover {
+  color: #e2e2e2;
+  background-color: #525252;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.time {
+  margin-left: 6px;
+  padding: 2px;
+  color: #9c9c9c;
+}
+
+.time:hover {
+  color: #e2e2e2;
+  background-color: #525252;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.progress_value {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 10px;
+  width: 40px;
+  height: 44px;
+}
+
+.progress {
+  background-color: rgba(0, 0, 0, 0);
+  color: #a08a40 !important;
+}
+
+.progress_value:hover {
+  background-color: #525252;
+  border-radius: 10px;
+  transition: background-color 0.3s linear;
+  cursor: pointer;
+}
 .priority {
-  color: white;
+  color: #9c9c9c;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+.priority:hover {
+  color: #e2e2e2;
+  background-color: #525252;
+  border-radius: 10px;
+  cursor: pointer;
+}
 .deleteTask {
-  color: white;
+  color: #9c9c9c;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .deleteTask:hover {
-  color: rgb(161, 46, 46);
-  transition: all 0.2s ease-in;
+  color: #e2e2e2;
+  background-color: #525252;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
 }
 
 /* Body of page*/

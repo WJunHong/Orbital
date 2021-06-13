@@ -1,25 +1,27 @@
-import React, { Fragment } from 'react';
-import '../../App.css';
-import "../../design/TaskBox.css";
+import React, { Fragment } from "react";
 
+import "../../design/TaskBox.css";
+import styles from "./TaskPage.module.css";
 // Components
 import InputTodo from "../InputTodo/InputTodo";
 import ListTodo from "../ListTodo";
-import SideBar from "../SideBar/SideBar"
+import Background from "../Background";
+import TabName from "../TabName";
+import TabBody from "../TabBody";
+import TaskTables from "../TaskTables";
 
 // List have 4 definite properties, up to 8 custom properties
 const TaskPage = () => {
   return (
-      <Fragment>
-        <div className="outer_box">
-            <SideBar />
-          <div className="task_box">
-                <InputTodo />
-              <ListTodo />
-          </div>
-        </div>
-      </Fragment>
+    <Background>
+      <TabName name={"Main Tasks"} />
+      <TabBody>
+        <InputTodo />
+        <TaskTables name={"mt"} />
+      </TabBody>
+      <div className={styles.bottom}></div>
+    </Background>
   );
-}
+};
 
 export default TaskPage;
