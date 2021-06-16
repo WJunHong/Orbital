@@ -1,5 +1,5 @@
 // Imports
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 import styles from "./InputTodo.module.css";
@@ -18,6 +18,8 @@ const InputToDo = () => {
   // Description of a task
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(new Date());
+  const [priority, setPriority] = useState(5);
+  const [todoDate, setTodoDate] = useState(null);
 
   const onSubmitForm = async (e) => {
     // Prevents page from reloading on form submission
@@ -45,66 +47,191 @@ const InputToDo = () => {
       console.error(err.message);
     }
   };
-
   const focusText = (e) => {
     e.preventDefault();
     if (e.target.className == styles.typableArea) {
       document.querySelector("#something1").focus();
     }
   };
-
-  const toggleAdd = () => {
-    document.querySelector(`.${styles.addButton}`).classList.toggle("hidden");
+  const openCalendar = () =>
     document
-      .querySelector(`.${styles.addTaskStuff}`)
+      .querySelector(`.${styles.deadlineIcon}`)
+      .addEventListener("focus", (e) =>
+        document.querySelector(`.${styles.deadlineText}`).focus()
+      );
+
+  const deadlineColors = () => {
+    if (startDate == null) {
+      document.querySelector(`.${styles.deadlineIcon}`).style.color = "white";
+      document.querySelector(`.${styles.deadlineText}`).style.color = "white";
+      document.querySelector(`.${styles.deadlineText}`).style.borderColor =
+        "white";
+    } else {
+      if (new Date().setHours(0, 0, 0, 0) == startDate.setHours(0, 0, 0, 0)) {
+        document.querySelector(`.${styles.deadlineIcon}`).style.color = "green";
+        document.querySelector(`.${styles.deadlineText}`).style.color = "green";
+        document.querySelector(`.${styles.deadlineText}`).style.borderColor =
+          "green";
+      } else {
+        document.querySelector(`.${styles.deadlineIcon}`).style.color = "white";
+        document.querySelector(`.${styles.deadlineText}`).style.color = "white";
+        document.querySelector(`.${styles.deadlineText}`).style.borderColor =
+          "white";
+      }
+    }
+  };
+  const toggleAdd = () => {
+    document
+      .querySelector(`.${styles.addTaskButton}`)
+      .classList.toggle("hidden");
+    document.querySelector(`.${styles.addTaskBox}`).classList.toggle("hidden");
+  };
+  const togglePriority = () => {
+    document
+      .querySelector(`.${styles.priorityOptions}`)
       .classList.toggle("hidden");
   };
+  const makePriority = (e, val) => {
+    togglePriority();
+    switch (val) {
+      case 1:
+        // code block
+        document.querySelector(`.${styles.sideButton1}`).style.color = "red";
+        setPriority(1);
+        break;
+      case 2:
+        // code block
+        document.querySelector(`.${styles.sideButton1}`).style.color =
+          "rgb(218, 109, 7)";
+        setPriority(2);
+        break;
+      case 3:
+        // code block
+        document.querySelector(`.${styles.sideButton1}`).style.color =
+          "rgb(255, 217, 0)";
+        setPriority(3);
+        break;
+      case 4:
+        // code block
+        document.querySelector(`.${styles.sideButton1}`).style.color =
+          "rgb(27, 228, 1)";
+        setPriority(4);
+        break;
+      default:
+        // code block
+        document.querySelector(`.${styles.sideButton1}`).style.color = "white";
+        setPriority(5);
+    }
+  };
+
+  const makeTodoDate = () => {
+    if (todoDate == null) {
+      document.querySelector(`.alarmIcon`).style.color = "white";
+    } else {
+      if (new Date().setHours(0, 0, 0, 0) == todoDate.setHours(0, 0, 0, 0)) {
+        document.querySelector(`.alarmIcon`).style.color = "green";
+      } else {
+        document.querySelector(`.alarmIcon`).style.color = "white";
+      }
+    }
+  };
+  useEffect(() => {
+    deadlineColors();
+  }, [startDate]);
+  useEffect(() => {
+    makeTodoDate();
+  }, [todoDate]);
   return (
     <Fragment>
       <div className={styles.addTask}>
         <Fab
           aria-label="add"
-          className={styles.addButton}
+          className={styles.addTaskButton}
           size="small"
           onClick={(e) => toggleAdd(e)}
         >
-          <AddIcon className={styles.addButton1} />
+          <AddIcon className={styles.addButtonPlus} />
         </Fab>
         <form
-          className={`${styles.addTaskStuff} hidden`}
+          className={`${styles.addTaskBox} hidden`}
           onClick={(e) => focusText(e)}
         >
-          <div className={styles.firstBox}>
+          <div className={styles.textDeadlineLabel}>
             <div
               id="something1"
               contentEditable
               className={`${styles.addTaskText} ${styles.typableArea}`}
               data-placeholder="e.g. Watch 2040s recording"
             ></div>
-            <div className={styles.typableArea}>
-              <CalendarTodayRoundedIcon />
-              <DatePicker
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                showTimeSelect
-                timeFormat="HH:mm"
-                timeIntervals={30}
-                timeCaption="Time"
-                dateFormat="yyyy-MM-dd hh:mm aa"
-                placeholderText="Deadline"
-                className={styles.izgood}
-              />
+            <div className={`${styles.typableArea}`}>
+              <label className={styles.deadlineBox}>
+                <CalendarTodayRoundedIcon
+                  className={styles.deadlineIcon}
+                  onClick={openCalendar}
+                />
+                <DatePicker
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  showTimeSelect
+                  timeFormat="HH:mm"
+                  timeIntervals={30}
+                  timeCaption="Time"
+                  dateFormat="yyyy-MM-dd hh:mm aa"
+                  placeholderText="Input Deadline"
+                  minDate={new Date()}
+                  className={`${styles.deadlineText}`}
+                />
+              </label>
             </div>
             <div className={styles.typableArea}>
-              <LabelImportantRoundedIcon />
+              <div className={styles.labelBox}>
+                <LabelImportantRoundedIcon />
+                <div>Add Property +</div>
+              </div>
             </div>
           </div>
           <div>
             <div className={styles.sideButton}>
-              <OutlinedFlagRoundedIcon />
+              <div className={styles.sideButton1} onClick={togglePriority}>
+                <OutlinedFlagRoundedIcon />
+              </div>
+              <div className={`${styles.priorityOptions} hidden`}>
+                <ul>
+                  <li onClick={(e) => makePriority(e, 1)}>
+                    <OutlinedFlagRoundedIcon className={styles.po1} />
+                    Priority 1
+                  </li>
+                  <li onClick={(e) => makePriority(e, 2)}>
+                    <OutlinedFlagRoundedIcon className={styles.po2} />
+                    Priority 2
+                  </li>
+                  <li onClick={(e) => makePriority(e, 3)}>
+                    <OutlinedFlagRoundedIcon className={styles.po3} />
+                    Priority 3
+                  </li>
+                  <li onClick={(e) => makePriority(e, 4)}>
+                    <OutlinedFlagRoundedIcon className={styles.po4} />
+                    Priority 4
+                  </li>
+                  <li onClick={(e) => makePriority(e, 5)}>
+                    <OutlinedFlagRoundedIcon className={styles.po5} />
+                    Priority 5
+                  </li>
+                </ul>
+              </div>
             </div>
             <div className={styles.sideButton}>
-              <AlarmIcon />
+              <DatePicker
+                selected={todoDate}
+                onChange={(date) => setTodoDate(date)}
+                customInput={
+                  <div className={styles.sideButton2}>
+                    <AlarmIcon className="alarmIcon" />
+                  </div>
+                }
+                maxDate={startDate}
+                minDate={new Date()}
+              />
             </div>
           </div>
         </form>
@@ -117,7 +244,7 @@ const InputToDo = () => {
             type="text"
             className="form-control add_task"
             placeholder="Input task"
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => makeTodoDate(e)}
             autoComplete="off"
           />
 
