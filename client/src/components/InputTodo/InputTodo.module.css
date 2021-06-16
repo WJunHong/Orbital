@@ -1,11 +1,15 @@
 .addTask {
-  width: calc(40vw - 40px);
+  width: max(400px, calc(40vw - 40px));
 }
 
 .addButton {
   background-color: #f2aa4cff !important;
-  color: #1d1d1d !important;
   outline: none;
+}
+
+.addButton1 {
+  color: #1d1d1d;
+  transform: scale(1.3);
 }
 
 .addButton:hover {
@@ -19,4 +23,83 @@
 .addTaskMenu {
   width: calc(40vw - 40px);
   height: 200px;
+}
+
+.firstBox {
+  display: flex;
+  flex-direction: column;
+}
+.addTaskText {
+  font-family: "Nunito", sans-serif;
+  color: white !important;
+  border-style: none;
+  width: max(300px, calc(40vw - 80px));
+  outline: none;
+  height: fit-content;
+  padding-left: 8px;
+  padding-top: 8px;
+  font-size: 12px;
+  margin-bottom: 8px;
+  line-break: anywhere;
+}
+
+[contentEditable="true"]:empty:before {
+  content: attr(data-placeholder);
+  color: #9c9c9c;
+  font-size: 12px;
+}
+
+.typableArea:hover {
+  cursor: text !important;
+}
+
+.typableArea {
+  display: flex;
+  align-items: center;
+}
+.addTaskText:active {
+  outline: none;
+}
+
+.addTaskStuff {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: 1px solid white;
+  border-radius: 5px;
+  width: max(calc(40vw - 40px), 400px);
+}
+
+.sideButton {
+  width: 32px;
+  height: 32px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 4px;
+  margin-top: 4px;
+}
+
+.sideButton:hover {
+  background-color: #525252;
+  border-radius: 5px;
+}
+
+.izgood {
+  color: white;
+  background-color: #1d1d1d;
+  outline: none;
+  font-size: 12px;
+  font-family: "Nunito", sans-serif;
+  border-style: none;
+}
+
+.izgood:hover {
+  border: 1px solid white;
+  border-radius: 2px;
+  padding-left: 1px;
+}
+.izgood:active {
+  outline: none;
 }

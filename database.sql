@@ -22,3 +22,9 @@ CREATE TABLE users(
   user_password VARCHAR(255) NOT NULL,
   PRIMARY KEY(user_id)
 );
+
+--ALTER TABLE table
+--DROP COLUMN column_name;
+
+--INSERT INTO users (user_name, user_email, user_password)
+--VALUES ('owen', 'owen@gmail.com', 'test123pw');

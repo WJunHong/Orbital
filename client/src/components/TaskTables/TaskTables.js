@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import app from "../../base";
 
 import {
   CheckBoxOutlineBlankOutlinedIcon,
@@ -17,19 +18,10 @@ const TaskTables = ({ name }) => {
   // Array of main tasks
   const [todos, setTodos] = useState([]);
 
-  const getUserId = async () => {
-    const res = await fetch("http://localhost:5000/", {
-      method: "GET",
-      headers: { token: localStorage.token },
-    });
-
-    const parseData = await res.json();
-    return parseData[1].user_id;
-  };
-
   const getTodos = async () => {
     try {
-      const user_id = await getUserId();
+      const user = app.auth().currentUser;
+      const user_id = user.uid;
       // Calls the GET all tasks route method
       if (name === "mt") {
         const response = await fetch("/todos", {
@@ -86,8 +78,14 @@ const TaskTables = ({ name }) => {
   };
 
   const someFunc = (e, todo) => {
-    if (e.target.tagName == "TD" || e.target.tagName == "TR") {
+    if (
+      e.target.tagName == "TD" ||
+      e.target.tagName == "TR" ||
+      e.target.className == "deadline"
+    ) {
       console.log(todo.description);
+    } else {
+      console.log(e.target);
     }
   };
   useEffect(() => {

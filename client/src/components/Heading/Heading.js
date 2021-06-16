@@ -1,5 +1,6 @@
 // Imports
 import React, { Fragment, useState, useEffect } from "react";
+import app from "../../base";
 
 // Style imports
 import "../../design/TaskBox.css";
@@ -16,7 +17,7 @@ const theme = createMuiTheme({
     fontFamily: ["Nunito", "sans-serif"].join(","),
   },
 });
-const Heading = ({ setAuth }) => {
+const Heading = () => {
   var counter = 0;
   const [time, setTime] = useState("Morning");
   var opac = 1;
@@ -46,7 +47,6 @@ const Heading = ({ setAuth }) => {
     try {
       localStorage.removeItem("token");
       localStorage.removeItem("auth");
-      setAuth(false);
       //toast.success("Logout successfully");
     } catch (err) {
       console.error(err.message);
@@ -100,7 +100,7 @@ const Heading = ({ setAuth }) => {
               </a>
             </li>
             <li>
-              <a href="/login" onClick={(e) => logout(e)}>
+              <a href="/login" onClick={() => app.auth().signOut()}>
                 <ExitToAppRoundedIcon
                   fontSize="small"
                   className={styles.logoutIcon}

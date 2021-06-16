@@ -6,4 +6,5 @@
   width: 40vw;
   background-color: #1d1d1d !important;
   align-items: center;
+  min-width: 440px;
 }

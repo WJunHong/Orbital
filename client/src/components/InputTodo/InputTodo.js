@@ -3,6 +3,12 @@ import React, { Fragment, useState } from "react";
 import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 import styles from "./InputTodo.module.css";
+import OutlinedFlagRoundedIcon from "@material-ui/icons/OutlinedFlagRounded";
+import LabelImportantRoundedIcon from "@material-ui/icons/LabelImportantRounded";
+import { AlarmIcon, CalendarTodayRoundedIcon } from "../../design/table_icons";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import app from "../../base";
 
 /**
  * A functional component representing the input of a task
@@ -11,6 +17,7 @@ import styles from "./InputTodo.module.css";
 const InputToDo = () => {
   // Description of a task
   const [description, setDescription] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
 
   const onSubmitForm = async (e) => {
     // Prevents page from reloading on form submission
@@ -20,14 +27,8 @@ const InputToDo = () => {
         // If task field is empty, do not submit anything
       } else {
         // Fetches user_id
-        const res = await fetch("http://localhost:5000/", {
-          method: "GET",
-          headers: { token: localStorage.token },
-        });
-
-        const parseData = await res.json();
-        const user_id = parseData[1].user_id;
-        console.log(user_id);
+        const user = app.auth().currentUser;
+        const user_id = user.uid;
 
         // Sends a request to create the new task in server
         const body = { user_id, description };
@@ -45,12 +46,69 @@ const InputToDo = () => {
     }
   };
 
+  const focusText = (e) => {
+    e.preventDefault();
+    if (e.target.className == styles.typableArea) {
+      document.querySelector("#something1").focus();
+    }
+  };
+
+  const toggleAdd = () => {
+    document.querySelector(`.${styles.addButton}`).classList.toggle("hidden");
+    document
+      .querySelector(`.${styles.addTaskStuff}`)
+      .classList.toggle("hidden");
+  };
   return (
     <Fragment>
       <div className={styles.addTask}>
-        <Fab aria-label="add" className={styles.addButton} size="medium">
-          <AddIcon />
+        <Fab
+          aria-label="add"
+          className={styles.addButton}
+          size="small"
+          onClick={(e) => toggleAdd(e)}
+        >
+          <AddIcon className={styles.addButton1} />
         </Fab>
+        <form
+          className={`${styles.addTaskStuff} hidden`}
+          onClick={(e) => focusText(e)}
+        >
+          <div className={styles.firstBox}>
+            <div
+              id="something1"
+              contentEditable
+              className={`${styles.addTaskText} ${styles.typableArea}`}
+              data-placeholder="e.g. Watch 2040s recording"
+            ></div>
+            <div className={styles.typableArea}>
+              <CalendarTodayRoundedIcon />
+              <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={30}
+                timeCaption="Time"
+                dateFormat="yyyy-MM-dd hh:mm aa"
+                placeholderText="Deadline"
+                className={styles.izgood}
+              />
+            </div>
+            <div className={styles.typableArea}>
+              <LabelImportantRoundedIcon />
+            </div>
+          </div>
+          <div>
+            <div className={styles.sideButton}>
+              <OutlinedFlagRoundedIcon />
+            </div>
+            <div className={styles.sideButton}>
+              <AlarmIcon />
+            </div>
+          </div>
+        </form>
+        {/* Old stuff*/}
         <form
           className={`${styles.addTaskMenu} d-flex`}
           onSubmit={onSubmitForm}

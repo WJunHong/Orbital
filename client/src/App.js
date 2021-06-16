@@ -1,6 +1,5 @@
 // Imports
 import React, { Fragment, useState, useEffect } from "react";
-import "react-toastify/dist/ReactToastify.css";
 import {
   BrowserRouter as Router,
   Route,
@@ -8,9 +7,15 @@ import {
   Redirect,
 } from "react-router-dom";
 import "./App.css";
+// import Home from "./Home";
+// import SignUp from "./SignUp";
+// import Login from "./Login";
+import { AuthProvider } from "./Auth";
+import PrivateRoute from "./PrivateRoute";
 
 // Components
-import Heading from "./components/Heading/Heading";
+
+import Heading from "./components/Heading";
 import TaskPage from "./components/TaskPage";
 import Login from "./components/Login/Login";
 import Register from "./components/Register";
@@ -31,11 +36,26 @@ function App() {
   );
 }
 */
-
 function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <div>
+          <PrivateRoute exact path="/" component={Overview} />
+          <PrivateRoute exact path="/taskpage" component={TaskPage} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+        </div>
+      </Router>
+    </AuthProvider>
+  );
+  /*
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   const checkAuthenticated = async () => {
     try {
       // Makes a call to verify route to check if the user is authorized to be in the website
+      console.log(2);
       const res = await fetch("/auth/verify", {
         method: "GET",
         // Sets a header called token - localStorage.token
@@ -52,6 +72,7 @@ function App() {
 
   const checkAuthenticated2 = async () => {
     try {
+      console.log(2);
       // Makes a call to verify route to check if the user is authorized to be in the website
       const res = await fetch("/auth/verify", {
         method: "GET",
@@ -73,7 +94,6 @@ function App() {
   }, []);
 
   // TBD
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
@@ -159,6 +179,26 @@ function App() {
       </Router>
     </>
   );
+  */
 }
 
 export default App;
+
+{
+  /*
+
+*/
+}
+
+{
+  /*
+    <AuthProvider>
+      <Router>
+        <div>
+          <PrivateRoute exact path="/" component={Heading} />
+          <Route exact path="/register" component={RegisterFake} />
+          <Route exact path="login" component={LoginFake} />
+        </div>
+      </Router>
+    </AuthProvider>*/
+}

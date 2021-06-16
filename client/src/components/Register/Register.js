@@ -1,6 +1,8 @@
 // Logic imports
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useCallback } from "react";
 import { Link, Redirect } from "react-router-dom";
+import { withRouter } from "react-router";
+import app from "../../base";
 
 // Style imports
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -16,8 +18,26 @@ const theme = createMuiTheme({
     fontFamily: ["Nunito", "sans-serif"].join(","),
   },
 });
+/*
+const SignUp = ({ history }) => {
+  const handleSignUp = useCallback(
+    async (event) => {
+      event.preventDefault();
+      const { email, password } = event.target.elements;
+      try {
+        await app
+          .auth()
+          .createUserWithEmailAndPassword(email.value, password.value);
+        history.push("/");
+      } catch (error) {
+        alert(error);
+      }
+    },
+    [history]
+  );
+*/
 // The registration component page
-const Register = ({ setAuth }) => {
+const Register = ({ history }) => {
   // name field
   const [name, setName] = useState("");
   const [name_err, setNE] = useState(false);
@@ -34,6 +54,31 @@ const Register = ({ setAuth }) => {
   const [confirm_password, setCP] = useState("");
   const [cpassword_err, setCPE] = useState(false);
   const [confirm_password_label, setCPL] = useState("Confirm Password");
+
+  const SubmitForm = useCallback(
+    async (e) => {
+      e.preventDefault();
+      const { name, email, password } = e.target.elements;
+      try {
+        /*if (password != confirm_password) {
+          wrongPassword();
+        } else {*/
+        await app
+          .auth()
+          .createUserWithEmailAndPassword(email.value, password.value)
+          .then((userCred) => {
+            userCred.user.updateProfile({ displayName: name.value });
+          });
+        history.push("/");
+        // superErrorMsg(parseRes);
+      } catch (err) {
+        // superErrorMsg(err);
+        console.error(err.message);
+      }
+    },
+    [history]
+  );
+
   const superErrorMsg = (errorMsg) => {
     if (errorMsg === "Missing Credentials") {
       if (name === "") {
@@ -118,39 +163,6 @@ const Register = ({ setAuth }) => {
     setCPE(true);
     setCPL("Retype Password");
   };
-  const SubmitForm = async (e) => {
-    e.preventDefault();
-    try {
-      const body = { name, email, password };
-      if (password != confirm_password) {
-        wrongPassword();
-      } else {
-        const response = await fetch("/auth/register", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify(body),
-        });
-        // Returns the JWT token, if the email and password are valid
-        const parseRes = await response.json();
-
-        // If there is a JWT token, place it in localStorage as token, and make the user authorized.
-        if (parseRes.token) {
-          localStorage.setItem("token", parseRes.token);
-          localStorage.setItem("auth", true);
-          setAuth(true);
-        } else {
-          setAuth(false);
-          console.log(parseRes);
-          superErrorMsg(parseRes);
-        }
-      }
-      // Make a post request to register route, providing all info needed
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
 
   return (
     <Fragment>
@@ -206,43 +218,36 @@ const Register = ({ setAuth }) => {
                   >
                     <Grid item>
                       <TextField
+                        type="text"
+                        name="name"
                         className={styles.signUpBox}
                         error={name_err}
                         label={name_label}
                         placeholder="Name"
                         variant="outlined"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        inputProps={{
-                          autoComplete: "new-password",
-                          form: {
-                            autoComplete: "off",
-                          },
-                        }}
                       />
                     </Grid>
                     <Grid item>
                       <TextField
+                        type="email"
+                        name="email"
                         className={styles.signUpBox}
                         error={email_err}
                         id="email_input"
                         label={email_label}
                         placeholder="Email"
                         variant="outlined"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
                       />
                     </Grid>
                     <Grid item>
                       <TextField
+                        name="password"
                         error={password_err}
                         id="password_input"
                         className={styles.signUpBox}
                         label={password_label}
                         placeholder="Password"
                         variant="outlined"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
                         type="password"
                       />
                     </Grid>
@@ -279,4 +284,4 @@ const Register = ({ setAuth }) => {
   );
 };
 
-export default Register;
+export default withRouter(Register);

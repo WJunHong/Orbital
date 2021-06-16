@@ -1,5 +1,8 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useCallback, useContext } from "react";
 import { Link, Redirect } from "react-router-dom";
+import { withRouter } from "react-router";
+import app from "../../base";
+import { AuthContext } from "../../Auth";
 
 // Styling imports
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -16,11 +19,7 @@ const theme = createMuiTheme({
   },
 });
 
-const Login = ({ setAuth }) => {
-  const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
-  });
+const Login = ({ history }) => {
   // email field
   const [email, setEmail] = useState("");
   const [email_err, setEE] = useState(false);
@@ -29,6 +28,28 @@ const Login = ({ setAuth }) => {
   const [password, setPassword] = useState("");
   const [password_err, setPE] = useState(false);
   const [password_label, setPL] = useState("Password");
+
+  const SubmitForm = useCallback(
+    async (e) => {
+      e.preventDefault();
+      const { email, password } = e.target.elements;
+      try {
+        await app
+          .auth()
+          .signInWithEmailAndPassword(email.value, password.value);
+        history.push("/");
+      } catch (err) {
+        console.error(err.message);
+      }
+    },
+    [history]
+  );
+
+  const { currentUser } = useContext(AuthContext);
+
+  if (currentUser) {
+    return <Redirect to="/" />;
+  }
 
   const toggleErrorMsg = (errorMsg) => {
     if (errorMsg === "Missing Credentials") {
@@ -58,37 +79,6 @@ const Login = ({ setAuth }) => {
     }
   };
   //const { email, password } = inputs;
-
-  const onChange = (e) =>
-    setInputs({ ...inputs, [e.target.name]: e.target.value });
-  const SubmitForm = async (e) => {
-    e.preventDefault();
-    try {
-      const body = { email, password };
-      // Send a login post request with the credentials given. Initally unauthenticated
-      const response = await fetch("/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-      // Returns the JWT token
-      const parseRes = await response.json();
-
-      // If there is a JWT token, save it to localStorage, and make user authorized to use the web app.
-      if (parseRes.token) {
-        localStorage.setItem("token", parseRes.token);
-        localStorage.setItem("auth", true);
-        setAuth(true);
-      } else {
-        setAuth(false);
-        toggleErrorMsg(parseRes);
-      }
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
 
   /*const onSubmitForm = async (e) => {
     // Prevent page from reloading
@@ -195,6 +185,8 @@ const Login = ({ setAuth }) => {
                   >
                     <Grid item>
                       <TextField
+                        type="email"
+                        name="email"
                         className={styles.signUpBox}
                         error={email_err}
                         id="email_input"
@@ -208,6 +200,7 @@ const Login = ({ setAuth }) => {
                     <Grid item container direction="column">
                       <Grid item>
                         <TextField
+                          name="password"
                           error={password_err}
                           id="password_input"
                           className={styles.signUpBox}
@@ -262,4 +255,4 @@ const Login = ({ setAuth }) => {
   );
 };
 
-export default Login;
+export default withRouter(Login);

@@ -5,6 +5,7 @@
 /* 2. Task Table*/
 .todo_table {
   width: calc(40vw - 40px);
+  min-width: 400px;
 }
 .todo_table tbody {
   display: inline-block;
@@ -17,6 +18,7 @@
   width: calc(40vw - 40px);
   border-bottom: 1px solid #a2a2a2 !important;
   padding-left: 0 !important;
+  min-width: 400px;
 }
 
 .taskData td {
@@ -35,6 +37,7 @@
   margin-bottom: 4px;
   width: calc(40vw - 40px);
   grid-template-columns: 1fr 5fr 1fr 1fr 1fr 1fr 1fr;
+  min-width: 400px;
 }
 
 .taskData:hover {
@@ -96,7 +99,7 @@
 
 .deadline div {
   color: #9c9c9c;
-  display: flex;
+  display: flex !important;
   align-items: center;
 }
 
@@ -190,7 +193,7 @@
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 /* Input main task */
