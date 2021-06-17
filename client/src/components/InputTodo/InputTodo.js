@@ -17,9 +17,10 @@ import app from "../../base";
 const InputToDo = () => {
   // Description of a task
   const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
   const [priority, setPriority] = useState(5);
   const [todoDate, setTodoDate] = useState(null);
+  const [properties, setProperties] = useState([]);
 
   const onSubmitForm = async (e) => {
     // Prevents page from reloading on form submission
@@ -33,7 +34,14 @@ const InputToDo = () => {
         const user_id = user.uid;
 
         // Sends a request to create the new task in server
-        const body = { user_id, description };
+        const body = {
+          user_id,
+          description,
+          startDate,
+          todoDate,
+          priority,
+          properties,
+        };
         const response = await fetch("/todos", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -171,9 +179,10 @@ const InputToDo = () => {
                 />
                 <DatePicker
                   selected={startDate}
-                  onChange={(date) => setStartDate(date)}
+                  onChange={(date) => {
+                    setStartDate(date);
+                  }}
                   showTimeSelect
-                  timeFormat="HH:mm"
                   timeIntervals={30}
                   timeCaption="Time"
                   dateFormat="yyyy-MM-dd hh:mm aa"
@@ -244,7 +253,7 @@ const InputToDo = () => {
             type="text"
             className="form-control add_task"
             placeholder="Input task"
-            onChange={(e) => makeTodoDate(e)}
+            onChange={(e) => setDescription(e.target.value)}
             autoComplete="off"
           />
 

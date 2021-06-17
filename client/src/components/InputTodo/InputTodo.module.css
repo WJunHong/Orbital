@@ -107,16 +107,6 @@
   outline: none;
 }
 
-.react-datepicker__header {
-  text-align: center;
-  background-color: #3e82cf;
-  border-bottom: 0px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  padding-top: 8px;
-  position: relative;
-}
-
 .labelBox {
   margin-left: 8px;
   display: flex;
