@@ -73,7 +73,15 @@ const Register = ({ history }) => {
         // superErrorMsg(parseRes);
       } catch (err) {
         // superErrorMsg(err);
+        console.log(err.code);
         console.error(err.message);
+        switch(err.code) {
+          case "ERROR_INVALID CREDENTIAL":
+            err.message = "Wrong credentials";
+            break;
+          default:
+            err.message = "Undefined error";
+        }
       }
     },
     [history]
