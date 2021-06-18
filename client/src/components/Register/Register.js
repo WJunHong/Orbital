@@ -12,30 +12,14 @@ import { Paper } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import styles from "./Register.module.css";
 import GoogleButton from "react-google-button";
+import { set } from "date-fns";
 
 const theme = createMuiTheme({
   typography: {
     fontFamily: ["Nunito", "sans-serif"].join(","),
   },
 });
-/*
-const SignUp = ({ history }) => {
-  const handleSignUp = useCallback(
-    async (event) => {
-      event.preventDefault();
-      const { email, password } = event.target.elements;
-      try {
-        await app
-          .auth()
-          .createUserWithEmailAndPassword(email.value, password.value);
-        history.push("/");
-      } catch (error) {
-        alert(error);
-      }
-    },
-    [history]
-  );
-*/
+
 // The registration component page
 const Register = ({ history }) => {
   // name field
@@ -54,123 +38,101 @@ const Register = ({ history }) => {
   const [confirm_password, setCP] = useState("");
   const [cpassword_err, setCPE] = useState(false);
   const [confirm_password_label, setCPL] = useState("Confirm Password");
+  const clearAll = () => {
+    setNE(false);
+    setNL("Name");
+    setEE(false);
+    setEL("Email");
+    setPE(false);
+    setPL("Password");
+    setCPE(false);
+    setCPL("Confirm Password");
+    document.getElementById("signupError").style.display = "none";
+  }
 
   const SubmitForm = useCallback(
     async (e) => {
       e.preventDefault();
-      const { name, email, password } = e.target.elements;
+      const { name, email, password, confirmPassword} = e.target.elements;
       try {
-        /*if (password != confirm_password) {
-          wrongPassword();
-        } else {*/
-        await app
-          .auth()
-          .createUserWithEmailAndPassword(email.value, password.value)
-          .then((userCred) => {
-            userCred.user.updateProfile({ displayName: name.value });
-          });
-        history.push("/");
-        // superErrorMsg(parseRes);
-      } catch (err) {
-        // superErrorMsg(err);
-        console.log(err.code);
-        console.error(err.message);
-        switch(err.code) {
-          case "ERROR_INVALID CREDENTIAL":
-            err.message = "Wrong credentials";
-            break;
-          default:
-            err.message = "Undefined error";
+        clearAll();
+        if (!validateInfo(name.value, email.value, password.value, confirmPassword.value)) {
+          // do nothing
+        } else {
+          await app
+            .auth()
+            .createUserWithEmailAndPassword(email.value, password.value)
+            .then((userCred) => {
+              userCred.user.updateProfile({ displayName: name.value });
+            });
+          history.push("/");
         }
+      } catch (err) {
+        toggleErrorMsg(err.code);
       }
     },
     [history]
   );
 
-  const superErrorMsg = (errorMsg) => {
-    if (errorMsg === "Missing Credentials") {
-      if (name === "") {
-        setNE(true);
-        setNL("Please enter a Name");
-      } else {
-        setNE(false);
-        setNL("Name");
-      }
-      if (email === "") {
-        setEE(true);
-        setEL("Invalid Email");
-      } else {
-        setEE(false);
-        setEL("Email");
-      }
-      if (password === "") {
-        setPE(true);
-        setPL("Please enter Password");
-        setCPE(true);
-        setCPL("No Password");
-      } else {
-        if (!passwordCheck()) {
-          setCPE(true);
-          setCPL("Password Mismatch");
-          setPE(false);
-          setPL("Password");
-        } else {
-          setPE(false);
-          setPL("Password");
-          setCPE(false);
-          setCPL("Password Matched");
-        }
-      }
-    } else if (errorMsg === "Invalid Email") {
+  const toggleErrorMsg = (errorMsg) => {
+    const textError = document.getElementById("signupError");
+    textError.style.display = "none";
+    if (errorMsg === "auth/invalid-email") {
       setEE(true);
-      setEL(errorMsg);
-      if (!passwordCheck()) {
-        setCPE(true);
-        setCPL("Password Mismatch");
-        setPE(false);
-        setPL("Password");
+      setEL("Invalid email");
+    } else {
+      setEE(false);
+      setEL("Email");
+      setPE(false);
+      setPL("Password");
+      textError.style.display = "inline";
+      if (errorMsg === "auth/weak-password") {
+        textError.innerHTML = "The password must be 6 characters long or more.";
+      } else if (errorMsg === "auth/email-already-in-use") {
+        setEE(true);
+        textError.innerHTML = "The email address is already in use by another account.";
       } else {
-        setPE(false);
-        setPL("Password");
-        setCPE(false);
-        setCPL("Password Matched");
+        textError.innerHTML = "Undefined error";
       }
+    }
+  }
+
+  const validateInfo = (checkName, checkEmail, checkPassword, checkConfirmPassword) => {
+    var validated = true;
+    if (checkName === "") {
+      setNE(true);
+      setNL("Please enter a name");
+      validated = false;
+    } else {
       setNE(false);
       setNL("Name");
-    } else if (errorMsg === "User already exist") {
-      setEE(true);
-      setEL(errorMsg);
-      if (!passwordCheck()) {
-        setCPE(true);
-        setCPL("Password Mismatch");
-      }
     }
-  };
-  const passwordCheck = () => {
-    return password == confirm_password;
-  };
-  const toggleErrorMsg = () => {
-    // Add error to textfields with invalid input
-    if (password === "" && email === "") {
+
+    if (checkEmail === "") {
       setEE(true);
-      setPE(true);
-      setCPE(true);
       setEL("Please enter email");
-      setPL("Please enter password");
-      setCPL("Please confirm password");
+      validated = false;
     } else {
-      setEE(true);
-      setPE(false);
-      setCPE(false);
-      setEL("Please enter valid email");
-      setPL("Password");
-      setCPL("Confirm Password");
+      setEE(false);
+      setEL("Email");
     }
-  };
-  const wrongPassword = () => {
-    setCPE(true);
-    setCPL("Retype Password");
-  };
+
+    if (checkPassword === "") {
+      setPE(true);
+      setPL("Please enter password");
+      validated = false;
+    } else {
+      setPE(false);
+      setPL("Password");
+    }
+
+    if (checkPassword != checkConfirmPassword) {
+      setCPE(true);
+      setCPL("Retype Password");
+      validated = false;
+    }
+    return validated;
+  }
 
   return (
     <Fragment>
@@ -262,6 +224,7 @@ const Register = ({ history }) => {
                     <Grid item>
                       <TextField
                         error={cpassword_err}
+                        name="confirmPassword"
                         id="confirm_password_input"
                         className={styles.signUpBox}
                         label={confirm_password_label}
@@ -271,6 +234,11 @@ const Register = ({ history }) => {
                         onChange={(e) => setCP(e.target.value)}
                         type="password"
                       />
+                    </Grid>
+                    <Grid item>
+                      <text id="signupError" className={styles.errorInput}>
+                        hi
+                      </text>
                     </Grid>
                     <Grid item>
                       <Button

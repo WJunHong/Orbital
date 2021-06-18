@@ -12,6 +12,7 @@ import { Paper } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import styles from "./Login.module.css";
 import GoogleButton from "react-google-button";
+import { lastDayOfQuarter, set } from "date-fns";
 
 const theme = createMuiTheme({
   typography: {
@@ -34,12 +35,16 @@ const Login = ({ history }) => {
       e.preventDefault();
       const { email, password } = e.target.elements;
       try {
-        await app
+        if (!validateInfo(email.value, password.value)) {
+          // do nothing
+        } else {
+          await app
           .auth()
           .signInWithEmailAndPassword(email.value, password.value);
         history.push("/");
+        }
       } catch (err) {
-        console.error(err.message);
+        toggleErrorMsg(err.code);
       }
     },
     [history]
@@ -52,62 +57,49 @@ const Login = ({ history }) => {
   }
 
   const toggleErrorMsg = (errorMsg) => {
-    if (errorMsg === "Missing Credentials") {
-      if (email === "") {
-        setEE(true);
-        setEL("Please enter email");
-      } else {
-        setEE(false);
-        setEL("Email");
-      }
-      if (password === "") {
-        setPE(true);
-        setPL("Please enter password");
-      } else {
-        setPE(false);
-        setPL("Password");
-      }
-    } else if (errorMsg === "Invalid Email") {
+    const textError = document.getElementById("invalidEP");
+    textError.style.display = "none";
+    if (errorMsg === "auth/invalid-email") {
       setEE(true);
-      setEL(errorMsg);
+      setEL("Invalid email");
     } else {
       setEE(false);
       setEL("Email");
       setPE(false);
       setPL("Password");
-      document.getElementById("invalidEP").style.display = "inline";
-    }
-  };
-  //const { email, password } = inputs;
-
-  /*const onSubmitForm = async (e) => {
-    // Prevent page from reloading
-    e.preventDefault();
-    try {
-      const body = { email, password };
-      // Send a login post request with the credentials given. Initally unauthenticated
-      const response = await fetch("/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-      // Returns the JWT token
-      const parseRes = await response.json();
-
-      // If there is a JWT token, save it to localStorage, and make user authorized to use the web app.
-      if (parseRes.token) {
-        localStorage.setItem("token", parseRes.token);
-        localStorage.setItem("auth", true);
-        setAuth(true);
+      textError.style.display = "inline";
+      if (errorMsg === "auth/too-many-requests") {
+        textError.innerHTML = "Too many failed login attempts. Please try again later.";
+      } else if (errorMsg === "auth/wrong-password") {
+        textError.innerHTML = "Invalid email or password";
+      } else if (errorMsg === "auth/user-not-found") {
+        textError.innerHTML = "Email has not been registered";
       } else {
-        setAuth(false);
+        textError.innerHTML = "Undefined error";
       }
-    } catch (err) {
-      console.error(err.message);
     }
-  };*/
+  }
+  const validateInfo = (checkEmail, checkPassword) => {
+    var validated = true;
+    if (checkEmail === "") {
+      setEE(true);
+      setEL("Please enter email");
+      validated = false;
+    } else {
+      setEE(false);
+      setEL("Email");
+    }
+
+    if (checkPassword === "") {
+      setPE(true);
+      setPL("Please enter password");
+      validated = false;
+    } else {
+      setPE(false);
+      setPL("Password");
+    }
+    return validated;
+  }
 
   return (
     <Fragment>
@@ -226,7 +218,6 @@ const Login = ({ history }) => {
                         </Grid>
                         <Grid item>
                           <text id="invalidEP" className={styles.errorInput}>
-                            Invalid email or password
                           </text>
                         </Grid>
                       </Grid>

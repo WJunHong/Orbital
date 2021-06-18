@@ -175,8 +175,9 @@ const TaskTables = ({ name }) => {
           {todos
             .filter(
               (todo) =>
+                todo.deadline != null &&
                 todo.deadline.substring(0, 10) ===
-                new Date().toISOString().split("T")[0]
+                  new Date().toISOString().split("T")[0]
             )
             .map((todo) => (
               <tr
@@ -254,8 +255,9 @@ const TaskTables = ({ name }) => {
           {todos
             .filter(
               (todo) =>
+                todo.deadline != null &&
                 todo.deadline.substring(0, 10) !=
-                new Date().toISOString().split("T")[0]
+                  new Date().toISOString().split("T")[0]
             )
             .map((todo) => (
               <tr

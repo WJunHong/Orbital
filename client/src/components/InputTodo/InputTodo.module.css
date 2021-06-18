@@ -1,34 +1,42 @@
 .addTask {
   width: max(400px, calc(40vw - 40px));
 }
-
-.addButton {
+/* Add Button */
+.addTaskButton {
   background-color: #f2aa4cff !important;
   outline: none;
 }
 
-.addButton1 {
+.addButtonPlus {
   color: #1d1d1d;
-  transform: scale(1.3);
+  transform: scale(1.2);
 }
 
-.addButton:hover {
+.addTaskButton:hover {
   background-color: rgb(245, 158, 46) !important;
 }
 
-.addButton:focus {
+.addTaskButton:focus {
   outline: none;
 }
 
-.addTaskMenu {
-  width: calc(40vw - 40px);
-  height: 200px;
+/* Add Task Box*/
+.addTaskBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: 1px solid white;
+  border-radius: 5px;
+  width: max(calc(40vw - 40px), 400px);
 }
 
-.firstBox {
+/* Text, Deadlines and labels container box */
+.textDeadlineLabel {
   display: flex;
   flex-direction: column;
 }
+
+/* Text box for inputting tasks*/
 .addTaskText {
   font-family: "Nunito", sans-serif;
   color: white !important;
@@ -38,7 +46,7 @@
   height: fit-content;
   padding-left: 8px;
   padding-top: 8px;
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 8px;
   line-break: anywhere;
 }
@@ -46,60 +54,142 @@
 [contentEditable="true"]:empty:before {
   content: attr(data-placeholder);
   color: #9c9c9c;
-  font-size: 12px;
+  font-size: 14px;
 }
 
-.typableArea:hover {
-  cursor: text !important;
-}
-
-.typableArea {
-  display: flex;
-  align-items: center;
-}
 .addTaskText:active {
   outline: none;
 }
 
-.addTaskStuff {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  border: 1px solid white;
-  border-radius: 5px;
-  width: max(calc(40vw - 40px), 400px);
+/* Let's you click anywhere and focus on the text*/
+.typableArea:hover {
+  cursor: text;
 }
 
+.typableArea {
+  height: 50px;
+}
+/* Represents the container of the priority and todo-date*/
 .sideButton {
   width: 32px;
   height: 32px;
   color: white;
+  margin-right: 8px;
+  margin-top: 8px;
+  position: relative;
+}
+
+/* Deadline section*/
+.deadlineBox {
+  margin-left: 8px;
+  width: fit-content;
+  padding-right: 8px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin-right: 4px;
-  margin-top: 4px;
 }
 
-.sideButton:hover {
-  background-color: #525252;
-  border-radius: 5px;
+.deadlineIcon {
+  color: white;
+  cursor: pointer;
 }
-
-.izgood {
+.deadlineText {
   color: white;
   background-color: #1d1d1d;
   outline: none;
-  font-size: 12px;
+  font-size: 14px;
   font-family: "Nunito", sans-serif;
   border-style: none;
+  padding-left: 4px;
+  border-bottom: 1px solid white;
 }
 
-.izgood:hover {
-  border: 1px solid white;
-  border-radius: 2px;
-  padding-left: 1px;
-}
-.izgood:active {
+.deadlineText:active {
   outline: none;
+}
+
+.labelBox {
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  color: white;
+  width: fit-content;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.sideButton1 {
+  height: 32px;
+  width: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.sideButton1:hover {
+  background-color: #303030;
+  border-radius: 5px;
+  transition: background-color 0.2s ease-in;
+}
+
+.sideButton2 {
+  height: 32px;
+  width: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.sideButton2:hover {
+  background-color: #303030;
+  border-radius: 5px;
+  transition: background-color 0.2s ease-in;
+}
+
+.priorityOptions {
+  position: absolute;
+  display: inline-block;
+  left: 40px;
+  top: -10px;
+}
+
+.priorityOptions ul {
+  list-style: none;
+  padding-left: 0px;
+  margin-bottom: 0px;
+  background-color: #303030;
+}
+.priorityOptions li {
+  width: 120px;
+  height: 46px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.priorityOptions li:hover {
+  background-color: #535353;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in;
+}
+.priorityOptions li:active {
+  background-color: #5f5f5f;
+  cursor: pointer;
+}
+.po1 {
+  color: red;
+}
+.po2 {
+  color: rgb(218, 109, 7);
+}
+.po3 {
+  color: rgb(255, 217, 0);
+}
+.po4 {
+  color: rgb(27, 228, 1);
+}
+.addTaskMenu {
+  width: calc(40vw - 40px);
+  height: 200px;
 }

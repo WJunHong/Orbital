@@ -58,3 +58,10 @@
 .button:focus {
   outline: 0;
 }
+
+.errorInput {
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  color: red;
+  display: none;
+}
