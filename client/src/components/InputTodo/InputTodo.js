@@ -9,6 +9,9 @@ import { AlarmIcon, CalendarTodayRoundedIcon } from "../../design/table_icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import app from "../../base";
+import Chip from "@material-ui/core/Chip";
+import CloseIcon from "@material-ui/icons/Close";
+import Button from "@material-ui/core/Button";
 
 /**
  * A functional component representing the input of a task
@@ -21,10 +24,25 @@ const InputToDo = () => {
   const [priority, setPriority] = useState(5);
   const [todoDate, setTodoDate] = useState(null);
   const [properties, setProperties] = useState([]);
+  const [propertyLabels, setPL] = useState([]);
 
+  const resetEverything = () => {
+    toggleAdd();
+    setDescription("");
+    setStartDate(null);
+    setPriority(5);
+    setTodoDate(null);
+    setProperties([]);
+    setPL([]);
+    document.getElementById("something1").textContent = "";
+    document.querySelector(`.${styles.sideButton1}`).style.color = "white";
+    document.querySelector(`.alarmIcon`).style.color = "white";
+    document.querySelector(`.${styles.addPropertyField}`).value = "";
+  };
   const onSubmitForm = async (e) => {
     // Prevents page from reloading on form submission
     e.preventDefault();
+    setDescription(document.getElementById("something1").textContent);
     try {
       if (description === "") {
         // If task field is empty, do not submit anything
@@ -49,7 +67,7 @@ const InputToDo = () => {
         });
 
         // Reset the input field to empty upon successful task submission
-        document.querySelector(".add_task").value = "";
+        resetEverything();
       }
     } catch (err) {
       console.error(err.message);
@@ -57,7 +75,7 @@ const InputToDo = () => {
   };
   const focusText = (e) => {
     e.preventDefault();
-    if (e.target.className == styles.typableArea) {
+    if (e.target.classList.contains(styles.typableArea)) {
       document.querySelector("#something1").focus();
     }
   };
@@ -75,6 +93,7 @@ const InputToDo = () => {
       document.querySelector(`.${styles.deadlineText}`).style.borderColor =
         "white";
     } else {
+      // Change this back to original
       if (new Date().setHours(0, 0, 0, 0) == startDate.setHours(0, 0, 0, 0)) {
         document.querySelector(`.${styles.deadlineIcon}`).style.color = "green";
         document.querySelector(`.${styles.deadlineText}`).style.color = "green";
@@ -92,7 +111,7 @@ const InputToDo = () => {
     document
       .querySelector(`.${styles.addTaskButton}`)
       .classList.toggle("hidden");
-    document.querySelector(`.${styles.addTaskBox}`).classList.toggle("hidden");
+    document.querySelector(`.${styles.addALL}`).classList.toggle("hidden");
   };
   const togglePriority = () => {
     document
@@ -143,6 +162,24 @@ const InputToDo = () => {
       }
     }
   };
+
+  const addProperty = (e) => {
+    if (e.key == "Enter") {
+      if (properties.includes(e.target.value)) {
+      } else {
+        setPL([
+          ...propertyLabels,
+          { key: properties.length, label: e.target.value },
+        ]);
+        setProperties([...properties, e.target.value]);
+      }
+      e.target.value = "";
+    }
+  };
+  const handleDelete = (chipToDelete) => () => {
+    setPL(propertyLabels.filter((chip) => chip.key !== chipToDelete.key));
+    setProperties(properties.filter((chip) => chip != chipToDelete.label));
+  };
   useEffect(() => {
     deadlineColors();
   }, [startDate]);
@@ -152,99 +189,137 @@ const InputToDo = () => {
   return (
     <Fragment>
       <div className={styles.addTask}>
-        <Fab
-          aria-label="add"
-          className={styles.addTaskButton}
-          size="small"
-          onClick={(e) => toggleAdd(e)}
-        >
-          <AddIcon className={styles.addButtonPlus} />
-        </Fab>
+        <div className={styles.addTaskBegin}>
+          <Fab
+            aria-label="add"
+            className={styles.addTaskButton}
+            size="small"
+            onClick={(e) => toggleAdd(e)}
+          >
+            <AddIcon className={styles.addButtonPlus} />
+          </Fab>
+          Add Task
+        </div>
         <form
-          className={`${styles.addTaskBox} hidden`}
-          onClick={(e) => focusText(e)}
+          onSubmit={(e) => onSubmitForm(e)}
+          className={`${styles.addALL} hidden`}
+          id="lmao"
         >
-          <div className={styles.textDeadlineLabel}>
-            <div
-              id="something1"
-              contentEditable
-              className={`${styles.addTaskText} ${styles.typableArea}`}
-              data-placeholder="e.g. Watch 2040s recording"
-            ></div>
-            <div className={`${styles.typableArea}`}>
-              <label className={styles.deadlineBox}>
-                <CalendarTodayRoundedIcon
-                  className={styles.deadlineIcon}
-                  onClick={openCalendar}
-                />
+          <div className={`${styles.addTaskBox}`} onClick={(e) => focusText(e)}>
+            <div className={styles.textDeadlineLabel}>
+              <div
+                id="something1"
+                contentEditable
+                className={`${styles.addTaskText} ${styles.typableArea}`}
+                data-placeholder="e.g. Watch 2040s recording"
+              ></div>
+              <div className={`${styles.typableArea}`}>
+                <label className={styles.deadlineBox}>
+                  <CalendarTodayRoundedIcon
+                    className={styles.deadlineIcon}
+                    onClick={openCalendar}
+                  />
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date) => {
+                      setStartDate(date);
+                    }}
+                    showTimeSelect
+                    timeIntervals={30}
+                    timeCaption="Time"
+                    dateFormat="yyyy-MM-dd hh:mm aa"
+                    placeholderText="Input Deadline"
+                    minDate={new Date()}
+                    className={`${styles.deadlineText}`}
+                  />
+                </label>
+              </div>
+              <div className={`${styles.typableArea} ${styles.propertyBox}`}>
+                <div className={styles.labelBox}>
+                  <LabelImportantRoundedIcon />
+                  <input
+                    onKeyPress={(e) => addProperty(e)}
+                    placeholder="Add Property +"
+                    className={styles.addPropertyField}
+                    type="text"
+                  />
+                  {propertyLabels.map((data) => (
+                    <Chip
+                      label={data.label}
+                      onDelete={handleDelete(data)}
+                      key={data.key}
+                      size="small"
+                      className={styles.propertyChip}
+                      variant="outlined"
+                      deleteIcon={<CloseIcon className={styles.close} />}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles.sideButton}>
+                <div className={styles.sideButton1} onClick={togglePriority}>
+                  <OutlinedFlagRoundedIcon />
+                </div>
+                <div className={`${styles.priorityOptions} hidden`}>
+                  <ul>
+                    <li onClick={(e) => makePriority(e, 1)}>
+                      <OutlinedFlagRoundedIcon className={styles.po1} />
+                      Priority 1
+                    </li>
+                    <li onClick={(e) => makePriority(e, 2)}>
+                      <OutlinedFlagRoundedIcon className={styles.po2} />
+                      Priority 2
+                    </li>
+                    <li onClick={(e) => makePriority(e, 3)}>
+                      <OutlinedFlagRoundedIcon className={styles.po3} />
+                      Priority 3
+                    </li>
+                    <li onClick={(e) => makePriority(e, 4)}>
+                      <OutlinedFlagRoundedIcon className={styles.po4} />
+                      Priority 4
+                    </li>
+                    <li onClick={(e) => makePriority(e, 5)}>
+                      <OutlinedFlagRoundedIcon className={styles.po5} />
+                      Priority 5
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className={styles.sideButton}>
                 <DatePicker
-                  selected={startDate}
-                  onChange={(date) => {
-                    setStartDate(date);
-                  }}
-                  showTimeSelect
-                  timeIntervals={30}
-                  timeCaption="Time"
-                  dateFormat="yyyy-MM-dd hh:mm aa"
-                  placeholderText="Input Deadline"
+                  selected={todoDate}
+                  onChange={(date) => setTodoDate(date)}
+                  customInput={
+                    <div className={styles.sideButton2}>
+                      <AlarmIcon className="alarmIcon" />
+                    </div>
+                  }
+                  maxDate={startDate}
                   minDate={new Date()}
-                  className={`${styles.deadlineText}`}
                 />
-              </label>
-            </div>
-            <div className={styles.typableArea}>
-              <div className={styles.labelBox}>
-                <LabelImportantRoundedIcon />
-                <div>Add Property +</div>
               </div>
             </div>
           </div>
-          <div>
-            <div className={styles.sideButton}>
-              <div className={styles.sideButton1} onClick={togglePriority}>
-                <OutlinedFlagRoundedIcon />
-              </div>
-              <div className={`${styles.priorityOptions} hidden`}>
-                <ul>
-                  <li onClick={(e) => makePriority(e, 1)}>
-                    <OutlinedFlagRoundedIcon className={styles.po1} />
-                    Priority 1
-                  </li>
-                  <li onClick={(e) => makePriority(e, 2)}>
-                    <OutlinedFlagRoundedIcon className={styles.po2} />
-                    Priority 2
-                  </li>
-                  <li onClick={(e) => makePriority(e, 3)}>
-                    <OutlinedFlagRoundedIcon className={styles.po3} />
-                    Priority 3
-                  </li>
-                  <li onClick={(e) => makePriority(e, 4)}>
-                    <OutlinedFlagRoundedIcon className={styles.po4} />
-                    Priority 4
-                  </li>
-                  <li onClick={(e) => makePriority(e, 5)}>
-                    <OutlinedFlagRoundedIcon className={styles.po5} />
-                    Priority 5
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className={styles.sideButton}>
-              <DatePicker
-                selected={todoDate}
-                onChange={(date) => setTodoDate(date)}
-                customInput={
-                  <div className={styles.sideButton2}>
-                    <AlarmIcon className="alarmIcon" />
-                  </div>
-                }
-                maxDate={startDate}
-                minDate={new Date()}
-              />
-            </div>
-          </div>
+          <Button
+            variant="contained"
+            type="submit"
+            form="lmao"
+            className={styles.confirmButton}
+          >
+            Confirm
+          </Button>
+          <Button
+            variant="contained"
+            onClick={resetEverything}
+            className={styles.cancelButton}
+          >
+            <CloseIcon size="small" />
+            Cancel
+          </Button>
         </form>
-        {/* Old stuff*/}
+        {/* Old stuff 
         <form
           className={`${styles.addTaskMenu} d-flex`}
           onSubmit={onSubmitForm}
@@ -258,7 +333,7 @@ const InputToDo = () => {
           />
 
           <button className="btn btn-success add_button"> Add</button>
-        </form>
+        </form>*/}
       </div>
     </Fragment>
   );
