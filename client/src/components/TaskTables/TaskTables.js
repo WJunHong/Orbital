@@ -88,6 +88,72 @@ const TaskTables = ({ name }) => {
       console.log(e.target);
     }
   };
+  var date = new Date();
+
+  // add a day
+  date.setDate(date.getDate() + 1);
+
+  var date1 = new Date();
+  date1.setDate(date1.getDate() + 5);
+
+  // The fetched filters object
+  const filter = {
+    priority: [],
+    deadline: [null, null],
+    progress: [0, 100],
+    todoDate: [null, null],
+    properties: [],
+  };
+
+  const properFilter = (todo) => {
+    // console.log(todo.description);
+    // console.log(todo.deadline);
+    // console.log(todo.priority);
+    // console.log(todo.tododate);
+    // console.log(todo.progress);
+    // console.log(todo.properties);
+    // console.log(filter.deadline);
+
+    var filterMe = true;
+    if (filter.properties.length != 0) {
+      filterMe =
+        filterMe &&
+        todo.properties.some((item) => filter.properties.includes(item));
+    }
+    if (filter.priority.length != 0) {
+      filterMe = filterMe && filter.priority.includes(todo.priority);
+    }
+    if (!filter.deadline.every((i) => i == null) && todo.deadline != null) {
+      filterMe =
+        filterMe &&
+        new Date(todo.deadline).getTime() >= filter.deadline[0].getTime() &&
+        new Date(todo.deadline).getTime() <= filter.deadline[1].getTime();
+    } else if (
+      !filter.deadline.every((i) => i == null) &&
+      todo.deadline == null
+    ) {
+      filterMe = false;
+    }
+    if (
+      todo.progress < filter.progress[0] ||
+      todo.progress > filter.progress[1]
+    ) {
+      filterMe = false;
+    }
+    if (!filter.todoDate.every((i) => i == null) && todo.todoDate != null) {
+      filterMe =
+        filterMe &&
+        new Date(todo.todoDate).getTime() >= filter.todoDate[0].getTime() &&
+        new Date(todo.todoDate).getTime() <= filter.todoDate[1].getTime();
+    } else if (
+      !filter.todoDate.every((i) => i == null) &&
+      todo.todoDate == null
+    ) {
+      filterMe = false;
+    }
+    return filterMe;
+  };
+
   useEffect(() => {
     getTodos();
   }, [todos]);
@@ -98,7 +164,7 @@ const TaskTables = ({ name }) => {
         <th></th>
       </thead>
       <tbody>
-        {todos.map((todo) => (
+        {todos.filter(properFilter).map((todo) => (
           <tr
             key={todo.todo_id}
             className="taskData"

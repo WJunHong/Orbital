@@ -20,8 +20,15 @@ CREATE TABLE subtasks(
 );
 
 CREATE TABLE properties(
-  user_id VARCHAR(255),
-  property_name VARCHAR(255)
+  user_id VARCHAR,
+  property_name VARCHAR(255),
+  todo_id INTEGER
+);
+
+CREATE TABLE filters(
+  user_id VARCHAR,
+  property TEXT,
+  pageName TEXT
 );
 
 --ALTER TABLE table

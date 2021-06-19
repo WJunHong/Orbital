@@ -38,14 +38,21 @@ const InputToDo = () => {
     document.querySelector(`.${styles.sideButton1}`).style.color = "white";
     document.querySelector(`.alarmIcon`).style.color = "white";
     document.querySelector(`.${styles.addPropertyField}`).value = "";
+    document
+      .getElementById("something1")
+      .setAttribute("data-placeholder", "e.g. Watch 2040s recording");
   };
   const onSubmitForm = async (e) => {
+    console.log(1);
     // Prevents page from reloading on form submission
     e.preventDefault();
     setDescription(document.getElementById("something1").textContent);
     try {
       if (description === "") {
         // If task field is empty, do not submit anything
+        document
+          .getElementById("something1")
+          .setAttribute("data-placeholder", "Please type something!!");
       } else {
         // Fetches user_id
         const user = app.auth().currentUser;
@@ -77,6 +84,9 @@ const InputToDo = () => {
     e.preventDefault();
     if (e.target.classList.contains(styles.typableArea)) {
       document.querySelector("#something1").focus();
+      document
+        .getElementById("something1")
+        .setAttribute("data-placeholder", "e.g. Watch 2040s recording");
     }
   };
   const openCalendar = () =>
@@ -94,7 +104,16 @@ const InputToDo = () => {
         "white";
     } else {
       // Change this back to original
-      if (new Date().setHours(0, 0, 0, 0) == startDate.setHours(0, 0, 0, 0)) {
+      const testDate = {
+        year: new Date().getFullYear(),
+        month: new Date().getMonth(),
+        day: new Date().getDate(),
+      };
+      if (
+        startDate.getFullYear() == testDate["year"] &&
+        startDate.getMonth() == testDate["month"] &&
+        startDate.getDate() == testDate["day"]
+      ) {
         document.querySelector(`.${styles.deadlineIcon}`).style.color = "green";
         document.querySelector(`.${styles.deadlineText}`).style.color = "green";
         document.querySelector(`.${styles.deadlineText}`).style.borderColor =

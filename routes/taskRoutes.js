@@ -8,11 +8,20 @@ router.post("/", async (req, res) => {
     const { user_id, description, startDate, todoDate, priority, properties } =
       req.body;
     const newTodo = await pool.query(
-      "INSERT INTO todo (user_id, description, completed, deadline,todoDate,priority) VALUES($1, $2, $3, $4, $5,$6) RETURNING *",
-      [user_id, description, false, startDate, todoDate, priority]
+      "INSERT INTO todo (user_id, description, completed, deadline,tododate,priority, properties,progress) VALUES($1, $2, $3, $4, $5,$6,$7,$8) RETURNING *",
+      [
+        user_id,
+        description,
+        false,
+        startDate,
+        todoDate,
+        priority,
+        properties,
+        0,
+      ]
     );
 
-    properties.forEach(async (property) => {
+    /*properties.forEach(async (property) => {
       try {
         const updateProperties = await pool.query(
           "INSERT INTO properties (user_id, property_name) VALUES($1, $2) RETURNING *",
@@ -21,7 +30,7 @@ router.post("/", async (req, res) => {
       } catch (err) {
         console.error(err);
       }
-    });
+    });*/
 
     res.json(newTodo.rows[0]);
   } catch (err) {
