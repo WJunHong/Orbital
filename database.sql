@@ -8,6 +8,7 @@ CREATE TABLE todo(
     todoDate DATE,
     priority integer,
     progress integer,
+    properties TEXT[],
     completed boolean
 );
 

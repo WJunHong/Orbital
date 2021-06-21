@@ -55,4 +55,21 @@ router.get("/todos", async (req, res) => {
   }
 });
 
+router.get("/properties", async (req, res) => {
+  try {
+    // Get the user id
+    const { user_id } = req.headers;
+    const properties = await pool.query(
+      "SELECT array_agg(DISTINCT u.val) unique_properties from todo cross join lateral UNNEST(properties) as u(val) WHERE user_id = $1",
+      [user_id]
+    );
+
+    // Return ALL UNIQUE properties of user
+    res.json(properties.rows[0]);
+  } catch (error) {
+    console.error("hi db");
+    console.error(error.message);
+  }
+});
+
 module.exports = router;
