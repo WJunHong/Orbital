@@ -55,7 +55,7 @@
   border-style: none;
   width: max(300px, calc(40vw - 80px));
   outline: none;
-  height: fit-content;
+  height: auto !important;
   padding-left: 8px;
   padding-top: 8px;
   font-size: 14px;
@@ -130,6 +130,7 @@
   font-size: 14px;
   flex-wrap: wrap;
 }
+
 .addPropertyField {
   outline: none;
   background-color: #1d1d1d;

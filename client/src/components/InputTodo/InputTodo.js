@@ -184,7 +184,8 @@ const InputToDo = () => {
 
   const addProperty = (e) => {
     if (e.key == "Enter") {
-      if (properties.includes(e.target.value)) {
+      e.preventDefault();
+      if (properties.includes(e.target.value) || e.target.value == "") {
       } else {
         setPL([
           ...propertyLabels,
