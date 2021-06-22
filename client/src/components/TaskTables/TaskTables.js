@@ -13,6 +13,7 @@ import {
 import styles from "./TaskTables.module.css";
 
 import EditTodo from "../EditTodo";
+import FSD from "../FSD";
 
 const TaskTables = ({ name }) => {
   // Array of main tasks
@@ -159,76 +160,78 @@ const TaskTables = ({ name }) => {
   }, [todos]);
 
   const MainTask = (
-    <table className="table task_table todo_table">
-      <thead>
-        <th></th>
-      </thead>
-      <tbody>
-        {todos.filter(properFilter).map((todo) => (
-          <tr
-            key={todo.todo_id}
-            className="taskData"
-            onClick={(e) => someFunc(e, todo)}
-          >
-            <td>
-              <div className="checkbox">
-                <CheckBoxOutlineBlankOutlinedIcon
-                  onClick={() => completeTask(todo)}
-                />
-              </div>
-            </td>
-            <td className="task_name">
-              <div className="description">{todo.description}</div>
-              <div className="deadline">
-                <div className="todo_date">
-                  <AlarmIcon fontSize="small" />
-                  <text> Some date</text>
+    <>
+      <FSD />
+      <table className="table task_table todo_table">
+        <thead>
+          <th></th>
+        </thead>
+        <tbody>
+          {todos.filter(properFilter).map((todo) => (
+            <tr
+              key={todo.todo_id}
+              className="taskData"
+              onClick={(e) => someFunc(e, todo)}
+            >
+              <td>
+                <div className="checkbox">
+                  <CheckBoxOutlineBlankOutlinedIcon
+                    onClick={() => completeTask(todo)}
+                  />
                 </div>
-                <div>
-                  <CalendarTodayRoundedIcon fontSize="small" />
+              </td>
+              <td className="task_name">
+                <div className="description">{todo.description}</div>
+                <div className="deadline">
+                  <div className="todo_date">
+                    <AlarmIcon fontSize="small" />
+                    <text> Some date</text>
+                  </div>
+                  <div>
+                    <CalendarTodayRoundedIcon fontSize="small" />
 
-                  <text className="date">11-11-2021</text>
-                  <text className="time">06:30 PM</text>
+                    <text className="date">11-11-2021</text>
+                    <text className="time">06:30 PM</text>
+                  </div>
                 </div>
-              </div>
-            </td>
-            <td>
-              <div className="progress_value">
-                {" "}
-                <CircularProgress
-                  variant="determinate"
-                  value={75}
-                  className="progress"
-                  size={24}
-                  thickness={8}
-                />
-                <div>75%</div>
-              </div>
-            </td>
-            <td>
-              <div className="priority">
-                <FlagRoundedIcon />
-              </div>
-            </td>
-            <td>
-              <EditTodo todo={todo} />
-            </td>
-            <td>
-              <div className="deleteTask">
-                <DeleteRoundedIcon onClick={() => deleteTodo(todo.todo_id)} />
-              </div>
-            </td>
-            <td>
-              <div className="dropdown">
-                <ArrowDropDownRoundedIcon />
-              </div>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+              </td>
+              <td>
+                <div className="progress_value">
+                  {" "}
+                  <CircularProgress
+                    variant="determinate"
+                    value={75}
+                    className="progress"
+                    size={24}
+                    thickness={8}
+                  />
+                  <div>75%</div>
+                </div>
+              </td>
+              <td>
+                <div className="priority">
+                  <FlagRoundedIcon />
+                </div>
+              </td>
+              <td>
+                <EditTodo todo={todo} />
+              </td>
+              <td>
+                <div className="deleteTask">
+                  <DeleteRoundedIcon onClick={() => deleteTodo(todo.todo_id)} />
+                </div>
+              </td>
+              <td>
+                <div className="dropdown">
+                  <ArrowDropDownRoundedIcon />
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
   );
-
   const OverviewTasks = (
     <>
       <table className="table task_table todo_table">
