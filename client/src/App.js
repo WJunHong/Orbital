@@ -21,6 +21,7 @@ import Login from "./components/Login/Login";
 import Register from "./components/Register";
 import Overview from "./components/Overview";
 import SideBar from "./components/SideBar";
+import Filter from "./components/TaskTables/Filter";
 
 /**
  * Functional Component of our main app
@@ -45,6 +46,7 @@ function App() {
           <PrivateRoute exact path="/taskpage" component={TaskPage} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
+          <Route exact path="/test" component={Filter} />
         </div>
       </Router>
     </AuthProvider>

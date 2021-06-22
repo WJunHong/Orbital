@@ -43,7 +43,6 @@ const InputToDo = () => {
       .setAttribute("data-placeholder", "e.g. Watch 2040s recording");
   };
   const onSubmitForm = async (e) => {
-    console.log(1);
     // Prevents page from reloading on form submission
     e.preventDefault();
     setDescription(document.getElementById("something1").textContent);

@@ -11,7 +11,7 @@ import {
   ArrowDropDownRoundedIcon,
 } from "../../design/table_icons";
 import styles from "./TaskTables.module.css";
-
+import Filter from "./Filter";
 import EditTodo from "../EditTodo";
 import FSD from "../FSD";
 
@@ -98,13 +98,16 @@ const TaskTables = ({ name }) => {
   date1.setDate(date1.getDate() + 5);
 
   // The fetched filters object
-  const filter = {
-    priority: [],
-    deadline: [null, null],
-    progress: [0, 100],
-    todoDate: [null, null],
-    properties: [],
-  };
+  const filter =
+    localStorage.getItem(`filter-${name}`) !== null
+      ? JSON.parse(localStorage.getItem(`filter-${name}`))
+      : {
+          priority: [],
+          deadline: [null, null],
+          progress: [0, 100],
+          todoDate: [null, null],
+          properties: [],
+        };
 
   const properFilter = (todo) => {
     // console.log(todo.description);
@@ -112,7 +115,8 @@ const TaskTables = ({ name }) => {
     // console.log(todo.priority);
     // console.log(todo.tododate);
     // console.log(todo.progress);
-    // console.log(todo.properties);
+    // console.log(filter);
+    // console.log(filter.properties);
     // console.log(filter.deadline);
 
     var filterMe = true;
@@ -161,7 +165,8 @@ const TaskTables = ({ name }) => {
 
   const MainTask = (
     <>
-      <FSD />
+      <Filter name={name} todos={todos} />
+
       <table className="table task_table todo_table">
         <thead>
           <th></th>
