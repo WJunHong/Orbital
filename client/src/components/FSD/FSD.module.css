@@ -1,0 +1,145 @@
+.buttonZs {
+  position: absolute;
+  left: max(40vw, 440px);
+  width: calc(100vw - 40vw - 280px - 16px);
+  height: fit-content;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 16px;
+  min-width: 375px;
+}
+.buttonDiv {
+  display: flex;
+  flex-direction: column;
+}
+.filterButton {
+  background-color: #4b4b4b !important;
+  margin-bottom: 16px !important;
+  outline: none !important;
+  color: white !important;
+}
+
+.filterButton:hover {
+  background-color: #4a1a57 !important;
+}
+.filterButton:active {
+  outline: none !important;
+}
+.sortButton {
+  background-color: #4b4b4b !important;
+  color: white !important;
+  outline: none !important;
+}
+.sortButton:hover {
+  background-color: #171e44 !important;
+}
+.sortButton:active {
+  outline: none !important;
+}
+
+.filterOptions {
+  color: white;
+  width: 300px;
+  height: fit-content;
+  background-color: rgb(39, 39, 39);
+  font-family: "Nunito", sans-serif;
+  padding-bottom: 16px;
+}
+.topText {
+  padding-left: 16px;
+  padding-top: 8px;
+  font-size: 12px;
+}
+
+.Tag {
+  font-weight: bold;
+  padding-left: 16px;
+  padding-top: 8px;
+}
+.priorityButtons {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  padding-left: 0px;
+  width: 300px;
+  justify-content: space-evenly;
+  align-items: center;
+  padding-top: 16px;
+}
+.priorityButton {
+  padding-left: 8px;
+  padding-right: 8px;
+  background-color: #414141;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.priorityButton:hover {
+  background-color: #4a1a57;
+}
+
+.clearPriority {
+  display: flex;
+  align-items: center;
+  color: rgb(146, 1, 1);
+}
+
+.clearPriority:hover {
+  color: rgb(197, 1, 1);
+  cursor: pointer;
+}
+
+.progressSlider {
+  width: 200px !important;
+}
+
+.progressWrap {
+  display: flex;
+  justify-content: space-around;
+}
+
+.clearProgress {
+  color: rgb(146, 1, 1);
+  cursor: pointer;
+}
+.clearProgress:hover {
+  color: rgb(197, 1, 1);
+}
+.deadlineContainer {
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 8px;
+}
+.deadlineInput {
+  width: 100px;
+  margin-right: 16px;
+  outline: none !important;
+  background-color: rgb(39, 39, 39);
+  border: 1px solid rgb(85, 85, 85);
+  color: rgb(160, 160, 160);
+  padding-left: 4px;
+  border-radius: 5px;
+}
+
+.deadlineInput:active {
+  outline: none !important;
+}
+
+.clearDeadlines {
+  color: rgb(146, 1, 1);
+  cursor: pointer;
+}
+.clearDeadlines:hover {
+  color: rgb(197, 1, 1);
+}
+.sideHandler {
+  position: relative;
+}
+.sortOptions {
+  margin-top: 16px;
+  color: white;
+  width: 300px;
+  height: fit-content;
+  background-color: rgb(39, 39, 39);
+  font-family: "Nunito", sans-serif;
+}
