@@ -37,34 +37,33 @@ Filter pop-up
 Sort pop up
 */
 const FSD = ({ name, todos }) => {
-  const filterObj = localStorage.getItem(`filter-${name}`);
+  var filterObj;
+  if (localStorage.getItem(`filter-${name}`) == null) {
+    filterObj = {
+      priority: [],
+      deadline: [null, null],
+      progress: [0, 100],
+      todoDate: [null, null],
+      properties: [],
+    };
+  } else {
+    filterObj = JSON.parse(localStorage.getItem(`filter-${name}`));
+  }
 
-  const initialSelectedProperties =
-    filterObj == null ? [] : JSON.parse(filterObj).properties; // user properties to be fetched from database
-  const initialSelectedPriorities =
-    filterObj == null ? [] : JSON.parse(filterObj).priority;
-  const initialSelectedDeadline =
-    filterObj == null ? [null, null] : JSON.parse(filterObj).deadline;
-  const initialSelectedProgress =
-    filterObj == null ? [0, 100] : JSON.parse(filterObj).progress;
-  const initialSelectedToDoDate =
-    filterObj == null ? [null, null] : JSON.parse(filterObj).todoDate;
 
   const initialPriorities = [1, 2, 3, 4, 5];
   // Properties from the user
   const [properties, setProperties] = useState([]);
   // Things which have been selected
-  const [priority, setPriority] = useState(initialSelectedPriorities);
-  const [progress, setProgress] = useState(initialSelectedProgress);
-  const [deadlineStart, setDS] = useState(initialSelectedDeadline[0]);
-  const [deadlineEnd, setDE] = useState(initialSelectedDeadline[1]);
-  const [todoStart, setTS] = useState(new Date(initialSelectedToDoDate[0]));
-  const [todoEnd, setTE] = useState(new Date(initialSelectedToDoDate[1]));
+  const [priority, setPriority] = useState(filterObj.priority);
+  const [progress, setProgress] = useState(filterObj.progress);
+  const [deadlineStart, setDS] = useState(filterObj.deadline[0]);
+  const [deadlineEnd, setDE] = useState(filterObj.deadline[1]);
+  const [todoStart, setTS] = useState(filterObj.todoDate[0]);
+  const [todoEnd, setTE] = useState(filterObj.todoDate[1]);
   const [clickedF, setClickF] = useState(false);
   const [clickedS, setClickS] = useState(false);
-  const [selectedProperties, setSelectedProperties] = useState(
-    initialSelectedProperties
-  );
+  const [selectedProperties, setSelectedProperties] = useState(filterObj.properties);
 
   const handleClick = (e, num) => {
     if (e.target.style.backgroundColor != "black") {
@@ -73,29 +72,57 @@ const FSD = ({ name, todos }) => {
       e.target.style.backgroundColor = "#414141";
     }
   };
-  const deleteAllPriority = () => {
+  const clearAllPriority = () => {
     document
       .querySelectorAll(`.${styles.priorityButton}`)
       .forEach((i) => (i.style.backgroundColor = "#414141"));
     setPriority([]);
+    var newFilterObj = {
+      ...filterObj,
+      priority: [],
+    };
+    localStorage.setItem(`filter-${name}`, JSON.stringify(newFilterObj));
   };
   const handleChange = (event, newValue) => {
-    //setProgress(newValue);
     handleSelect("progress", newValue, progress, setProgress);
   };
 
-  const deleteAllProgress = () => {
-    setProgress([0, 99]);
+  const clearAllProgress = () => {
+    setProgress([0, 100]);
+    var newFilterObj = {
+      ...filterObj,
+      progress: [0, 100],
+    };
+    localStorage.setItem(`filter-${name}`, JSON.stringify(newFilterObj));
   };
 
-  const deleteDeadlines = () => {
+  const clearDeadlines = () => {
     setDS(null);
     setDE(null);
+    var newFilterObj = {
+      ...filterObj,
+      deadline: [null, null],
+    };
+    localStorage.setItem(`filter-${name}`, JSON.stringify(newFilterObj));
   };
 
-  const deleteTodos = () => {
+  const clearTodoDate = () => {
     setTE(null);
     setTS(null);
+    var newFilterObj = {
+      ...filterObj,
+      todoDate: [null, null],
+    };
+    localStorage.setItem(`filter-${name}`, JSON.stringify(newFilterObj));
+  };
+
+  const clearAllProperties = () => {
+    setSelectedProperties([]);
+    var newFilterObj = {
+      ...filterObj,
+      properties: [],
+    };
+    localStorage.setItem(`filter-${name}`, JSON.stringify(newFilterObj));
   };
 
   const toggleFilterOptions = () => {
@@ -123,57 +150,42 @@ const FSD = ({ name, todos }) => {
       newSelection = property;
       set(newSelection);
     }
-    var filterObj;
+    var filter;
     switch (str) {
       case "priority":
-        filterObj = {
+        filter = {
+          ...filterObj,
           priority: newSelection,
-          deadline: initialSelectedDeadline,
-          progress: progress,
-          todoDate: initialSelectedToDoDate,
-          properties: selectedProperties,
         };
         break;
       case "deadline":
         set(property);
-        filterObj = {
-          priority: priority,
+        filter = {
+          ...filterObj,
           deadline: arr,
-          progress: progress,
-          todoDate: initialSelectedToDoDate,
-          properties: selectedProperties,
         };
         break;
       case "progress":
-        filterObj = {
-          priority: priority,
-          deadline: initialSelectedDeadline,
+        filter = {
+          ...filterObj,
           progress: newSelection,
-          todoDate: initialSelectedToDoDate,
-          properties: selectedProperties,
         };
         break;
 
       case "todoDate":
         set(property);
-        filterObj = {
-          priority: priority,
-          deadline: initialSelectedDeadline,
-          progress: progress,
+        filter = {
+          ...filterObj,
           todoDate: arr,
-          properties: selectedProperties,
         };
         break;
       case "property":
-        filterObj = {
-          priority: priority,
-          deadline: [null, null],
-          progress: progress,
-          todoDate: [null, null],
+        filter = {
+          ...filterObj,
           properties: newSelection,
         };
     }
-    localStorage.setItem(`filter-${name}`, JSON.stringify(filterObj));
+    localStorage.setItem(`filter-${name}`, JSON.stringify(filter));
   };
 
   const getProperties = async () => {
@@ -244,7 +256,7 @@ const FSD = ({ name, todos }) => {
                   </li>
                 );
               })}
-              <li className={styles.clearPriority} onClick={deleteAllPriority}>
+              <li className={styles.clearPriority} onClick={clearAllPriority}>
                 <ClearIcon />
               </li>
             </ul>
@@ -264,7 +276,7 @@ const FSD = ({ name, todos }) => {
               </ThemeProvider>
               <ClearIcon
                 className={styles.clearProgress}
-                onClick={deleteAllProgress}
+                onClick={clearAllProgress}
               />
             </div>
           </div>
@@ -287,7 +299,7 @@ const FSD = ({ name, todos }) => {
                 />
                 <DatePicker
                   selected={
-                    deadlineEnd == null ? null : new Date(deadlineStart)
+                    deadlineEnd == null ? null : new Date(deadlineEnd)
                   }
                   onChange={(date) =>
                     handleSelect("deadline", date, [deadlineStart, date], setDE)
@@ -295,12 +307,12 @@ const FSD = ({ name, todos }) => {
                   placeholderText="End"
                   className={styles.deadlineInput}
                   minDate={
-                    deadlineStart == null ? undefined : new Date(deadlineEnd)
+                    deadlineStart == null ? undefined : new Date(deadlineStart)
                   }
                 />
                 <ClearIcon
                   className={styles.clearDeadlines}
-                  onClick={deleteDeadlines}
+                  onClick={clearDeadlines}
                 />
               </div>
             </div>
@@ -311,59 +323,72 @@ const FSD = ({ name, todos }) => {
               Todo Date
               <div className={styles.deadlineContainer}>
                 <DatePicker
-                  selected={todoStart}
+                  selected={
+                    todoStart == null ? null : new Date(todoStart)
+                  }
                   onChange={(date) =>
                     handleSelect("todoDate", date, [date, todoEnd], setTS)
                   }
                   placeholderText="Start"
                   className={styles.deadlineInput}
-                  maxDate={todoEnd}
+                  maxDate={
+                    todoEnd == null ? undefined : new Date(todoEnd)
+                  }
                 />
                 <DatePicker
-                  selected={todoEnd}
+                  selected={
+                    todoEnd == null ? null : new Date(todoEnd)
+                  }
                   onChange={(date) =>
                     handleSelect("todoDate", date, [todoStart, date], setTE)
                   }
                   placeholderText="End"
                   className={styles.deadlineInput}
-                  minDate={todoStart}
+                  minDate={
+                    todoStart == null ? undefined : new Date(todoStart)
+                  }
                 />
                 <ClearIcon
                   className={styles.clearDeadlines}
-                  onClick={deleteTodos}
+                  onClick={clearTodoDate}
                 />
               </div>
             </div>
           </div>
           <div>
-            <div className={styles.Tag}>Properties</div>
-            {properties.map((property, index) => {
-              const isSelected = selectedProperties.includes(property);
-              return (
-                <Fragment>
-                  <input
-                    name={`property-${index}`}
-                    key={index}
-                    type="checkbox"
-                    checked={isSelected}
-                    onChange={() =>
-                      handleSelect(
-                        "property",
-                        property,
-                        selectedProperties,
-                        setSelectedProperties
-                      )
-                    }
-                  ></input>
-                  <label
-                    htmlFor={`property-${index}`}
-                    style={{ color: "white" }}
-                  >
-                    {property}
-                  </label>
-                </Fragment>
-              );
-            })}
+            <div className={styles.Tag}>
+              Properties
+              <div className={styles.priorityButtons}>
+                {properties.map((property, index) => {
+                  const isSelected = selectedProperties.includes(property);
+                  return (
+                    <Fragment>
+                      <input
+                        name={`property-${index}`}
+                        key={index}
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() =>
+                          handleSelect(
+                            "property",
+                            property,
+                            selectedProperties,
+                            setSelectedProperties
+                          )
+                        }
+                      ></input>
+                      <label
+                        htmlFor={`property-${index}`}
+                        style={{ color: "white" }}
+                      >
+                        {property}
+                      </label>
+                    </Fragment>
+                  );
+                })}
+                <ClearIcon className={styles.clearDeadlines} onClick={clearAllProperties} />
+              </div>
+            </div>
           </div>
         </div>
         <div className={styles.sortOptions}>Something big</div>

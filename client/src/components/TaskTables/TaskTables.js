@@ -11,7 +11,6 @@ import {
   ArrowDropDownRoundedIcon,
 } from "../../design/table_icons";
 import styles from "./TaskTables.module.css";
-import Filter from "./Filter";
 import EditTodo from "../EditTodo";
 import FSD from "../FSD";
 
@@ -112,7 +111,7 @@ const TaskTables = ({ name }) => {
   const properFilter = (todo) => {
     // console.log(todo.description);
     // console.log(todo.deadline);
-    // console.log(new Date(filter.deadline[0]).getTime());
+    // console.log(filter.todoDate);
     // console.log(todo.priority);
     // console.log(todo.tododate);
     // console.log(todo.progress);
@@ -130,12 +129,26 @@ const TaskTables = ({ name }) => {
       filterMe = filterMe && filter.priority.includes(todo.priority);
     }
     if (!filter.deadline.every((i) => i == null) && todo.deadline != null) {
-      filterMe =
-        filterMe &&
-        new Date(todo.deadline).getTime() >=
-          new Date(filter.deadline[0]).getTime() &&
-        new Date(todo.deadline).getTime() <=
-          new Date(filter.deadline[1]).getTime();
+      if (filter.deadline[0] == null) {
+        filterMe =
+          filterMe &&
+          new Date(todo.deadline).getTime() <=
+            new Date(filter.deadline[1]).getTime();
+      } else {
+        if (filter.deadline[1] == null) {
+          filterMe =
+            filterMe &&
+            new Date(todo.deadline).getTime() >=
+              new Date(filter.deadline[0]).getTime();
+        } else {
+          filterMe =
+            filterMe &&
+            new Date(todo.deadline).getTime() >=
+              new Date(filter.deadline[0]).getTime() &&
+            new Date(todo.deadline).getTime() <=
+              new Date(filter.deadline[1]).getTime();
+        }
+      }
     } else if (
       !filter.deadline.every((i) => i == null) &&
       todo.deadline == null
@@ -148,13 +161,27 @@ const TaskTables = ({ name }) => {
     ) {
       filterMe = false;
     }
-    if (!filter.todoDate.every((i) => i == null) && todo.todoDate != null) {
-      filterMe =
-        filterMe &&
-        new Date(todo.todoDate).getTime() >=
-          new Date(filter.todoDate[0]).getTime() &&
-        new Date(todo.todoDate).getTime() <=
-          new Date(filter.todoDate[1]).getTime();
+    if (!filter.todoDate.every((i) => i == null) && todo.tododate != null) {
+      if (filter.todoDate[0] == null) {
+        filterMe =
+          filterMe &&
+          new Date(todo.tododate).getTime() <=
+            new Date(filter.todoDate[1]).getTime();
+      } else {
+        if (filter.todoDate[1] == null) {
+          filterMe =
+            filterMe &&
+            new Date(todo.tododate).getTime() >=
+              new Date(filter.todoDate[0]).getTime();
+        } else {
+          filterMe =
+            filterMe &&
+            new Date(todo.tododate).getTime() >=
+              new Date(filter.todoDate[0]).getTime() &&
+            new Date(todo.tododate).getTime() <=
+              new Date(filter.todoDate[1]).getTime();
+        }
+      }
     } else if (
       !filter.todoDate.every((i) => i == null) &&
       todo.todoDate == null
