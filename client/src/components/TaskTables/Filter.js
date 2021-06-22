@@ -3,9 +3,17 @@ import app from "../../base";
 
 const Filter = ({name, todos}) => {
   const filterObj = localStorage.getItem(`filter-${name}`);
+
   const initialSelectedProperties = filterObj == null ? [] : JSON.parse(filterObj).properties; // user properties to be fetched from database
+  const initialSelectedPriorities = filterObj == null ? [] : JSON.parse(filterObj).priority;
+  const initialSelectedDeadline = filterObj == null ? [null, null] : JSON.parse(filterObj).deadline;
+  const initialSelectedProgress = filterObj == null ? [0, 100] : JSON.parse(filterObj).progress;
+  const initialSelectedToDoDate = filterObj == null ? [null, null] : JSON.parse(filterObj).todoDate;
+
   const [properties, setProperties] = useState([]);
   const [selectedProperties, setSelectedProperties] = useState(initialSelectedProperties);
+  const priority = [1,2,3,4,5];
+  const [selectedPriorities, setSelectedPriorities] = useState([]);
 
   const getProperties = async () => {
     try {
@@ -39,7 +47,7 @@ const Filter = ({name, todos}) => {
     }
     setSelectedProperties(newSelection);
     const filterObj = {
-      priority: [],
+      priority: selectedPriorities,
       deadline: [null, null],
       progress: [0, 100],
       todoDate: [null, null],
@@ -57,7 +65,8 @@ const Filter = ({name, todos}) => {
     <Fragment>
       <div className="Filter"></div>
         <h3 style={{color: "white"}}>Filter</h3>
-        <div className="Filter-Checkbox">
+        <div className="Filter-Properties" style={{color: "white"}}>
+          Properties
           {properties.map((property, index) => {
             const isSelected = selectedProperties.includes(property);
             return (
