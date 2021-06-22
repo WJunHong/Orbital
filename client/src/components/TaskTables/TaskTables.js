@@ -112,6 +112,7 @@ const TaskTables = ({ name }) => {
   const properFilter = (todo) => {
     // console.log(todo.description);
     // console.log(todo.deadline);
+    // console.log(new Date(filter.deadline[0]).getTime());
     // console.log(todo.priority);
     // console.log(todo.tododate);
     // console.log(todo.progress);
@@ -131,8 +132,10 @@ const TaskTables = ({ name }) => {
     if (!filter.deadline.every((i) => i == null) && todo.deadline != null) {
       filterMe =
         filterMe &&
-        new Date(todo.deadline).getTime() >= filter.deadline[0].getTime() &&
-        new Date(todo.deadline).getTime() <= filter.deadline[1].getTime();
+        new Date(todo.deadline).getTime() >=
+          new Date(filter.deadline[0]).getTime() &&
+        new Date(todo.deadline).getTime() <=
+          new Date(filter.deadline[1]).getTime();
     } else if (
       !filter.deadline.every((i) => i == null) &&
       todo.deadline == null
@@ -148,8 +151,10 @@ const TaskTables = ({ name }) => {
     if (!filter.todoDate.every((i) => i == null) && todo.todoDate != null) {
       filterMe =
         filterMe &&
-        new Date(todo.todoDate).getTime() >= filter.todoDate[0].getTime() &&
-        new Date(todo.todoDate).getTime() <= filter.todoDate[1].getTime();
+        new Date(todo.todoDate).getTime() >=
+          new Date(filter.todoDate[0]).getTime() &&
+        new Date(todo.todoDate).getTime() <=
+          new Date(filter.todoDate[1]).getTime();
     } else if (
       !filter.todoDate.every((i) => i == null) &&
       todo.todoDate == null
@@ -165,8 +170,7 @@ const TaskTables = ({ name }) => {
 
   const MainTask = (
     <>
-      <Filter name={name} todos={todos} />
-
+      <FSD name={name} todos={todos} />
       <table className="table task_table todo_table">
         <thead>
           <th></th>

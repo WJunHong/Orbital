@@ -1,10 +1,12 @@
 .buttonZs {
   position: absolute;
-  left: max(41vw, 456px);
-  width: 500px;
-  height: 100px;
+  left: max(40vw, 440px);
+  width: calc(100vw - 40vw - 280px - 16px);
+  height: fit-content;
   display: flex;
   justify-content: space-between;
+  padding-left: 16px;
+  min-width: 375px;
 }
 .buttonDiv {
   display: flex;
@@ -41,17 +43,12 @@
   height: fit-content;
   background-color: rgb(39, 39, 39);
   font-family: "Nunito", sans-serif;
+  padding-bottom: 16px;
 }
 .topText {
   padding-left: 16px;
   padding-top: 8px;
   font-size: 12px;
-}
-.sortOptions {
-  position: absolute;
-  left: 20vw;
-  top: 0px;
-  color: white;
 }
 
 .Tag {
@@ -134,4 +131,15 @@
 }
 .clearDeadlines:hover {
   color: rgb(197, 1, 1);
+}
+.sideHandler {
+  position: relative;
+}
+.sortOptions {
+  margin-top: 16px;
+  color: white;
+  width: 300px;
+  height: fit-content;
+  background-color: rgb(39, 39, 39);
+  font-family: "Nunito", sans-serif;
 }
