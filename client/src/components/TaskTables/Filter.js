@@ -13,7 +13,7 @@ const Filter = ({name, todos}) => {
   const [properties, setProperties] = useState([]);
   const [selectedProperties, setSelectedProperties] = useState(initialSelectedProperties);
   const priority = [1,2,3,4,5];
-  const [selectedPriorities, setSelectedPriorities] = useState([]);
+  const [selectedPriorities, setSelectedPriorities] = useState(initialSelectedPriorities);
 
   const getProperties = async () => {
     try {
@@ -36,23 +36,44 @@ const Filter = ({name, todos}) => {
     }
   };
 
-  const handleSelectProperties = (property) => {
-    const isSelected = selectedProperties.includes(property);
+  const handleSelect = (str, property, arr, set) => {
+    const isSelected = arr.includes(property);
 
     var newSelection = null;
-    if (isSelected) {
-      newSelection = selectedProperties.filter(currProperty => currProperty != property);
-    } else {
-      newSelection = [...selectedProperties, property];
+    if (str == "priority" || str == "property") {
+      if (isSelected) {
+        newSelection = arr.filter(currProperty => currProperty != property);
+      } else {
+        newSelection = [...arr, property];
+      }
     }
-    setSelectedProperties(newSelection);
-    const filterObj = {
-      priority: selectedPriorities,
-      deadline: [null, null],
-      progress: [0, 100],
-      todoDate: [null, null],
-      properties: newSelection
-    };
+    set(newSelection);
+    var filterObj;
+    switch(str) {
+      case "priority":
+        filterObj = {
+          priority: newSelection,
+          deadline: [null, null],
+          progress: [0, 100],
+          todoDate: [null, null],
+          properties: selectedProperties
+        };
+        break;
+      // case "deadline":
+      
+      // case "progress":
+      
+      // case "todoDate":
+
+      case "property":
+        filterObj = {
+          priority: selectedPriorities,
+          deadline: [null, null],
+          progress: [0, 100],
+          todoDate: [null, null],
+          properties: newSelection
+        };
+    }
     localStorage.setItem(`filter-${name}`, JSON.stringify(filterObj));
   };
 
@@ -65,13 +86,35 @@ const Filter = ({name, todos}) => {
     <Fragment>
       <div className="Filter"></div>
         <h3 style={{color: "white"}}>Filter</h3>
+        <form>
+        <div className="Filter-Priorities" style={{color: "white"}}>
+          Priorities: 
+          {priority.map((property, index) => {
+            const isSelected = selectedPriorities.includes(property);
+            return (
+              <Fragment>
+                <input name={`priority-${index}`} key={index} type="checkbox" checked={isSelected} onChange={() => handleSelect("priority", property, selectedPriorities, setSelectedPriorities)}>
+                </input>
+                <label htmlFor={`priority-${index}`} style={{color: "white"}}>{property}</label> 
+              </Fragment>
+            );
+          })
+          }
+        </div>
+        <div className="Filter-Progress" style={{color: "white"}}>
+              <Fragment>
+                <label htmlFor="progress" style={{color: "white"}}>Progress: </label>
+                <input name="progress-first" id="progress-first" type="number" min="0" max="100"></input> {" - "}
+                <input name="progress-second" type="number" min={"0"} max="100"></input>
+              </Fragment>
+        </div>
         <div className="Filter-Properties" style={{color: "white"}}>
-          Properties
+          Properties: 
           {properties.map((property, index) => {
             const isSelected = selectedProperties.includes(property);
             return (
               <Fragment>
-                <input name={`property-${index}`} key={index} type="checkbox" checked={isSelected} onChange={() => handleSelectProperties(property)}>
+                <input name={`property-${index}`} key={index} type="checkbox" checked={isSelected} onChange={() => handleSelect("property", property, selectedProperties, setSelectedProperties)}>
                 </input>
                 <label htmlFor={`property-${index}`} style={{color: "white"}}>{property}</label> 
               </Fragment>
@@ -79,6 +122,7 @@ const Filter = ({name, todos}) => {
           })
           }
         </div>
+        </form>
     </Fragment>
   );
 }
