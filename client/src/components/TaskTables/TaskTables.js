@@ -221,13 +221,13 @@ const TaskTables = ({ name }) => {
                 <div className="deadline">
                   <div className="todo_date">
                     <AlarmIcon fontSize="small" />
-                    <text> Some date</text>
+                    <text>{todo.tododate == null ? "" : todo.deadline.substring(0, 10)}</text>
                   </div>
                   <div>
                     <CalendarTodayRoundedIcon fontSize="small" />
 
-                    <text className="date">11-11-2021</text>
-                    <text className="time">06:30 PM</text>
+                    <text className="date">{todo.deadline == null ? "" : todo.deadline.substring(0, 10)}</text>
+                    <text className="time">{todo.deadline == null ? "" : `${todo.deadline.substring(11, 16)}`}</text>
                   </div>
                 </div>
               </td>
@@ -236,12 +236,12 @@ const TaskTables = ({ name }) => {
                   {" "}
                   <CircularProgress
                     variant="determinate"
-                    value={75}
+                    value={todo.progress}
                     className="progress"
                     size={24}
                     thickness={8}
                   />
-                  <div>75%</div>
+                  <div>{`${todo.progress}%`}</div>
                 </div>
               </td>
               <td>
@@ -302,13 +302,13 @@ const TaskTables = ({ name }) => {
                   <div className="deadline">
                     <div className="todo_date">
                       <AlarmIcon fontSize="small" />
-                      <text> Some date</text>
+                      <text>{todo.tododate == null ? "" : todo.tododate.substring(0, 10)}</text>
                     </div>
                     <div>
                       <CalendarTodayRoundedIcon fontSize="small" />
 
-                      <text className="date">11-11-2021</text>
-                      <text className="time">06:30 PM</text>
+                      <text className="date">{todo.deadline == null ? "" : todo.deadline.substring(0, 10)}</text>
+                      <text className="time">{todo.deadline == null ? "" : `${todo.deadline.substring(11, 16)}`}</text>
                     </div>
                   </div>
                 </td>
@@ -317,12 +317,12 @@ const TaskTables = ({ name }) => {
                     {" "}
                     <CircularProgress
                       variant="determinate"
-                      value={75}
+                      value={todo.progress}
                       className="progress"
                       size={24}
                       thickness={8}
                     />
-                    <div>75%</div>
+                    <div>{`${todo.progress}%`}</div>
                   </div>
                 </td>
                 <td>
@@ -382,13 +382,13 @@ const TaskTables = ({ name }) => {
                   <div className="deadline">
                     <div className="todo_date">
                       <AlarmIcon fontSize="small" />
-                      <text> Some date</text>
+                      <text>{todo.tododate == null ? "" : todo.tododate.substring(0, 10)}</text>
                     </div>
                     <div>
                       <CalendarTodayRoundedIcon fontSize="small" />
 
-                      <text className="date">11-11-2021</text>
-                      <text className="time">06:30 PM</text>
+                      <text className="date">{todo.deadline == null ? "" : todo.deadline.substring(0, 10)}</text>
+                      <text className="time">{todo.deadline == null ? "" : `${todo.deadline.substring(11, 16)}`}</text>
                     </div>
                   </div>
                 </td>
@@ -397,12 +397,12 @@ const TaskTables = ({ name }) => {
                     {" "}
                     <CircularProgress
                       variant="determinate"
-                      value={75}
+                      value={todo.progress}
                       className="progress"
                       size={24}
                       thickness={8}
                     />
-                    <div>75%</div>
+                    <div>{`${todo.progress}%`}</div>
                   </div>
                 </td>
                 <td>

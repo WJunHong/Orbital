@@ -4,7 +4,7 @@ CREATE TABLE todo(
     user_id VARCHAR NOT NULL,
     todo_id SERIAL PRIMARY KEY, 
     description VARCHAR(255),
-    deadline DATE,
+    deadline TIMESTAMPTZ,
     todoDate DATE,
     priority integer,
     progress integer,
