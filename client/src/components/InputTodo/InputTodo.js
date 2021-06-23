@@ -330,6 +330,7 @@ const InputToDo = () => {
             Confirm
           </Button>
           <Button
+            type="button"
             variant="contained"
             onClick={resetEverything}
             className={styles.cancelButton}
