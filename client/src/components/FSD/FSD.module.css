@@ -135,6 +135,46 @@
 .sideHandler {
   position: relative;
 }
+
+.propertyButtons {
+  width: 276px;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 14px;
+}
+
+.propertyButtonList {
+  display: flex;
+  flex-wrap: wrap;
+  width: 200px;
+}
+
+.propertyButton {
+  margin: 2px;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgb(109, 109, 109);
+  padding: 4px;
+  border-radius: 5px;
+  width: fit-content;
+}
+.propertyName {
+  margin-bottom: 0px;
+  padding-right: 8px;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+}
+.testMe {
+  width: 16px;
+}
+.checkIt {
+  display: block;
+  width: 14px;
+  height: 14px;
+}
+
 .sortOptions {
   margin-top: 16px;
   color: white;
@@ -142,4 +182,60 @@
   height: fit-content;
   background-color: rgb(39, 39, 39);
   font-family: "Nunito", sans-serif;
+  margin-bottom: 16px;
+}
+
+.sortBox {
+  display: flex;
+  width: 300px;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.sortList {
+  list-style: none;
+  display: inline-flex;
+  padding-left: 0px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  flex-direction: column;
+  margin-left: 16px;
+  font-weight: bold;
+}
+
+.sortItems {
+  padding: 8px;
+}
+.sortItems:hover {
+  background-color: #2f386b;
+  transition: all 0.2s ease-in;
+  cursor: pointer;
+}
+
+.sortArrows {
+  margin-right: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  cursor: default;
+  font-weight: bold;
+}
+.spanDirection {
+  color: #485391;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.clickedSortOption {
+  background-color: #485391;
+}
+
+.arrowStyle {
+  background-color: #767c9e;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 4px;
 }

@@ -11,6 +11,8 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import ArrowDownwardRoundedIcon from "@material-ui/icons/ArrowDownwardRounded";
+import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 
 const muiTheme = createMuiTheme({
   overrides: {
@@ -50,8 +52,14 @@ const FSD = ({ name, todos }) => {
     filterObj = JSON.parse(localStorage.getItem(`filter-${name}`));
   }
 
-
   const initialPriorities = [1, 2, 3, 4, 5];
+  const initialSort = [
+    "Alphabetical",
+    "Priority",
+    "Progress",
+    "Deadline",
+    "Todo Date",
+  ];
   // Properties from the user
   const [properties, setProperties] = useState([]);
   // Things which have been selected
@@ -63,7 +71,11 @@ const FSD = ({ name, todos }) => {
   const [todoEnd, setTE] = useState(filterObj.todoDate[1]);
   const [clickedF, setClickF] = useState(false);
   const [clickedS, setClickS] = useState(false);
-  const [selectedProperties, setSelectedProperties] = useState(filterObj.properties);
+  const [direction, setDirection] = useState("descending");
+  const [sortSelection, setSS] = useState("");
+  const [selectedProperties, setSelectedProperties] = useState(
+    filterObj.properties
+  );
 
   const handleClick = (e, num) => {
     if (e.target.style.backgroundColor != "black") {
@@ -132,6 +144,7 @@ const FSD = ({ name, todos }) => {
     setClickF(!clickedF);
   };
   const toggleSortOptions = () => {
+    document.querySelector(`.${styles.sortOptions}`).classList.toggle(`hidden`);
     setClickS(!clickedS);
   };
 
@@ -209,9 +222,67 @@ const FSD = ({ name, todos }) => {
     }
   };
 
+  const handleSort = (e, item) => {
+    e.preventDefault();
+    if (sortSelection == "") {
+      if (item == "Todo Date") {
+        document
+          .querySelector(`#sort-todoDate`)
+          .classList.toggle(`${styles.clickedSortOption}`);
+      } else {
+        document
+          .querySelector(`#sort-${item}`)
+          .classList.toggle(`${styles.clickedSortOption}`);
+      }
+    } else {
+      if (item == "Todo Date") {
+        if (item == sortSelection) {
+          document
+            .querySelector(`#sort-todoDate`)
+            .classList.toggle(`${styles.clickedSortOption}`);
+          setSS("");
+          setDirection("descending");
+          return;
+        } else {
+          document
+            .querySelector(`#sort-todoDate`)
+            .classList.toggle(`${styles.clickedSortOption}`);
+          document
+            .querySelector(`#sort-${sortSelection}`)
+            .classList.toggle(`${styles.clickedSortOption}`);
+        }
+      } else {
+        if (item == sortSelection) {
+          document
+            .querySelector(`#sort-${item}`)
+            .classList.toggle(`${styles.clickedSortOption}`);
+          setSS("");
+          setDirection("descending");
+          return;
+        } else {
+          document
+            .querySelector(`#sort-${item}`)
+            .classList.toggle(`${styles.clickedSortOption}`);
+          document
+            .querySelector(`#sort-${sortSelection}`)
+            .classList.toggle(`${styles.clickedSortOption}`);
+        }
+      }
+    }
+    setSS(item == "Todo Date" ? "todoDate" : item);
+  };
+
+  const handleDirection = (e) => {
+    e.preventDefault();
+    if (direction == "descending") {
+      setDirection("ascending");
+    } else {
+      setDirection("descending");
+    }
+  };
   // Called when rendered, adding or deleting a task
   useEffect(() => getProperties(), [todos]);
-
+  useEffect(() => console.log(sortSelection), [sortSelection]);
   //Testing
   return (
     <div className={styles.buttonZs}>
@@ -298,9 +369,7 @@ const FSD = ({ name, todos }) => {
                   }
                 />
                 <DatePicker
-                  selected={
-                    deadlineEnd == null ? null : new Date(deadlineEnd)
-                  }
+                  selected={deadlineEnd == null ? null : new Date(deadlineEnd)}
                   onChange={(date) =>
                     handleSelect("deadline", date, [deadlineStart, date], setDE)
                   }
@@ -323,30 +392,22 @@ const FSD = ({ name, todos }) => {
               Todo Date
               <div className={styles.deadlineContainer}>
                 <DatePicker
-                  selected={
-                    todoStart == null ? null : new Date(todoStart)
-                  }
+                  selected={todoStart == null ? null : new Date(todoStart)}
                   onChange={(date) =>
                     handleSelect("todoDate", date, [date, todoEnd], setTS)
                   }
                   placeholderText="Start"
                   className={styles.deadlineInput}
-                  maxDate={
-                    todoEnd == null ? undefined : new Date(todoEnd)
-                  }
+                  maxDate={todoEnd == null ? undefined : new Date(todoEnd)}
                 />
                 <DatePicker
-                  selected={
-                    todoEnd == null ? null : new Date(todoEnd)
-                  }
+                  selected={todoEnd == null ? null : new Date(todoEnd)}
                   onChange={(date) =>
                     handleSelect("todoDate", date, [todoStart, date], setTE)
                   }
                   placeholderText="End"
                   className={styles.deadlineInput}
-                  minDate={
-                    todoStart == null ? undefined : new Date(todoStart)
-                  }
+                  minDate={todoStart == null ? undefined : new Date(todoStart)}
                 />
                 <ClearIcon
                   className={styles.clearDeadlines}
@@ -356,42 +417,81 @@ const FSD = ({ name, todos }) => {
             </div>
           </div>
           <div>
-            <div className={styles.Tag}>
-              Properties
-              <div className={styles.priorityButtons}>
+            <div className={styles.Tag}>Properties</div>
+            <div className={styles.propertyButtons}>
+              <div className={styles.propertyButtonList}>
                 {properties.map((property, index) => {
                   const isSelected = selectedProperties.includes(property);
                   return (
-                    <Fragment>
-                      <input
-                        name={`property-${index}`}
-                        key={index}
-                        type="checkbox"
-                        checked={isSelected}
-                        onChange={() =>
-                          handleSelect(
-                            "property",
-                            property,
-                            selectedProperties,
-                            setSelectedProperties
-                          )
-                        }
-                      ></input>
+                    <div className={styles.propertyButton}>
                       <label
                         htmlFor={`property-${index}`}
-                        style={{ color: "white" }}
+                        className={styles.propertyName}
                       >
                         {property}
                       </label>
-                    </Fragment>
+                      <div className={styles.testMe}>
+                        <input
+                          className={styles.checkIt}
+                          name={`property-${index}`}
+                          key={index}
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() =>
+                            handleSelect(
+                              "property",
+                              property,
+                              selectedProperties,
+                              setSelectedProperties
+                            )
+                          }
+                        ></input>
+                      </div>
+                    </div>
                   );
                 })}
-                <ClearIcon className={styles.clearDeadlines} onClick={clearAllProperties} />
+              </div>
+              <ClearIcon
+                className={styles.clearDeadlines}
+                onClick={clearAllProperties}
+              />
+            </div>
+          </div>
+        </div>
+        <div className={`${styles.sortOptions} hidden`}>
+          <div className={styles.topText}>Sorting Options</div>
+          <div className={styles.sortBox}>
+            <ul className={styles.sortList}>
+              {initialSort.map((item, index) => (
+                <li
+                  key={`sort_${index}`}
+                  className={styles.sortItems}
+                  onClick={(e) => handleSort(e, item)}
+                  id={item == "Todo Date" ? "sort-todoDate" : `sort-${item}`}
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <div className={styles.sortArrows}>
+              Sorted by{" "}
+              <span className={styles.spanDirection}>{direction}</span>
+              <div>
+                {direction == "descending" ? (
+                  <ArrowDownwardRoundedIcon
+                    onClick={(e) => handleDirection(e)}
+                    className={styles.arrowStyle}
+                  />
+                ) : (
+                  <ArrowUpwardRoundedIcon
+                    onClick={(e) => handleDirection(e)}
+                    className={styles.arrowStyle}
+                  />
+                )}
               </div>
             </div>
           </div>
         </div>
-        <div className={styles.sortOptions}>Something big</div>
       </div>
     </div>
   );
