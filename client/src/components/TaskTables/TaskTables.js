@@ -116,56 +116,6 @@ const TaskTables = ({ name }) => {
     if (sortStuff.direction == "descending") {
       switch (sortStuff.sort) {
         case "dateAdded":
-          return task1.todo_id - task2.todo_id;
-          break;
-        case "Alphabetical":
-          // If 1st is smaller will be negative, no change
-          return (
-            task1.description[0].toLowerCase().charCodeAt(0) -
-            task2.description[0].toLowerCase().charCodeAt(0)
-          );
-          break;
-        case "Priority":
-          return task1.priority - task2.priority;
-          break;
-        case "Deadline":
-          if (task1.deadline == null && task2.deadline == null) {
-            return -1;
-          } else if (task1.deadline == null) {
-            return 1;
-          } else if (task2.deadline == null) {
-            return -1;
-          } else {
-            // Earlier date before later date
-            return (
-              new Date(task1.deadline).getTime() -
-              new Date(task2.deadline).getTime()
-            );
-          }
-          break;
-        case "todoDate":
-          if (task1.todoDate == null && task2.todoDate == null) {
-            return -1;
-          } else if (task1.todoDate == null) {
-            return 1;
-          } else if (task2.todoDate == null) {
-            return -1;
-          } else {
-            // Earlier date before later date
-            return (
-              new Date(task1.todoDate).getTime() -
-              new Date(task2.todoDate).getTime()
-            );
-          }
-          break;
-        default:
-          console.log("bad");
-          break;
-      }
-    } else {
-      // Sort by ascending order
-      switch (sortStuff.sort) {
-        case "dateAdded":
           return task2.todo_id - task1.todo_id;
           break;
         case "Alphabetical":
@@ -205,6 +155,56 @@ const TaskTables = ({ name }) => {
             return (
               new Date(task2.todoDate).getTime() -
               new Date(task1.todoDate).getTime()
+            );
+          }
+          break;
+        default:
+          console.log("bad");
+          break;
+      }
+    } else {
+      // Sort by ascending order
+      switch (sortStuff.sort) {
+        case "dateAdded":
+          return task1.todo_id - task2.todo_id;
+          break;
+        case "Alphabetical":
+          // If 1st is smaller will be negative, no change
+          return (
+            task1.description[0].toLowerCase().charCodeAt(0) -
+            task2.description[0].toLowerCase().charCodeAt(0)
+          );
+          break;
+        case "Priority":
+          return task1.priority - task2.priority;
+          break;
+        case "Deadline":
+          if (task1.deadline == null && task2.deadline == null) {
+            return -1;
+          } else if (task1.deadline == null) {
+            return 1;
+          } else if (task2.deadline == null) {
+            return -1;
+          } else {
+            // Earlier date before later date
+            return (
+              new Date(task1.deadline).getTime() -
+              new Date(task2.deadline).getTime()
+            );
+          }
+          break;
+        case "todoDate":
+          if (task1.todoDate == null && task2.todoDate == null) {
+            return -1;
+          } else if (task1.todoDate == null) {
+            return 1;
+          } else if (task2.todoDate == null) {
+            return -1;
+          } else {
+            // Earlier date before later date
+            return (
+              new Date(task1.todoDate).getTime() -
+              new Date(task2.todoDate).getTime()
             );
           }
           break;
