@@ -1,5 +1,5 @@
 .addTask {
-  width: max(400px, calc(40vw - 40px));
+  width: 540px;
 }
 /* Add Button */
 .addTaskBegin {
@@ -39,7 +39,7 @@
   justify-content: space-between;
   border: 1px solid white;
   border-radius: 5px;
-  width: max(calc(40vw - 40px), 400px);
+  width: 540px;
 }
 
 /* Text, Deadlines and labels container box */
@@ -53,7 +53,7 @@
   font-family: "Nunito", sans-serif;
   color: white !important;
   border-style: none;
-  width: max(300px, calc(40vw - 80px));
+  width: 420px;
   outline: none;
   height: auto !important;
   padding-left: 8px;

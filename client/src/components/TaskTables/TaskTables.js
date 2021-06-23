@@ -9,6 +9,7 @@ import {
   FlagRoundedIcon,
   CircularProgress,
   ArrowDropDownRoundedIcon,
+  Tooltip,
 } from "../../design/table_icons";
 import styles from "./TaskTables.module.css";
 import EditTodo from "../EditTodo";
@@ -305,7 +306,7 @@ const TaskTables = ({ name }) => {
       <FSD name={name} todos={todos} />
       <table className="table task_table todo_table">
         <thead>
-          <th></th>
+          <tr className={styles.topBorder}></tr>
         </thead>
         <tbody>
           {todos
@@ -329,38 +330,42 @@ const TaskTables = ({ name }) => {
                   <div className="deadline">
                     <div className="todo_date">
                       <AlarmIcon fontSize="small" />
-                      <text>
+                      <span>
                         {todo.tododate == null
-                          ? ""
+                          ? "-"
                           : todo.deadline.substring(0, 10)}
-                      </text>
+                      </span>
                     </div>
                     <div>
                       <CalendarTodayRoundedIcon fontSize="small" />
 
-                      <text className="date">
+                      <span className="date">
                         {todo.deadline == null
-                          ? ""
+                          ? "-"
                           : todo.deadline.substring(0, 10)}
-                      </text>
-                      <text className="time">
+                      </span>
+                      <span className="time">
                         {todo.deadline == null
-                          ? ""
+                          ? "-"
                           : `${todo.deadline.substring(11, 16)}`}
-                      </text>
+                      </span>
                     </div>
                   </div>
                 </td>
                 <td>
                   <div className="progress_value">
                     {" "}
-                    <CircularProgress
-                      variant="determinate"
-                      value={todo.progress}
-                      className="progress"
-                      size={24}
-                      thickness={8}
-                    />
+                    {todo.progress == 0 ? (
+                      <div />
+                    ) : (
+                      <CircularProgress
+                        variant="determinate"
+                        value={todo.progress}
+                        className="progress"
+                        size={24}
+                        thickness={8}
+                      />
+                    )}
                     <div>{`${todo.progress}%`}</div>
                   </div>
                 </td>
@@ -424,25 +429,25 @@ const TaskTables = ({ name }) => {
                   <div className="deadline">
                     <div className="todo_date">
                       <AlarmIcon fontSize="small" />
-                      <text>
+                      <span>
                         {todo.tododate == null
-                          ? ""
+                          ? "-"
                           : todo.tododate.substring(0, 10)}
-                      </text>
+                      </span>
                     </div>
                     <div>
                       <CalendarTodayRoundedIcon fontSize="small" />
 
-                      <text className="date">
+                      <span className="date">
                         {todo.deadline == null
-                          ? ""
+                          ? "-"
                           : todo.deadline.substring(0, 10)}
-                      </text>
-                      <text className="time">
+                      </span>
+                      <span className="time">
                         {todo.deadline == null
-                          ? ""
+                          ? "-"
                           : `${todo.deadline.substring(11, 16)}`}
-                      </text>
+                      </span>
                     </div>
                   </div>
                 </td>
@@ -516,25 +521,25 @@ const TaskTables = ({ name }) => {
                   <div className="deadline">
                     <div className="todo_date">
                       <AlarmIcon fontSize="small" />
-                      <text>
+                      <span>
                         {todo.tododate == null
-                          ? ""
+                          ? "-"
                           : todo.tododate.substring(0, 10)}
-                      </text>
+                      </span>
                     </div>
                     <div>
                       <CalendarTodayRoundedIcon fontSize="small" />
 
-                      <text className="date">
+                      <span className="date">
                         {todo.deadline == null
-                          ? ""
+                          ? "-"
                           : todo.deadline.substring(0, 10)}
-                      </text>
-                      <text className="time">
+                      </span>
+                      <span className="time">
                         {todo.deadline == null
-                          ? ""
+                          ? "-"
                           : `${todo.deadline.substring(11, 16)}`}
-                      </text>
+                      </span>
                     </div>
                   </div>
                 </td>

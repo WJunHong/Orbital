@@ -39,9 +39,9 @@ const Login = ({ history }) => {
           // do nothing
         } else {
           await app
-          .auth()
-          .signInWithEmailAndPassword(email.value, password.value);
-        history.push("/");
+            .auth()
+            .signInWithEmailAndPassword(email.value, password.value);
+          history.push("/");
         }
       } catch (err) {
         toggleErrorMsg(err.code);
@@ -69,7 +69,8 @@ const Login = ({ history }) => {
       setPL("Password");
       textError.style.display = "inline";
       if (errorMsg === "auth/too-many-requests") {
-        textError.innerHTML = "Too many failed login attempts. Please try again later.";
+        textError.innerHTML =
+          "Too many failed login attempts. Please try again later.";
       } else if (errorMsg === "auth/wrong-password") {
         textError.innerHTML = "Invalid email or password";
       } else if (errorMsg === "auth/user-not-found") {
@@ -78,7 +79,7 @@ const Login = ({ history }) => {
         textError.innerHTML = "Undefined error";
       }
     }
-  }
+  };
   const validateInfo = (checkEmail, checkPassword) => {
     var validated = true;
     if (checkEmail === "") {
@@ -99,7 +100,7 @@ const Login = ({ history }) => {
       setPL("Password");
     }
     return validated;
-  }
+  };
 
   return (
     <Fragment>
@@ -217,8 +218,10 @@ const Login = ({ history }) => {
                           </a>
                         </Grid>
                         <Grid item>
-                          <text id="invalidEP" className={styles.errorInput}>
-                          </text>
+                          <span
+                            id="invalidEP"
+                            className={styles.errorInput}
+                          ></span>
                         </Grid>
                       </Grid>
                     </Grid>

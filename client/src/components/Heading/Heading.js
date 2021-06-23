@@ -96,7 +96,7 @@ const Heading = () => {
                   fontSize="small"
                   className={styles.profileIcon}
                 />
-                <text className={styles.profileTab}>View Profile</text>
+                <span className={styles.profileTab}>View Profile</span>
               </a>
             </li>
             <li>
@@ -105,7 +105,7 @@ const Heading = () => {
                   fontSize="small"
                   className={styles.logoutIcon}
                 />
-                <text className={styles.logout}>Logout</text>
+                <span className={styles.logout}>Logout</span>
               </a>
             </li>
           </ul>

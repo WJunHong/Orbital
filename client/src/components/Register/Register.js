@@ -48,15 +48,22 @@ const Register = ({ history }) => {
     setCPE(false);
     setCPL("Confirm Password");
     document.getElementById("signupError").style.display = "none";
-  }
+  };
 
   const SubmitForm = useCallback(
     async (e) => {
       e.preventDefault();
-      const { name, email, password, confirmPassword} = e.target.elements;
+      const { name, email, password, confirmPassword } = e.target.elements;
       try {
         clearAll();
-        if (!validateInfo(name.value, email.value, password.value, confirmPassword.value)) {
+        if (
+          !validateInfo(
+            name.value,
+            email.value,
+            password.value,
+            confirmPassword.value
+          )
+        ) {
           // do nothing
         } else {
           await app
@@ -90,14 +97,20 @@ const Register = ({ history }) => {
         textError.innerHTML = "The password must be 6 characters long or more.";
       } else if (errorMsg === "auth/email-already-in-use") {
         setEE(true);
-        textError.innerHTML = "The email address is already in use by another account.";
+        textError.innerHTML =
+          "The email address is already in use by another account.";
       } else {
         textError.innerHTML = "Undefined error";
       }
     }
-  }
+  };
 
-  const validateInfo = (checkName, checkEmail, checkPassword, checkConfirmPassword) => {
+  const validateInfo = (
+    checkName,
+    checkEmail,
+    checkPassword,
+    checkConfirmPassword
+  ) => {
     var validated = true;
     if (checkName === "") {
       setNE(true);
@@ -132,7 +145,7 @@ const Register = ({ history }) => {
       validated = false;
     }
     return validated;
-  }
+  };
 
   return (
     <Fragment>
@@ -236,9 +249,9 @@ const Register = ({ history }) => {
                       />
                     </Grid>
                     <Grid item>
-                      <text id="signupError" className={styles.errorInput}>
+                      <span id="signupError" className={styles.errorInput}>
                         hi
-                      </text>
+                      </span>
                     </Grid>
                     <Grid item>
                       <Button

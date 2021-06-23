@@ -4,7 +4,7 @@
 
 /* 2. Task Table*/
 .todo_table {
-  width: calc(40vw - 40px);
+  width: 540px;
   min-width: 400px;
 }
 .todo_table tbody {
@@ -15,7 +15,7 @@
 .todo_table th {
   color: #a2a2a2;
   border-top: none !important;
-  width: calc(40vw - 40px);
+  width: 540px;
   border-bottom: 1px solid #a2a2a2 !important;
   padding-left: 0 !important;
   min-width: 400px;
@@ -35,7 +35,7 @@
   padding: 16px;
   padding-left: 0px;
   margin-bottom: 4px;
-  width: calc(40vw - 40px);
+  width: 540px;
   grid-template-columns: 1fr 5fr 1fr 1fr 1fr 1fr 1fr;
   min-width: 400px;
 }
@@ -49,7 +49,7 @@
 .checkbox {
   color: #9c9c9c;
   cursor: pointer;
-  width: 32px;
+  width: 24px;
   height: 32px;
   display: flex;
   justify-content: center;
@@ -59,7 +59,7 @@
 .checkbox:hover {
   color: #e2e2e2;
   background-color: #525252;
-  border-radius: 10px;
+  border-radius: 2px;
   cursor: pointer;
 }
 
@@ -69,6 +69,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start !important;
+  width: 250px;
 }
 
 .task_name:hover {
@@ -77,7 +78,7 @@
 
 .dropdown {
   color: #9c9c9c;
-  width: 32px;
+  width: 24px;
   height: 32px;
   display: flex;
   justify-content: center;
@@ -87,7 +88,7 @@
 .dropdown:hover {
   color: #e2e2e2;
   background-color: #525252;
-  border-radius: 10px;
+  border-radius: 2px;
 }
 
 .deadline {
@@ -103,12 +104,14 @@
   align-items: center;
 }
 
-.todo_date text {
+.todo_date span {
   margin-left: 6px;
   padding: 2px;
+  width: 72px;
+  text-align: center;
 }
 
-.todo_date text:hover {
+.todo_date span:hover {
   color: #e2e2e2;
   background-color: #525252;
   border-radius: 2px;
@@ -119,6 +122,8 @@
   color: #9c9c9c;
   margin-left: 6px;
   padding: 2px;
+  width: 72px;
+  text-align: center;
 }
 
 .date:hover {
@@ -131,6 +136,8 @@
   margin-left: 6px;
   padding: 2px;
   color: #9c9c9c;
+  width: 72px;
+  text-align: center;
 }
 
 .time:hover {
@@ -146,7 +153,7 @@
   align-items: center;
   color: white;
   font-size: 10px;
-  width: 40px;
+  width: 30px;
   height: 44px;
 }
 
@@ -157,13 +164,13 @@
 
 .progress_value:hover {
   background-color: #525252;
-  border-radius: 10px;
+  border-radius: 2px;
   transition: background-color 0.3s linear;
   cursor: pointer;
 }
 .priority {
   color: #9c9c9c;
-  width: 32px;
+  width: 24px;
   height: 32px;
   display: flex;
   justify-content: center;
@@ -173,12 +180,12 @@
 .priority:hover {
   color: #e2e2e2;
   background-color: #525252;
-  border-radius: 10px;
+  border-radius: 2px;
   cursor: pointer;
 }
 .deleteTask {
   color: #9c9c9c;
-  width: 32px;
+  width: 24px;
   height: 32px;
   display: flex;
   justify-content: center;
@@ -188,7 +195,7 @@
 .deleteTask:hover {
   color: #e2e2e2;
   background-color: #525252;
-  border-radius: 10px;
+  border-radius: 2px;
   cursor: pointer;
 }
 

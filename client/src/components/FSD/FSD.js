@@ -13,12 +13,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ArrowDownwardRoundedIcon from "@material-ui/icons/ArrowDownwardRounded";
 import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
+import Checkbox from "@material-ui/core/Checkbox";
+import { withStyles } from "@material-ui/core/styles";
 
 const muiTheme = createMuiTheme({
   overrides: {
     MuiSlider: {
       thumb: {
-        color: "#662d91",
+        color: "#0f1425",
       },
       track: {
         color: "white",
@@ -29,7 +31,15 @@ const muiTheme = createMuiTheme({
     },
   },
 });
-
+const CustomColorCheckbox = withStyles({
+  root: {
+    color: "rgb(143, 143, 143)",
+    "&$checked": {
+      color: "#f2aa4cff",
+    },
+  },
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
 /* FSD contains:
 1. Filter button
 2. Sort Button
@@ -290,6 +300,14 @@ const FSD = ({ name, todos }) => {
         .classList.add(`${styles.clickedSortOption}`);
     }
   };
+
+  const clearSort = (e) => {
+    var newSort = { sort: "dateAdded", direction: "descending" };
+    setSS("dateAdded");
+    setDirection("descending");
+    sortStyle(e, sortSelection);
+    localStorage.setItem(`sort-${name}`, JSON.stringify(newSort));
+  };
   // Called when rendered, adding or deleting a task
   useEffect(() => getProperties(), [todos]);
   useEffect(() => assignSort(), []);
@@ -299,6 +317,7 @@ const FSD = ({ name, todos }) => {
     <div className={styles.buttonZs}>
       <div className={styles.buttonDiv}>
         <Fab
+          style={{ backgroundColor: `${clickedF ? "red" : "#4b4b4b"}` }}
           size="small"
           aria-label="filter"
           className={styles.filterButton}
@@ -307,6 +326,7 @@ const FSD = ({ name, todos }) => {
           {clickedF ? <ClearIcon /> : <FilterListRoundedIcon />}
         </Fab>
         <Fab
+          style={{ backgroundColor: `${clickedS ? "red" : "#4b4b4b"}` }}
           size="small"
           aria-label="filter"
           className={styles.sortButton}
@@ -441,8 +461,22 @@ const FSD = ({ name, todos }) => {
                       >
                         {property}
                       </label>
-                      <div className={styles.testMe}>
-                        <input
+                      <CustomColorCheckbox
+                        className={styles.checkIt}
+                        name={`property-${index}`}
+                        key={index}
+                        disableRipple
+                        checked={isSelected}
+                        onChange={() =>
+                          handleSelect(
+                            "property",
+                            property,
+                            selectedProperties,
+                            setSelectedProperties
+                          )
+                        }
+                      />
+                      {/*<input
                           className={styles.checkIt}
                           name={`property-${index}`}
                           key={index}
@@ -456,8 +490,7 @@ const FSD = ({ name, todos }) => {
                               setSelectedProperties
                             )
                           }
-                        ></input>
-                      </div>
+                        / >*/}
                     </div>
                   );
                 })}
@@ -540,6 +573,13 @@ const FSD = ({ name, todos }) => {
                     className={styles.arrowStyle}
                   />
                 )}
+              </div>
+              <div className={styles.clearSort}>
+                Reset
+                <ClearIcon
+                  className={styles.clearSortButton}
+                  onClick={clearSort}
+                />
               </div>
             </div>
           </div>

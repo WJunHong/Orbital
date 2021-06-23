@@ -2,7 +2,8 @@
   background-color: #0f1425;
   position: fixed;
   height: 100vh;
-  width: 250px;
+  /* Change this*/
+  width: max(140px, 15vw);
   z-index: 2;
   top: 64px;
 }
@@ -11,14 +12,18 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  padding-left: 15px;
+  padding-left: 0px;
   margin-bottom: 0;
   font-family: "Nunito", sans-serif;
 }
-
+.sideBar ul li {
+  margin-left: 16px;
+  width: max(108px, calc(15vw - 32px));
+}
 .sideBar ul a {
   display: flex;
-  width: 220px;
+  /* Change this*/
+  width: max(108px, calc(15vw - 32px));
   height: 40px;
   align-items: center;
   color: #808080;
@@ -50,6 +55,9 @@
   font-weight: bold;
   color: #52a384;
 }
+.mainTask {
+  margin-top: 8px;
+}
 .mainTask a:hover {
   background-color: #273569;
   text-decoration: none;
@@ -76,11 +84,11 @@
 
 .calendar {
   border-bottom: 1px solid white;
-  margin-bottom: 3px;
   height: 48px;
 }
 
 .addList {
+  margin-top: 8px;
   margin-left: 15px;
   padding-left: 2px;
   display: flex;
@@ -93,7 +101,5 @@
 
 .addList:hover {
   cursor: pointer;
-  border: 1px solid #e4d9ff;
-  padding-left: 1px;
-  border-radius: 5px;
+  font-weight: bold;
 }

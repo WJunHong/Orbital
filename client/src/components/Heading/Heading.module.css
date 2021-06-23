@@ -128,20 +128,13 @@
   transition: all 0.1s linear;
 }
 
-.profileDropdown ul li text {
+.profileDropdown ul li span {
   padding-left: 4px;
   font-size: 16px;
   color: #efeff1;
   display: inline-block;
 }
 
-/*ul li a:hover {
-  background-color: #d3d3d9;
-  color: #efeff1;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: all 0.1s ease-in;
-}*/
 .tabProfile {
   display: flex;
   flex-direction: row;

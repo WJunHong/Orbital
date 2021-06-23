@@ -1,8 +1,8 @@
 .overviewName {
   display: block;
   margin-top: 80px;
-  margin-left: 280px;
-  width: 40vw;
+  margin-left: max(156px, calc(15vw + 16px));
+  width: 580px;
   height: 60px;
   padding-left: 10px;
   line-height: 60px;
