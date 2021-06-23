@@ -88,13 +88,6 @@ const TaskTables = ({ name }) => {
       console.log(e.target);
     }
   };
-  var date = new Date();
-
-  // add a day
-  date.setDate(date.getDate() + 1);
-
-  var date1 = new Date();
-  date1.setDate(date1.getDate() + 5);
 
   // The fetched filters object
   const filter =
@@ -108,6 +101,118 @@ const TaskTables = ({ name }) => {
           properties: [],
         };
 
+  const sortStuff =
+    localStorage.getItem(`sort-${name}`) != null
+      ? JSON.parse(localStorage.getItem(`sort-${name}`))
+      : {
+          sort: "dateAdded",
+          direction: "descending",
+        };
+
+  // <= 0 sort in same order, > 0 sort in reverse order
+  const properSort = (task1, task2) => {
+    // Sort by descending order
+    if (sortStuff.direction == "descending") {
+      switch (sortStuff.sort) {
+        case "dateAdded":
+          return task1.todo_id - task2.todo_id;
+          break;
+        case "Alphabetical":
+          // If 1st is smaller will be negative, no change
+          return (
+            task1.description[0].toLowerCase().charCodeAt(0) -
+            task2.description[0].toLowerCase().charCodeAt(0)
+          );
+          break;
+        case "Priority":
+          return task1.priority - task2.priority;
+          break;
+        case "Deadline":
+          if (task1.deadline == null && task2.deadline == null) {
+            return -1;
+          } else if (task1.deadline == null) {
+            return 1;
+          } else if (task2.deadline == null) {
+            return -1;
+          } else {
+            // Earlier date before later date
+            return (
+              new Date(task1.deadline).getTime() -
+              new Date(task2.deadline).getTime()
+            );
+          }
+          break;
+        case "todoDate":
+          if (task1.todoDate == null && task2.todoDate == null) {
+            return -1;
+          } else if (task1.todoDate == null) {
+            return 1;
+          } else if (task2.todoDate == null) {
+            return -1;
+          } else {
+            // Earlier date before later date
+            return (
+              new Date(task1.todoDate).getTime() -
+              new Date(task2.todoDate).getTime()
+            );
+          }
+          break;
+        default:
+          console.log("bad");
+          break;
+      }
+    } else {
+      // Sort by ascending order
+      switch (sortStuff.sort) {
+        case "dateAdded":
+          return task2.todo_id - task1.todo_id;
+          break;
+        case "Alphabetical":
+          // If 1st is smaller will be negative, no change
+          return (
+            task2.description[0].toLowerCase().charCodeAt(0) -
+            task1.description[0].toLowerCase().charCodeAt(0)
+          );
+          break;
+        case "Priority":
+          return task2.priority - task1.priority;
+          break;
+        case "Deadline":
+          if (task1.deadline == null && task2.deadline == null) {
+            return 1;
+          } else if (task1.deadline == null) {
+            return -1;
+          } else if (task2.deadline == null) {
+            return 1;
+          } else {
+            // Earlier date before later date
+            return (
+              new Date(task2.deadline).getTime() -
+              new Date(task1.deadline).getTime()
+            );
+          }
+          break;
+        case "todoDate":
+          if (task1.todoDate == null && task2.todoDate == null) {
+            return 1;
+          } else if (task1.todoDate == null) {
+            return -1;
+          } else if (task2.todoDate == null) {
+            return 1;
+          } else {
+            // Earlier date before later date
+            return (
+              new Date(task2.todoDate).getTime() -
+              new Date(task1.todoDate).getTime()
+            );
+          }
+          break;
+        default:
+          console.log("bad");
+          break;
+      }
+    }
+  };
   const properFilter = (todo) => {
     // console.log(todo.description);
     // console.log(todo.deadline);
@@ -203,67 +308,84 @@ const TaskTables = ({ name }) => {
           <th></th>
         </thead>
         <tbody>
-          {todos.filter(properFilter).map((todo) => (
-            <tr
-              key={todo.todo_id}
-              className="taskData"
-              onClick={(e) => someFunc(e, todo)}
-            >
-              <td>
-                <div className="checkbox">
-                  <CheckBoxOutlineBlankOutlinedIcon
-                    onClick={() => completeTask(todo)}
-                  />
-                </div>
-              </td>
-              <td className="task_name">
-                <div className="description">{todo.description}</div>
-                <div className="deadline">
-                  <div className="todo_date">
-                    <AlarmIcon fontSize="small" />
-                    <text>{todo.tododate == null ? "" : todo.deadline.substring(0, 10)}</text>
+          {todos
+            .sort(properSort)
+            .filter(properFilter)
+            .map((todo) => (
+              <tr
+                key={todo.todo_id}
+                className="taskData"
+                onClick={(e) => someFunc(e, todo)}
+              >
+                <td>
+                  <div className="checkbox">
+                    <CheckBoxOutlineBlankOutlinedIcon
+                      onClick={() => completeTask(todo)}
+                    />
                   </div>
-                  <div>
-                    <CalendarTodayRoundedIcon fontSize="small" />
+                </td>
+                <td className="task_name">
+                  <div className="description">{todo.description}</div>
+                  <div className="deadline">
+                    <div className="todo_date">
+                      <AlarmIcon fontSize="small" />
+                      <text>
+                        {todo.tododate == null
+                          ? ""
+                          : todo.deadline.substring(0, 10)}
+                      </text>
+                    </div>
+                    <div>
+                      <CalendarTodayRoundedIcon fontSize="small" />
 
-                    <text className="date">{todo.deadline == null ? "" : todo.deadline.substring(0, 10)}</text>
-                    <text className="time">{todo.deadline == null ? "" : `${todo.deadline.substring(11, 16)}`}</text>
+                      <text className="date">
+                        {todo.deadline == null
+                          ? ""
+                          : todo.deadline.substring(0, 10)}
+                      </text>
+                      <text className="time">
+                        {todo.deadline == null
+                          ? ""
+                          : `${todo.deadline.substring(11, 16)}`}
+                      </text>
+                    </div>
                   </div>
-                </div>
-              </td>
-              <td>
-                <div className="progress_value">
-                  {" "}
-                  <CircularProgress
-                    variant="determinate"
-                    value={todo.progress}
-                    className="progress"
-                    size={24}
-                    thickness={8}
-                  />
-                  <div>{`${todo.progress}%`}</div>
-                </div>
-              </td>
-              <td>
-                <div className="priority">
-                  <FlagRoundedIcon />
-                </div>
-              </td>
-              <td>
-                <EditTodo todo={todo} />
-              </td>
-              <td>
-                <div className="deleteTask">
-                  <DeleteRoundedIcon onClick={() => deleteTodo(todo.todo_id)} />
-                </div>
-              </td>
-              <td>
-                <div className="dropdown">
-                  <ArrowDropDownRoundedIcon />
-                </div>
-              </td>
-            </tr>
-          ))}
+                </td>
+                <td>
+                  <div className="progress_value">
+                    {" "}
+                    <CircularProgress
+                      variant="determinate"
+                      value={todo.progress}
+                      className="progress"
+                      size={24}
+                      thickness={8}
+                    />
+                    <div>{`${todo.progress}%`}</div>
+                  </div>
+                </td>
+                <td>
+                  <div className="priority">
+                    <FlagRoundedIcon />
+                  </div>
+                </td>
+                <td>
+                  <EditTodo todo={todo} />
+                </td>
+                <td>
+                  <div className="deleteTask">
+                    <DeleteRoundedIcon
+                      onClick={() => deleteTodo(todo.todo_id)}
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div className="dropdown">
+                    <ArrowDropDownRoundedIcon />
+                  </div>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </>
@@ -302,13 +424,25 @@ const TaskTables = ({ name }) => {
                   <div className="deadline">
                     <div className="todo_date">
                       <AlarmIcon fontSize="small" />
-                      <text>{todo.tododate == null ? "" : todo.tododate.substring(0, 10)}</text>
+                      <text>
+                        {todo.tododate == null
+                          ? ""
+                          : todo.tododate.substring(0, 10)}
+                      </text>
                     </div>
                     <div>
                       <CalendarTodayRoundedIcon fontSize="small" />
 
-                      <text className="date">{todo.deadline == null ? "" : todo.deadline.substring(0, 10)}</text>
-                      <text className="time">{todo.deadline == null ? "" : `${todo.deadline.substring(11, 16)}`}</text>
+                      <text className="date">
+                        {todo.deadline == null
+                          ? ""
+                          : todo.deadline.substring(0, 10)}
+                      </text>
+                      <text className="time">
+                        {todo.deadline == null
+                          ? ""
+                          : `${todo.deadline.substring(11, 16)}`}
+                      </text>
                     </div>
                   </div>
                 </td>
@@ -382,13 +516,25 @@ const TaskTables = ({ name }) => {
                   <div className="deadline">
                     <div className="todo_date">
                       <AlarmIcon fontSize="small" />
-                      <text>{todo.tododate == null ? "" : todo.tododate.substring(0, 10)}</text>
+                      <text>
+                        {todo.tododate == null
+                          ? ""
+                          : todo.tododate.substring(0, 10)}
+                      </text>
                     </div>
                     <div>
                       <CalendarTodayRoundedIcon fontSize="small" />
 
-                      <text className="date">{todo.deadline == null ? "" : todo.deadline.substring(0, 10)}</text>
-                      <text className="time">{todo.deadline == null ? "" : `${todo.deadline.substring(11, 16)}`}</text>
+                      <text className="date">
+                        {todo.deadline == null
+                          ? ""
+                          : todo.deadline.substring(0, 10)}
+                      </text>
+                      <text className="time">
+                        {todo.deadline == null
+                          ? ""
+                          : `${todo.deadline.substring(11, 16)}`}
+                      </text>
                     </div>
                   </div>
                 </td>
