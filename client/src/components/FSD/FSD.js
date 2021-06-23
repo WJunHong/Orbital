@@ -51,15 +51,13 @@ const FSD = ({ name, todos }) => {
   } else {
     filterObj = JSON.parse(localStorage.getItem(`filter-${name}`));
   }
+  var sortVariable =
+    localStorage.getItem(`sort-${name}`) == null
+      ? { sort: "dateAdded", direction: "descending" }
+      : JSON.parse(localStorage.getItem(`sort-${name}`));
 
   const initialPriorities = [1, 2, 3, 4, 5];
-  const initialSort = [
-    "Alphabetical",
-    "Priority",
-    "Progress",
-    "Deadline",
-    "Todo Date",
-  ];
+  const initialSort = ["Alphabetical", "Priority", "Progress", "Deadline"];
   // Properties from the user
   const [properties, setProperties] = useState([]);
   // Things which have been selected
@@ -71,8 +69,8 @@ const FSD = ({ name, todos }) => {
   const [todoEnd, setTE] = useState(filterObj.todoDate[1]);
   const [clickedF, setClickF] = useState(false);
   const [clickedS, setClickS] = useState(false);
-  const [direction, setDirection] = useState("descending");
-  const [sortSelection, setSS] = useState("");
+  const [direction, setDirection] = useState(sortVariable.direction);
+  const [sortSelection, setSS] = useState(sortVariable.sort);
   const [selectedProperties, setSelectedProperties] = useState(
     filterObj.properties
   );
@@ -222,67 +220,80 @@ const FSD = ({ name, todos }) => {
     }
   };
 
-  const handleSort = (e, item) => {
+  const sortStyle = (e, item) => {
     e.preventDefault();
-    if (sortSelection == "") {
-      if (item == "Todo Date") {
-        document
-          .querySelector(`#sort-todoDate`)
-          .classList.toggle(`${styles.clickedSortOption}`);
-      } else {
-        document
-          .querySelector(`#sort-${item}`)
-          .classList.toggle(`${styles.clickedSortOption}`);
-      }
+    if (item != sortSelection) {
+      document
+        .querySelector(`#sort-${item}`)
+        .classList.add(`${styles.clickedSortOption}`);
+      document
+        .querySelector(`#sort-${sortSelection}`)
+        .classList.remove(`${styles.clickedSortOption}`);
     } else {
-      if (item == "Todo Date") {
-        if (item == sortSelection) {
-          document
-            .querySelector(`#sort-todoDate`)
-            .classList.toggle(`${styles.clickedSortOption}`);
-          setSS("");
-          setDirection("descending");
-          return;
+      document
+        .querySelector(`#sort-${item}`)
+        .classList.remove(`${styles.clickedSortOption}`);
+      document
+        .querySelector(`#sort-dateAdded`)
+        .classList.add(`${styles.clickedSortOption}`);
+    }
+  };
+  const handleSortProper = (str, item, com, set) => {
+    // Initialize something
+    var newSort = null;
+    // For sorting button
+    if (str == "sort") {
+      // If the item is already in the sort Selection
+      if (item == com) {
+        if (item == "dateAdded") {
+          // Do nothing
         } else {
-          document
-            .querySelector(`#sort-todoDate`)
-            .classList.toggle(`${styles.clickedSortOption}`);
-          document
-            .querySelector(`#sort-${sortSelection}`)
-            .classList.toggle(`${styles.clickedSortOption}`);
+          set("dateAdded");
         }
+        newSort = "dateAdded";
       } else {
-        if (item == sortSelection) {
-          document
-            .querySelector(`#sort-${item}`)
-            .classList.toggle(`${styles.clickedSortOption}`);
-          setSS("");
-          setDirection("descending");
-          return;
-        } else {
-          document
-            .querySelector(`#sort-${item}`)
-            .classList.toggle(`${styles.clickedSortOption}`);
-          document
-            .querySelector(`#sort-${sortSelection}`)
-            .classList.toggle(`${styles.clickedSortOption}`);
-        }
+        set(item);
+        newSort = item;
+      }
+      // For arrow button
+    } else {
+      if (item != com) {
+        set(item);
+        newSort = item;
       }
     }
-    setSS(item == "Todo Date" ? "todoDate" : item);
+    var sortInfo;
+    switch (str) {
+      case "sort":
+        sortInfo = {
+          sort: newSort,
+          direction: direction,
+        };
+        break;
+      case "direction":
+        sortInfo = {
+          sort: sortSelection,
+          direction: newSort,
+        };
+        break;
+    }
+    localStorage.setItem(`sort-${name}`, JSON.stringify(sortInfo));
   };
-
-  const handleDirection = (e) => {
-    e.preventDefault();
-    if (direction == "descending") {
-      setDirection("ascending");
+  const assignSort = () => {
+    if (localStorage.getItem(`sort-${name}`) == null) {
+      document
+        .querySelector(`#sort-dateAdded`)
+        .classList.add(`${styles.clickedSortOption}`);
     } else {
-      setDirection("descending");
+      document
+        .querySelector(`#sort-${sortSelection}`)
+        .classList.add(`${styles.clickedSortOption}`);
     }
   };
   // Called when rendered, adding or deleting a task
   useEffect(() => getProperties(), [todos]);
-  useEffect(() => console.log(sortSelection), [sortSelection]);
+  useEffect(() => assignSort(), []);
+  //useEffect(() => console.log(sortSelection), [sortSelection]);
   //Testing
   return (
     <div className={styles.buttonZs}>
@@ -462,16 +473,41 @@ const FSD = ({ name, todos }) => {
           <div className={styles.topText}>Sorting Options</div>
           <div className={styles.sortBox}>
             <ul className={styles.sortList}>
+              <li
+                key={`sort_4`}
+                className={styles.sortItems}
+                onClick={(e) => {
+                  sortStyle(e, "dateAdded");
+                  handleSortProper("sort", "dateAdded", sortSelection, setSS);
+                }}
+                id="sort-dateAdded"
+              >
+                Date Added
+              </li>
               {initialSort.map((item, index) => (
                 <li
                   key={`sort_${index}`}
                   className={styles.sortItems}
-                  onClick={(e) => handleSort(e, item)}
-                  id={item == "Todo Date" ? "sort-todoDate" : `sort-${item}`}
+                  onClick={(e) => {
+                    sortStyle(e, item);
+                    handleSortProper("sort", item, sortSelection, setSS);
+                  }}
+                  id={`sort-${item}`}
                 >
                   {item}
                 </li>
               ))}
+              <li
+                key={`sort_5`}
+                className={styles.sortItems}
+                onClick={(e) => {
+                  sortStyle(e, "todoDate");
+                  handleSortProper("sort", "todoDate", sortSelection, setSS);
+                }}
+                id="sort-todoDate"
+              >
+                Todo Date
+              </li>
             </ul>
             <div className={styles.sortArrows}>
               Sorted by{" "}
@@ -479,12 +515,28 @@ const FSD = ({ name, todos }) => {
               <div>
                 {direction == "descending" ? (
                   <ArrowDownwardRoundedIcon
-                    onClick={(e) => handleDirection(e)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSortProper(
+                        "direction",
+                        "ascending",
+                        direction,
+                        setDirection
+                      );
+                    }}
                     className={styles.arrowStyle}
                   />
                 ) : (
                   <ArrowUpwardRoundedIcon
-                    onClick={(e) => handleDirection(e)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSortProper(
+                        "direction",
+                        "descending",
+                        direction,
+                        setDirection
+                      );
+                    }}
                     className={styles.arrowStyle}
                   />
                 )}
