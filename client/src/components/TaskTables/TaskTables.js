@@ -144,17 +144,17 @@ const TaskTables = ({ name }) => {
           }
           break;
         case "todoDate":
-          if (task1.todoDate == null && task2.todoDate == null) {
+          if (task1.tododate == null && task2.tododate == null) {
             return 1;
-          } else if (task1.todoDate == null) {
+          } else if (task1.tododate == null) {
             return -1;
-          } else if (task2.todoDate == null) {
+          } else if (task2.tododate == null) {
             return 1;
           } else {
             // Earlier date before later date
             return (
-              new Date(task2.todoDate).getTime() -
-              new Date(task1.todoDate).getTime()
+              new Date(task2.tododate).getTime() -
+              new Date(task1.tododate).getTime()
             );
           }
           break;
@@ -194,17 +194,17 @@ const TaskTables = ({ name }) => {
           }
           break;
         case "todoDate":
-          if (task1.todoDate == null && task2.todoDate == null) {
+          if (task1.tododate == null && task2.tododate == null) {
             return -1;
-          } else if (task1.todoDate == null) {
+          } else if (task1.tododate == null) {
             return 1;
-          } else if (task2.todoDate == null) {
+          } else if (task2.tododate == null) {
             return -1;
           } else {
             // Earlier date before later date
             return (
-              new Date(task1.todoDate).getTime() -
-              new Date(task2.todoDate).getTime()
+              new Date(task1.tododate).getTime() -
+              new Date(task2.tododate).getTime()
             );
           }
           break;
