@@ -214,7 +214,7 @@ const FSD = ({ name, todos }) => {
       const user = app.auth().currentUser;
       const user_id = user.uid;
       // Calls the GET all properties route method
-      const response = await fetch("/filter/properties", {
+      const response = await fetch("/api/filter/properties", {
         method: "GET",
         headers: { user_id },
       });

@@ -21,13 +21,13 @@ app.get("*", (req, res) => {
 
 // Routes for user login
 
-app.use("/auth", require("./routes/jwtAuth"));
-app.use("/", require("./routes/taskpage"));
+app.use("/api/auth", require("./routes/jwtAuth"));
+app.use("/api", require("./routes/taskpage"));
 
 // Routes for todo-list
-app.use("/todos", require("./routes/taskRoutes"));
-app.use("/subtasks", require("./routes/subtaskRoutes"));
-app.use("/filter", require("./routes/filterTasks"));
+app.use("/api/todos", require("./routes/taskRoutes"));
+app.use("/api/subtasks", require("./routes/subtaskRoutes"));
+app.use("/api/filter", require("./routes/filterTasks"));
 
 app.listen(PORT, () => {
   console.log("server has started on port 5000");

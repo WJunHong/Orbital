@@ -25,7 +25,7 @@ const InputSubtasks = ({ todo }) => {
         // Create new object with task_id and description
         const body = { user_id, task_id, description };
         // Send a request to create the new subtask to server
-        const response = await fetch("/subtasks", {
+        const response = await fetch("/api/subtasks", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
