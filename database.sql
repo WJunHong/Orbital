@@ -26,11 +26,6 @@ CREATE TABLE properties(
   todo_id INTEGER
 );
 
-CREATE TABLE filters(
-  user_id VARCHAR,
-  property TEXT,
-  pageName TEXT
-);
 
 --ALTER TABLE table
 --DROP COLUMN column_name;
