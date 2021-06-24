@@ -333,7 +333,7 @@ const TaskTables = ({ name }) => {
                       <span>
                         {todo.tododate == null
                           ? "-"
-                          : todo.deadline.substring(0, 10)}
+                          : todo.tododate.substring(0, 10)}
                       </span>
                     </div>
                     <div>

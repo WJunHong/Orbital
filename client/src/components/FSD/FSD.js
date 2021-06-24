@@ -476,21 +476,6 @@ const FSD = ({ name, todos }) => {
                           )
                         }
                       />
-                      {/*<input
-                          className={styles.checkIt}
-                          name={`property-${index}`}
-                          key={index}
-                          type="checkbox"
-                          checked={isSelected}
-                          onChange={() =>
-                            handleSelect(
-                              "property",
-                              property,
-                              selectedProperties,
-                              setSelectedProperties
-                            )
-                          }
-                        / >*/}
                     </div>
                   );
                 })}
@@ -515,7 +500,10 @@ const FSD = ({ name, todos }) => {
                 }}
                 id="sort-dateAdded"
               >
-                Date Added
+                Date Added{" "}
+                {direction == "descending"
+                  ? "(Latest - Oldest)"
+                  : "(Oldest - Latest)"}
               </li>
               {initialSort.map((item, index) => (
                 <li
@@ -528,6 +516,26 @@ const FSD = ({ name, todos }) => {
                   id={`sort-${item}`}
                 >
                   {item}
+                  {item != "Alphabetical"
+                    ? ""
+                    : direction == "descending"
+                    ? " (Z-A)"
+                    : " (A-Z)"}
+                  {item != "Priority"
+                    ? ""
+                    : direction == "descending"
+                    ? " (Highest-Lowest)"
+                    : " (Lowest-Highest)"}
+                  {item != "Progress"
+                    ? ""
+                    : direction == "descending"
+                    ? " (Highest-Lowest)"
+                    : " (Lowest-Highest)"}
+                  {item != "Deadline"
+                    ? ""
+                    : direction == "descending"
+                    ? " (Furthest-Closest)"
+                    : " (Closest-Furthest)"}
                 </li>
               ))}
               <li
@@ -539,7 +547,10 @@ const FSD = ({ name, todos }) => {
                 }}
                 id="sort-todoDate"
               >
-                Todo Date
+                Todo Date{" "}
+                {direction == "descending"
+                  ? "(Furthest - Closest)"
+                  : "(Closest - Furthest)"}
               </li>
             </ul>
             <div className={styles.sortArrows}>
