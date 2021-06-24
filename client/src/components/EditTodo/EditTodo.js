@@ -22,9 +22,11 @@ const EditTodo = ({ todo }) => {
     try {
       // Sends updated description of main task to server
       const body = { description, completed };
-      const response = await fetch(`/api/todos/${todo.todo_id}`, {
+      const response = await fetch(`/todos/${todo.todo_id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(body),
       });
       // Sets description on modal header after clicking edit

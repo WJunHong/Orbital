@@ -13,7 +13,7 @@ const ListSubtasks = ({ todo }) => {
   const getSubtasks = async (id) => {
     try {
       // Calls the GET all subtasks route method
-      const response = await fetch(`/api/subtasks/${id}`);
+      const response = await fetch(`/subtasks/${id}`);
       const jsonData = await response.json();
       setSubtaskList(jsonData);
     } catch (err) {
@@ -29,7 +29,7 @@ const ListSubtasks = ({ todo }) => {
         `#edit_subtask${subtask_id}`
       ).value;
       const submitThis = { description };
-      const updateSubtask = await fetch(`/api/subtasks/${id}/${subtask_id}`, {
+      const updateSubtask = await fetch(`/subtasks/${id}/${subtask_id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(submitThis),
@@ -42,7 +42,7 @@ const ListSubtasks = ({ todo }) => {
   const deleteTodo = async (id, subtask_id) => {
     try {
       // Calls the DELETE subtask route method
-      const deleteTodo = await fetch(`/api/subtasks/${id}/${subtask_id}`, {
+      const deleteTodo = await fetch(`/subtasks/${id}/${subtask_id}`, {
         method: "DELETE",
       });
       // Update subtaskList to contain subtasks which have not been deleted

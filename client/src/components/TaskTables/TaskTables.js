@@ -25,14 +25,14 @@ const TaskTables = ({ name }) => {
       const user_id = user.uid;
       // Calls the GET all tasks route method
       if (name === "mt") {
-        const response = await fetch("/api/todos", {
+        const response = await fetch("/todos", {
           method: "GET",
           headers: { user_id },
         });
         const jsonData = await response.json();
         setTodos(jsonData);
       } else {
-        const response = await fetch("/api/filter/todos", {
+        const response = await fetch("/filter/todos", {
           method: "GET",
           headers: { user_id },
         });
@@ -47,7 +47,7 @@ const TaskTables = ({ name }) => {
   const deleteTodo = async (id) => {
     try {
       // Calls the DELETE task route method
-      const deleteTodo = await fetch(`/api/todos/${id}`, {
+      const deleteTodo = await fetch(`/todos/${id}`, {
         method: "DELETE",
       });
 
@@ -55,7 +55,7 @@ const TaskTables = ({ name }) => {
       setTodos(todos.filter((todo) => todo.todo_id !== id));
 
       // Calls the DELETE subtasks route method
-      const deleteSubtasks = await fetch(`/api/subtasks/${id}`, {
+      const deleteSubtasks = await fetch(`/subtasks/${id}`, {
         method: "DELETE",
       });
     } catch (err) {
@@ -68,7 +68,7 @@ const TaskTables = ({ name }) => {
       const description = todo.description;
       const completed = true;
       const body = { description, completed };
-      const comeplete_task = await fetch(`/api/todos/${todo.todo_id}`, {
+      const comeplete_task = await fetch(`/todos/${todo.todo_id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
