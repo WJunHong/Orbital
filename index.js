@@ -25,6 +25,9 @@ app.use("/", require("./routes/taskpage"));
 app.use("/todos", require("./routes/taskRoutes"));
 app.use("/subtasks", require("./routes/subtaskRoutes"));
 app.use("/filter", require("./routes/filterTasks"));
+app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+});
 
 
 app.listen(PORT, () => {
