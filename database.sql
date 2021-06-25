@@ -5,7 +5,7 @@ CREATE TABLE todo(
     todo_id SERIAL PRIMARY KEY, 
     description VARCHAR(255),
     deadline TIMESTAMPTZ,
-    todoDate DATE,
+    todoDate TIMESTAMPTZ,
     priority integer,
     progress integer,
     properties TEXT[],

@@ -44,7 +44,7 @@ router.get("/", async (req, res) => {
   try {
     const { user_id } = req.headers;
     const allTodos = await pool.query(
-      "SELECT user_id, todo_id, description, deadline::timestamptz + INTERVAL '8 hour' as deadline, tododate, priority, progress, properties, completed FROM todo WHERE user_id = $1 AND completed = false ORDER BY todo_id ASC",
+      "SELECT user_id, todo_id, description, deadline::timestamptz + INTERVAL '8 hour' as deadline, tododate::timestamptz + INTERVAL '8 hour' as tododate, priority, progress, properties, completed FROM todo WHERE user_id = $1 AND completed = false ORDER BY todo_id ASC",
       [user_id]
     );
     res.json(allTodos.rows);
