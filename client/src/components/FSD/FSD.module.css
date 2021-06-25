@@ -1,7 +1,7 @@
 .buttonZs {
   position: absolute;
   left: 580px;
-  width: calc(100vw - 15vw - 580px - 32px);
+  width: 400px;
   height: fit-content;
   display: flex;
   justify-content: space-between;
@@ -176,7 +176,7 @@
 .sortOptions {
   margin-top: 16px;
   color: white;
-  width: 300px;
+  width: 350px;
   height: fit-content;
   background-color: rgb(39, 39, 39);
   font-family: "Nunito", sans-serif;
@@ -186,7 +186,7 @@
 
 .sortBox {
   display: flex;
-  width: 300px;
+  width: 350px;
   justify-content: space-between;
   margin-top: 16px;
 }
@@ -204,6 +204,7 @@
 
 .sortItems {
   padding: 8px;
+  width: fit-content;
 }
 .sortItems:hover {
   background-color: #2f386b;

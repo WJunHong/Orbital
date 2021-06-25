@@ -13,23 +13,17 @@ app.use(cors());
 app.use(express.json());
 
 if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, "client/build")));
+  app.use(express.static(path.join(__dirname, "client/build")));
 }
 
-// Routes for user login
-
-app.use("/auth", require("./routes/jwtAuth"));
-app.use("/", require("./routes/taskpage"));
-
 // Routes for todo-list
+//app.use("/api", require("./routes/taskpage"));
 app.use("/todos", require("./routes/taskRoutes"));
 app.use("/subtasks", require("./routes/subtaskRoutes"));
 app.use("/filter", require("./routes/filterTasks"));
 app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });
-
-
 app.listen(PORT, () => {
-    console.log("server has started on port 5000")
-}); 
+  console.log(`server has started on port ${PORT}`);
+});

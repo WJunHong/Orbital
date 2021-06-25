@@ -19,7 +19,7 @@ import Button from "@material-ui/core/Button";
  */
 const InputToDo = () => {
   // Description of a task
-  const [description, setDescription] = useState("");
+  const [descrip, setDescrip] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [priority, setPriority] = useState(5);
   const [todoDate, setTodoDate] = useState(null);
@@ -28,7 +28,7 @@ const InputToDo = () => {
 
   const resetEverything = () => {
     toggleAdd();
-    setDescription("");
+    setDescrip("");
     setStartDate(null);
     setPriority(5);
     setTodoDate(null);
@@ -45,7 +45,8 @@ const InputToDo = () => {
   const onSubmitForm = async (e) => {
     // Prevents page from reloading on form submission
     e.preventDefault();
-    setDescription(document.getElementById("something1").textContent);
+    const description = document.getElementById("something1").textContent;
+    setDescrip(description);
     try {
       if (description === "") {
         // If task field is empty, do not submit anything
