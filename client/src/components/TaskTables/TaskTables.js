@@ -11,6 +11,8 @@ import {
   ArrowDropDownRoundedIcon,
   Tooltip,
 } from "../../design/table_icons";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import styles from "./TaskTables.module.css";
 import EditTodo from "../EditTodo";
 import FSD from "../FSD";
@@ -18,6 +20,7 @@ import FSD from "../FSD";
 const TaskTables = ({ name }) => {
   // Array of main tasks
   const [todos, setTodos] = useState([]);
+  const [startDate, setStartDate] = useState(null);
 
   const getTodos = async () => {
     try {
@@ -236,23 +239,27 @@ const TaskTables = ({ name }) => {
     }
     if (!filter.deadline.every((i) => i == null) && todo.deadline != null) {
       if (filter.deadline[0] == null) {
+        // Filter Start Deadline Empty but End Deadline non-empty
+
         filterMe =
           filterMe &&
           new Date(todo.deadline).getTime() <=
-            new Date(filter.deadline[1]).getTime();
+            new Date(filter.deadline[1]).getTime() + 86400000;
       } else {
         if (filter.deadline[1] == null) {
+          // Filter Start Deadline non-empty but End Deadline empty
           filterMe =
             filterMe &&
             new Date(todo.deadline).getTime() >=
               new Date(filter.deadline[0]).getTime();
         } else {
+          // Filter Start Deadline non-empty but End Deadline non-empty
           filterMe =
             filterMe &&
             new Date(todo.deadline).getTime() >=
               new Date(filter.deadline[0]).getTime() &&
             new Date(todo.deadline).getTime() <=
-              new Date(filter.deadline[1]).getTime();
+              new Date(filter.deadline[1]).getTime() + 86400000;
         }
       }
     } else if (
@@ -272,7 +279,7 @@ const TaskTables = ({ name }) => {
         filterMe =
           filterMe &&
           new Date(todo.tododate).getTime() <=
-            new Date(filter.todoDate[1]).getTime();
+            new Date(filter.todoDate[1]).getTime() + 86400000;
       } else {
         if (filter.todoDate[1] == null) {
           filterMe =
@@ -285,7 +292,7 @@ const TaskTables = ({ name }) => {
             new Date(todo.tododate).getTime() >=
               new Date(filter.todoDate[0]).getTime() &&
             new Date(todo.tododate).getTime() <=
-              new Date(filter.todoDate[1]).getTime();
+              new Date(filter.todoDate[1]).getTime() + 86400000;
         }
       }
     } else if (
@@ -297,6 +304,7 @@ const TaskTables = ({ name }) => {
     return filterMe;
   };
 
+  const alterDate = (date) => {};
   useEffect(() => {
     getTodos();
   }, [todos]);
@@ -330,25 +338,52 @@ const TaskTables = ({ name }) => {
                   <div className="deadline">
                     <div className="todo_date">
                       <AlarmIcon fontSize="small" />
-                      <span>
+                      <DatePicker
+                        className="todoDateText"
+                        placeholderText="-"
+                        selected={
+                          todo.tododate == null ? null : new Date(todo.tododate)
+                        }
+                        onChange={(date) => setStartDate(date)}
+                        dateFormat="yyyy-MM-dd"
+                        maxDate={new Date(todo.deadline ? todo.deadline : "")}
+                      />
+                      {/*<span>
                         {todo.tododate == null
                           ? "-"
                           : todo.tododate.substring(0, 10)}
-                      </span>
+                        </span>*/}
                     </div>
-                    <div>
+                    <div className="deadlineBox">
                       <CalendarTodayRoundedIcon fontSize="small" />
-
-                      <span className="date">
+                      <DatePicker
+                        className="deadlineDate"
+                        placeholderText="-"
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
+                        dateFormat="yyyy-MM-dd"
+                        minDate={new Date(todo.deadline)}
+                      />
+                      {/*<span className="date">
                         {todo.deadline == null
                           ? "-"
                           : todo.deadline.substring(0, 10)}
-                      </span>
-                      <span className="time">
+                        </span>*/}
+                      <DatePicker
+                        className="deadlineTime"
+                        placeholderText="-"
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        dateFormat="h:mm aa"
+                        timeCaption="Time"
+                      />
+                      {/*<span className="time">
                         {todo.deadline == null
                           ? "-"
                           : `${todo.deadline.substring(11, 16)}`}
-                      </span>
+                        </span>*/}
                     </div>
                   </div>
                 </td>

@@ -28,12 +28,16 @@ const ListSubtasks = ({ todo }) => {
       const description = document.querySelector(
         `#edit_subtask${subtask_id}`
       ).value;
-      const submitThis = { description };
-      const updateSubtask = await fetch(`/subtasks/${id}/${subtask_id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(submitThis),
-      });
+      if (description == "") {
+        // do nothing
+      } else {
+        const submitThis = { description };
+        const updateSubtask = await fetch(`/subtasks/${id}/${subtask_id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(submitThis),
+        });
+      }
     } catch (err) {
       console.error(err.message);
     }

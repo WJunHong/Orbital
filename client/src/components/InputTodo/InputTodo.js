@@ -102,6 +102,8 @@ const InputToDo = () => {
       document.querySelector(`.${styles.deadlineText}`).style.color = "white";
       document.querySelector(`.${styles.deadlineText}`).style.borderColor =
         "white";
+      document.querySelector(`.alarmIcon`).style.color = "white";
+      setTodoDate(null);
     } else {
       // Change this back to original
       const testDate = {
@@ -309,6 +311,7 @@ const InputToDo = () => {
               </div>
               <div className={styles.sideButton}>
                 <DatePicker
+                  disabled={startDate == null}
                   selected={todoDate}
                   onChange={(date) => setTodoDate(date)}
                   customInput={

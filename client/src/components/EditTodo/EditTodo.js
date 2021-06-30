@@ -20,17 +20,21 @@ const EditTodo = ({ todo }) => {
     // Prevents page from reloading
     e.preventDefault();
     try {
-      // Sends updated description of main task to server
-      const body = { description, completed };
-      const response = await fetch(`/todos/${todo.todo_id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-      // Sets description on modal header after clicking edit
-      setDescription(description);
+      if (description == "") {
+        setDescription(todo.description);
+      } else {
+        // Sends updated description of main task to server
+        const body = { description, completed };
+        const response = await fetch(`/todos/${todo.todo_id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        });
+        // Sets description on modal header after clicking edit
+        setDescription(description);
+      }
     } catch (error) {
       console.error(error.message);
     }
