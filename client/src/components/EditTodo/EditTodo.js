@@ -14,6 +14,11 @@ const EditTodo = ({ todo }) => {
   // Main task description
   const [description, setDescription] = useState(todo.description);
   const completed = todo.completed;
+  const deadline = todo.deadline;
+  const todoDate = todo.tododate;
+  const priority = todo.priority;
+  const progress = todo.progress;
+  const properties = todo.properties;
 
   // Update task description
   const updateDescription = async (e) => {
@@ -24,7 +29,15 @@ const EditTodo = ({ todo }) => {
         setDescription(todo.description);
       } else {
         // Sends updated description of main task to server
-        const body = { description, completed };
+        const body = {
+          description,
+          completed,
+          deadline,
+          todoDate,
+          priority,
+          progress,
+          properties,
+        };
         const response = await fetch(`/todos/${todo.todo_id}`, {
           method: "PUT",
           headers: {

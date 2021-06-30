@@ -70,7 +70,20 @@ const TaskTables = ({ name }) => {
     try {
       const description = todo.description;
       const completed = true;
-      const body = { description, completed };
+      const deadline = todo.deadline;
+      const todoDate = todo.tododate;
+      const priority = todo.priority;
+      const progress = todo.progress;
+      const properties = todo.properties;
+      const body = {
+        description,
+        completed,
+        deadline,
+        todoDate,
+        priority,
+        progress,
+        properties,
+      };
       const comeplete_task = await fetch(`/todos/${todo.todo_id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -218,16 +231,6 @@ const TaskTables = ({ name }) => {
     }
   };
   const properFilter = (todo) => {
-    // console.log(todo.description);
-    // console.log(todo.deadline);
-    // console.log(filter.todoDate);
-    // console.log(todo.priority);
-    // console.log(todo.tododate);
-    // console.log(todo.progress);
-    // console.log(filter);
-    // console.log(filter.properties);
-    // console.log(filter.deadline);
-
     var filterMe = true;
     if (filter.properties.length != 0) {
       filterMe =
@@ -304,7 +307,37 @@ const TaskTables = ({ name }) => {
     return filterMe;
   };
 
-  const alterDate = (date) => {};
+  const alterDate = async (
+    deadline,
+    todoDate,
+    description,
+    priority,
+    progress,
+    properties,
+    id
+  ) => {
+    try {
+      const user = app.auth().currentUser;
+      const user_id = user.uid;
+      const completed = false;
+      const body = {
+        description,
+        completed,
+        deadline,
+        todoDate,
+        priority,
+        progress,
+        properties,
+      };
+      const comeplete_task = await fetch(`/todos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
   useEffect(() => {
     getTodos();
   }, [todos]);
@@ -344,25 +377,42 @@ const TaskTables = ({ name }) => {
                         selected={
                           todo.tododate == null ? null : new Date(todo.tododate)
                         }
-                        onChange={(date) => setStartDate(date)}
+                        onChange={(date) =>
+                          alterDate(
+                            todo.deadline,
+                            date,
+                            todo.description,
+                            todo.priority,
+                            todo.progress,
+                            todo.properties,
+                            todo.todo_id
+                          )
+                        }
                         dateFormat="yyyy-MM-dd"
                         maxDate={new Date(todo.deadline ? todo.deadline : "")}
                       />
-                      {/*<span>
-                        {todo.tododate == null
-                          ? "-"
-                          : todo.tododate.substring(0, 10)}
-                        </span>*/}
                     </div>
                     <div className="deadlineBox">
                       <CalendarTodayRoundedIcon fontSize="small" />
                       <DatePicker
                         className="deadlineDate"
                         placeholderText="-"
-                        selected={startDate}
-                        onChange={(date) => setStartDate(date)}
+                        selected={
+                          todo.deadline == null ? null : new Date(todo.deadline)
+                        }
+                        onChange={(date) =>
+                          alterDate(
+                            date,
+                            null,
+                            todo.description,
+                            todo.priority,
+                            todo.progress,
+                            todo.properties,
+                            todo.todo_id
+                          )
+                        }
                         dateFormat="yyyy-MM-dd"
-                        minDate={new Date(todo.deadline)}
+                        minDate={new Date()}
                       />
                       {/*<span className="date">
                         {todo.deadline == null

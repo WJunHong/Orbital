@@ -20,7 +20,6 @@ const theme = createMuiTheme({
 const Heading = () => {
   var counter = 0;
   const user = app.auth().currentUser;
-  console.log(user);
   const displayName = user.displayName;
   const [time, setTime] = useState("Morning");
   var opac = 1;
@@ -74,7 +73,9 @@ const Heading = () => {
             <a href="#">LEARN</a>
             <a href="#">SETTINGS</a>
           </div>
-          <div className={styles.time}>{`Good ${time} ${displayName == null ? "" : ", " + displayName}`}</div>
+          <div className={styles.time}>{`Good ${time} ${
+            displayName == null ? "" : ", " + displayName
+          }`}</div>
           <div className={styles.avatarControl}>
             <Avatar
               alt="Mei Leng"

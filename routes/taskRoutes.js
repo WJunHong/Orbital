@@ -86,10 +86,27 @@ router.get("/:todo_id", async (req, res) => {
 router.put("/:todo_id", async (req, res) => {
   try {
     const { todo_id } = req.params;
-    const { description, completed } = req.body;
+    const {
+      description,
+      completed,
+      deadline,
+      todoDate,
+      priority,
+      progress,
+      properties,
+    } = req.body;
     const updateTodo = await pool.query(
-      "UPDATE todo SET description = $1, completed = $3 WHERE todo_id = $2",
-      [description, todo_id, completed]
+      "UPDATE todo SET description = $1, completed = $3, deadline = $4, todoDate = $5, priority = $6, progress = $7, properties = $8 WHERE todo_id = $2",
+      [
+        description,
+        todo_id,
+        completed,
+        deadline,
+        todoDate,
+        priority,
+        progress,
+        properties,
+      ]
     );
 
     res.json("Todo was updated!");
@@ -97,7 +114,6 @@ router.put("/:todo_id", async (req, res) => {
     console.error(error.message);
   }
 });
-
 // Delete a todo
 
 router.delete("/:todo_id", async (req, res) => {
