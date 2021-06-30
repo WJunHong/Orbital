@@ -231,6 +231,28 @@ const TaskTables = ({ name }) => {
     }
   };
   const properFilter = (todo) => {
+    const tzOffset = 28800000; // 8 hours in ms
+    const day = 86400000; // 1 day in ms
+    var filterStartDeadline =
+      filter.deadline[0] == null
+        ? null
+        : new Date(filter.deadline[0]).getTime() + tzOffset;
+    var filterEndDeadline =
+      filter.deadline[1] == null
+        ? null
+        : new Date(filter.deadline[1]).getTime() + tzOffset + day;
+    var filterStartTododate =
+      filter.deadline[0] == null
+        ? null
+        : new Date(filter.deadline[0]).getTime() + tzOffset + day;
+    var filterEndTododate =
+      filter.deadline[0] == null
+        ? null
+        : new Date(filter.deadline[1]).getTime() + tzOffset;
+    var todoDeadline =
+      todo.deadline == null ? null : new Date(todo.deadline).getTime();
+    var todoTodoDate =
+      todo.tododate == null ? null : new Date(todo.tododate).getTime();
     var filterMe = true;
     if (filter.properties.length != 0) {
       filterMe =
@@ -242,27 +264,15 @@ const TaskTables = ({ name }) => {
     }
     if (!filter.deadline.every((i) => i == null) && todo.deadline != null) {
       if (filter.deadline[0] == null) {
-        // Filter Start Deadline Empty but End Deadline non-empty
-
-        filterMe =
-          filterMe &&
-          new Date(todo.deadline).getTime() <=
-            new Date(filter.deadline[1]).getTime() + 86400000;
+        filterMe = filterMe && todoDeadline < filterEndDeadline;
       } else {
         if (filter.deadline[1] == null) {
-          // Filter Start Deadline non-empty but End Deadline empty
-          filterMe =
-            filterMe &&
-            new Date(todo.deadline).getTime() >=
-              new Date(filter.deadline[0]).getTime();
+          filterMe = filterMe && todoDeadline >= filterStartDeadline;
         } else {
-          // Filter Start Deadline non-empty but End Deadline non-empty
           filterMe =
             filterMe &&
-            new Date(todo.deadline).getTime() >=
-              new Date(filter.deadline[0]).getTime() &&
-            new Date(todo.deadline).getTime() <=
-              new Date(filter.deadline[1]).getTime() + 86400000;
+            todoDeadline >= filterStartDeadline &&
+            todoDeadline < filterEndDeadline;
         }
       }
     } else if (
@@ -279,23 +289,15 @@ const TaskTables = ({ name }) => {
     }
     if (!filter.todoDate.every((i) => i == null) && todo.tododate != null) {
       if (filter.todoDate[0] == null) {
-        filterMe =
-          filterMe &&
-          new Date(todo.tododate).getTime() <=
-            new Date(filter.todoDate[1]).getTime() + 86400000;
+        filterMe = filterMe && todoTodoDate < filterEndTododate;
       } else {
         if (filter.todoDate[1] == null) {
-          filterMe =
-            filterMe &&
-            new Date(todo.tododate).getTime() >=
-              new Date(filter.todoDate[0]).getTime();
+          filterMe = filterMe && todoTodoDate >= filterStartTododate;
         } else {
           filterMe =
             filterMe &&
-            new Date(todo.tododate).getTime() >=
-              new Date(filter.todoDate[0]).getTime() &&
-            new Date(todo.tododate).getTime() <=
-              new Date(filter.todoDate[1]).getTime() + 86400000;
+            todoTodoDate >= filterStartTododate &&
+            todoTodoDate < filterEndTododate;
         }
       }
     } else if (
