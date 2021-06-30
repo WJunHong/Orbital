@@ -98,12 +98,31 @@
   align-items: flex-start;
 }
 
-.deadline div {
+.todo_date {
   color: #9c9c9c;
   display: flex !important;
   align-items: center;
 }
-
+.todoDateText {
+  margin-left: 6px;
+  padding: 2px;
+  width: 90px;
+  text-align: center;
+  cursor: pointer;
+  background-color: transparent !important;
+  border: none;
+  outline: none;
+  color: #9c9c9c;
+}
+.todoDateText:hover {
+  background-color: #525252 !important;
+  border-radius: 2px;
+  cursor: pointer;
+  color: #e2e2e2 !important;
+}
+.todoDateText:active {
+  outline: none;
+}
 .todo_date span {
   margin-left: 6px;
   padding: 2px;
@@ -117,7 +136,11 @@
   border-radius: 2px;
   cursor: pointer;
 }
-
+.deadlineBox {
+  color: #9c9c9c;
+  display: flex !important;
+  align-items: center;
+}
 .date {
   color: #9c9c9c;
   margin-left: 6px;
@@ -125,7 +148,46 @@
   width: 72px;
   text-align: center;
 }
-
+.deadlineDate {
+  margin-left: 6px;
+  padding: 2px;
+  width: 90px;
+  text-align: center;
+  cursor: pointer;
+  background-color: transparent !important;
+  border: none;
+  outline: none;
+  color: #9c9c9c;
+}
+.deadlineDate:hover {
+  background-color: #525252 !important;
+  border-radius: 2px;
+  cursor: pointer;
+  color: #e2e2e2 !important;
+}
+.deadlineDate:active {
+  outline: none;
+}
+.deadlineTime {
+  margin-left: 6px;
+  padding: 2px;
+  width: 64px;
+  text-align: center;
+  cursor: pointer;
+  background-color: transparent !important;
+  border: none;
+  outline: none;
+  color: #9c9c9c;
+}
+.deadlineTime:hover {
+  background-color: #525252 !important;
+  border-radius: 2px;
+  cursor: pointer;
+  color: #e2e2e2 !important;
+}
+.deadlineTime:active {
+  outline: none;
+}
 .date:hover {
   color: #e2e2e2;
   background-color: #525252;
