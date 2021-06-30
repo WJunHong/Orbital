@@ -215,15 +215,14 @@ const TaskTables = ({ name }) => {
     }
   };
   const properFilter = (todo) => {
-    // console.log(todo.description);
-    // console.log(todo.deadline);
-    // console.log(filter.todoDate);
-    // console.log(todo.priority);
-    // console.log(todo.tododate);
-    // console.log(todo.progress);
-    // console.log(filter);
-    // console.log(filter.properties);
-    // console.log(filter.deadline);
+    const tzOffset = 28800000; // 8 hours in ms
+    const day = 86400000; // 1 day in ms
+    var filterStartDeadline = filter.deadline[0] == null ? null : new Date(filter.deadline[0]).getTime() + tzOffset;
+    var filterEndDeadline = filter.deadline[1] == null ? null : new Date(filter.deadline[1]).getTime() + tzOffset + day;
+    var filterStartTododate = filter.deadline[0] == null ? null : new Date(filter.deadline[0]).getTime() + tzOffset + day;
+    var filterEndTododate = filter.deadline[0] == null ? null : new Date(filter.deadline[1]).getTime() + tzOffset;
+    var todoDeadline = todo.deadline == null ? null : new Date(todo.deadline).getTime();
+    var todoTodoDate = todo.tododate == null ? null : new Date(todo.tododate).getTime();
 
     var filterMe = true;
     if (filter.properties.length != 0) {
@@ -236,62 +235,31 @@ const TaskTables = ({ name }) => {
     }
     if (!filter.deadline.every((i) => i == null) && todo.deadline != null) {
       if (filter.deadline[0] == null) {
-        filterMe =
-          filterMe &&
-          new Date(todo.deadline).getTime() <=
-            new Date(filter.deadline[1]).getTime();
+        filterMe = filterMe && todoDeadline < filterEndDeadline;
       } else {
         if (filter.deadline[1] == null) {
-          filterMe =
-            filterMe &&
-            new Date(todo.deadline).getTime() >=
-              new Date(filter.deadline[0]).getTime();
+          filterMe = filterMe && todoDeadline >= filterStartDeadline;
         } else {
-          filterMe =
-            filterMe &&
-            new Date(todo.deadline).getTime() >=
-              new Date(filter.deadline[0]).getTime() &&
-            new Date(todo.deadline).getTime() <=
-              new Date(filter.deadline[1]).getTime();
+          filterMe = filterMe && todoDeadline >= filterStartDeadline && todoDeadline < filterEndDeadline;
         }
       }
-    } else if (
-      !filter.deadline.every((i) => i == null) &&
-      todo.deadline == null
-    ) {
+    } else if (!filter.deadline.every((i) => i == null) && todo.deadline == null) {
       filterMe = false;
     }
-    if (
-      todo.progress < filter.progress[0] ||
-      todo.progress > filter.progress[1]
-    ) {
+    if (todo.progress < filter.progress[0] || todo.progress > filter.progress[1]) {
       filterMe = false;
     }
     if (!filter.todoDate.every((i) => i == null) && todo.tododate != null) {
       if (filter.todoDate[0] == null) {
-        filterMe =
-          filterMe &&
-          new Date(todo.tododate).getTime() <=
-            new Date(filter.todoDate[1]).getTime();
+        filterMe = filterMe && todoTodoDate < filterEndTododate;
       } else {
         if (filter.todoDate[1] == null) {
-          filterMe =
-            filterMe &&
-            new Date(todo.tododate).getTime() >=
-              new Date(filter.todoDate[0]).getTime();
+          filterMe = filterMe && todoTodoDate >= filterStartTododate;
         } else {
-          filterMe =
-            filterMe &&
-            new Date(todo.tododate).getTime() >=
-              new Date(filter.todoDate[0]).getTime() &&
-            new Date(todo.tododate).getTime() <=
-              new Date(filter.todoDate[1]).getTime();
+          filterMe = filterMe && todoTodoDate >= filterStartTododate && todoTodoDate < filterEndTododate;
         }
       }
-    } else if (
-      !filter.todoDate.every((i) => i == null) &&
-      todo.todoDate == null
-    ) {
+    } else if (!filter.todoDate.every((i) => i == null) && todo.todoDate == null) {
       filterMe = false;
     }
     return filterMe;
