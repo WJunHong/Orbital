@@ -25,3 +25,54 @@
   padding: 1px;
   border-radius: 5px;
 }
+.expandedCheck:hover {
+  color: white;
+  background-color: #4b4b4b;
+  border-radius: 2px;
+}
+
+.expandedDropdown:hover {
+  color: white;
+  background-color: #4b4b4b;
+  border-radius: 2px;
+}
+
+.progressInput {
+  outline: none;
+  width: 24px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  color: #9c9c9c;
+}
+.progressInput:active {
+  outline: none;
+}
+.close {
+  color: white !important;
+}
+.close:hover {
+  color: red !important;
+  transition: all 0.2s ease-in !important;
+}
+.propertyChip {
+  margin-top: 4px;
+  margin-right: 8px !important;
+  margin-bottom: 8px !important;
+  background-color: #1d1d1d !important;
+  border-color: white !important;
+  color: white !important;
+  text-align: center !important;
+}
+.inputProperty {
+  outline: none;
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+  border: none;
+  margin-right: 8px;
+  width: 120px;
+  border-bottom: 1px solid #9c9c9c;
+}
+
+.inputProperty:active {
+  outline: none;
+}

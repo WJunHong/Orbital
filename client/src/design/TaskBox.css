@@ -296,3 +296,181 @@
 .modal-body {
   border-bottom: 1px solid black;
 }
+
+.expandedTaskData {
+  height: fit-content;
+  margin-bottom: 4px;
+  width: 540px !important;
+  background-color: #242424;
+}
+.expandedTaskData1 {
+  margin-top: 8px;
+  margin-bottom: 16px;
+  width: 540px;
+  height: fit-content;
+  display: grid;
+  grid-template-columns: 32px 476px 32px;
+}
+
+.checkbox1 {
+  color: #e2e2e2;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+
+.dropdown1 {
+  color: #e2e2e2;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  transform: rotate(180deg);
+  cursor: pointer;
+}
+
+.taskDescrip1 {
+  margin-left: 8px;
+  outline: none;
+  line-break: auto;
+  cursor: text;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  color: white;
+}
+
+.taskDescrip1:active {
+  outline: none;
+}
+
+.taskDescrip1:focus {
+  border-bottom: 1px solid #9c9c9c;
+}
+
+.expandedTaskData2 {
+  display: grid;
+  width: 540px;
+  grid-template-columns: 270px 270px;
+}
+
+.priority1 {
+  color: #9c9c9c;
+  display: flex;
+  font-weight: 700;
+  align-items: center;
+}
+
+.priorityIcon1 {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.leftSide1 {
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.leftSide1 div {
+  height: 64px;
+  display: flex;
+  align-items: center;
+}
+.todo_date1 {
+  color: #9c9c9c;
+  display: flex !important;
+  align-items: center;
+  font-weight: 700;
+}
+.todoDateText1 {
+  margin-left: 6px;
+  padding: 2px;
+  width: 90px;
+  text-align: center;
+  cursor: pointer;
+  background-color: transparent !important;
+  border: none;
+  outline: none;
+  color: #9c9c9c;
+}
+.todoDateText1:active {
+  outline: none;
+}
+.todoDateText1:hover {
+  background-color: #525252 !important;
+  border-radius: 2px;
+  cursor: pointer;
+  color: #e2e2e2 !important;
+}
+.todoDateIcon1 {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.deadlineBox1 {
+  color: #9c9c9c;
+  display: flex !important;
+  align-items: center;
+  font-weight: 700;
+}
+
+.deadlineDate1 {
+  margin-left: 6px;
+  padding: 2px;
+  width: 150px;
+  text-align: center;
+  cursor: pointer;
+  background-color: transparent !important;
+  border: none;
+  outline: none;
+  color: #9c9c9c;
+}
+.deadlineDate1:hover {
+  background-color: #525252 !important;
+  border-radius: 2px;
+  cursor: pointer;
+  color: #e2e2e2 !important;
+}
+.deadlineIcon1 {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.progress_value1 {
+  display: flex;
+  flex-direction: column;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  color: #9c9c9c;
+  font-size: 14px;
+  width: 270px;
+  justify-content: space-evenly;
+}
+.progressSlider1 {
+  width: 200px !important;
+  margin-left: 20px;
+}
+
+.properties1 {
+  margin-left: 8px;
+  color: #9c9c9c;
+  font-weight: 700;
+  font-size: 14px;
+  width: 476px;
+}
+
+.expandedTaskData3 {
+  display: flex;
+  padding-bottom: 16px;
+}
+
+.deleteTask1 {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  color: rgb(117, 34, 34);
+}
+
+.deleteTask1:hover {
+  color: rgb(172, 46, 46);
+  cursor: pointer;
+}

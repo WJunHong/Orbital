@@ -7,7 +7,9 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import ArrowDropDownRoundedIcon from "@material-ui/icons/ArrowDropDownRounded";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
-
+import Slider from "@material-ui/core/Slider";
+import Chip from "@material-ui/core/Chip";
+import CloseIcon from "@material-ui/icons/Close";
 export {
   CheckBoxOutlineBlankOutlinedIcon,
   AlarmIcon,
@@ -18,4 +20,7 @@ export {
   ArrowDropDownRoundedIcon,
   Button,
   Tooltip,
+  Slider,
+  Chip,
+  CloseIcon,
 };
