@@ -123,19 +123,7 @@
 .todoDateText:active {
   outline: none;
 }
-.todo_date span {
-  margin-left: 6px;
-  padding: 2px;
-  width: 72px;
-  text-align: center;
-}
 
-.todo_date span:hover {
-  color: #e2e2e2;
-  background-color: #525252;
-  border-radius: 2px;
-  cursor: pointer;
-}
 .deadlineBox {
   color: #9c9c9c;
   display: flex !important;

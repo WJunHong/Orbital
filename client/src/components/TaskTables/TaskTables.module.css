@@ -7,3 +7,21 @@
   min-width: 400px;
   height: 24px;
 }
+
+.taskDescrip {
+  outline: none;
+  line-break: auto;
+  width: 250px;
+  margin-bottom: 4px;
+  padding: 2px;
+  cursor: pointer;
+}
+.taskDescrip:active {
+  outline: none;
+}
+
+.taskDescrip:focus {
+  border: 1px solid #9c9c9c;
+  padding: 1px;
+  border-radius: 5px;
+}
