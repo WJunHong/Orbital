@@ -17,6 +17,8 @@ import styles from "./TaskTables.module.css";
 import EditTodo from "../EditTodo";
 import FSD from "../FSD";
 
+const TZOFFSET = 28800000;
+
 const TaskTables = ({ name }) => {
   // Array of main tasks
   const [todos, setTodos] = useState([]);
@@ -359,7 +361,7 @@ const TaskTables = ({ name }) => {
         case "tododate":
           body.tododate = val;
           var todoDeadlineTime = new Date(body.deadline).getTime();
-          var todoDeadline = new Date(todoDeadlineTime - 28800000);
+          var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
           body.deadline = todoDeadline;
           break;
         case "deadline":
@@ -405,8 +407,8 @@ const TaskTables = ({ name }) => {
             .map((todo) => {
               var todoDeadlineTime = new Date(todo.deadline).getTime();
               var todoDateTime = new Date(todo.tododate).getTime();
-              var todoDeadline = new Date(todoDeadlineTime - 28800000);
-              var todoDaate = new Date(todoDateTime - 28800000);
+              var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
+              var todoDaate = new Date(todoDateTime - TZOFFSET);
               return (
                 <tr
                   key={todo.todo_id}
@@ -506,7 +508,22 @@ const TaskTables = ({ name }) => {
                   </td>
                   <td>
                     <div className="priority">
-                      <FlagRoundedIcon />
+                      <FlagRoundedIcon 
+                        style={{color: 
+                          todo.priority == 1 
+                            ? "red" 
+                            : todo.priority == 2
+                              ? "rgb(218, 109, 7)"
+                              : todo.priority == 3
+                                ? "rgb(255, 217, 0)"
+                                : todo.priority == 4
+                                  ? "rgb(27, 228, 1)"
+                                  : "white"
+                        }}
+                        onClick={() => {
+                          updateAll(todo, "priority", todo.priority % 5 + 1)
+                        }}
+                      />
                     </div>
                   </td>
                   <td>
@@ -550,8 +567,8 @@ const TaskTables = ({ name }) => {
             .map((todo) => {
               var todoDeadlineTime = new Date(todo.deadline).getTime();
               var todoDateTime = new Date(todo.tododate).getTime();
-              var todoDeadline = new Date(todoDeadlineTime - 28800000);
-              var todoDaate = new Date(todoDateTime - 28800000);
+              var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
+              var todoDaate = new Date(todoDateTime - TZOFFSET);
               return (
                 <tr
                   key={todo.todo_id}
@@ -688,8 +705,8 @@ const TaskTables = ({ name }) => {
             .map((todo) => {
               var todoDeadlineTime = new Date(todo.deadline).getTime();
               var todoDateTime = new Date(todo.tododate).getTime();
-              var todoDeadline = new Date(todoDeadlineTime - 28800000);
-              var todoDaate = new Date(todoDateTime - 28800000);
+              var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
+              var todoDaate = new Date(todoDateTime - TZOFFSET);
               return (
                 <tr
                   key={todo.todo_id}
@@ -785,7 +802,14 @@ const TaskTables = ({ name }) => {
                   </td>
                   <td>
                     <div className="priority">
-                      <FlagRoundedIcon />
+                      <FlagRoundedIcon 
+                        id={`priority${todo.todo_id}`}
+                        // style={{color: "green"}}
+                        onClick={() => {
+                          
+                          updateAll(todo, "priority", todo.priority % 5 + 1)
+                        }}
+                      />
                     </div>
                   </td>
                   <td>
