@@ -6,7 +6,7 @@ Team Name:
 BBLoh
 
 Website Link:
-https://tickaholic.herokuapp.com/
+https://tickaholic-app.herokuapp.com/
 
 Proposed Level of Achievement:
 Apollo 11
