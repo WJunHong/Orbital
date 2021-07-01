@@ -90,19 +90,19 @@ router.put("/:todo_id", async (req, res) => {
       description,
       completed,
       deadline,
-      todoDate,
+      tododate,
       priority,
       progress,
       properties,
     } = req.body;
     const updateTodo = await pool.query(
-      "UPDATE todo SET description = $1, completed = $3, deadline = $4, todoDate = $5, priority = $6, progress = $7, properties = $8 WHERE todo_id = $2",
+      "UPDATE todo SET description = $1, completed = $3, deadline = $4, tododate = $5, priority = $6, progress = $7, properties = $8 WHERE todo_id = $2",
       [
         description,
         todo_id,
         completed,
         deadline,
-        todoDate,
+        tododate,
         priority,
         progress,
         properties,

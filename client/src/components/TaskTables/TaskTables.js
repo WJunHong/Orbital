@@ -358,6 +358,9 @@ const TaskTables = ({ name }) => {
           break;
         case "tododate":
           body.tododate = val;
+          var todoDeadlineTime = new Date(body.deadline).getTime();
+          var todoDeadline = new Date(todoDeadlineTime - 28800000);
+          body.deadline = todoDeadline;
           break;
         case "deadline":
           body.tododate = null;
@@ -436,7 +439,7 @@ const TaskTables = ({ name }) => {
                               "description",
                               e.target.textContent
                             );
-                            // Problem #1 -> Cause I'm blurring it does goes back to the old description before updating
+
                             e.target.blur();
                           }
                         }
@@ -563,7 +566,35 @@ const TaskTables = ({ name }) => {
                     </div>
                   </td>
                   <td className="task_name">
-                    <div className="description">{todo.description}</div>
+                    <div
+                      className={`${styles.taskDescrip}`}
+                      contentEditable
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          if (e.target.textContent === "") {
+                            e.target.textContent = todo.description;
+                          } else if (
+                            e.target.textContent === todo.description
+                          ) {
+                            // do nothing
+                          } else {
+                            updateAll(
+                              todo,
+                              "description",
+                              e.target.textContent
+                            );
+
+                            e.target.blur();
+                          }
+                        }
+                      }}
+                      onBlur={(e) => resetDescrip(e, todo)}
+                      suppressContentEditableWarning
+                      spellCheck="false"
+                    >
+                      {todo.description}
+                    </div>
                     <div className="deadline">
                       <div className="todo_date">
                         <AlarmIcon fontSize="small" />
@@ -673,7 +704,35 @@ const TaskTables = ({ name }) => {
                     </div>
                   </td>
                   <td className="task_name">
-                    <div className="description">{todo.description}</div>
+                    <div
+                      className={`${styles.taskDescrip}`}
+                      contentEditable
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          if (e.target.textContent === "") {
+                            e.target.textContent = todo.description;
+                          } else if (
+                            e.target.textContent === todo.description
+                          ) {
+                            // do nothing
+                          } else {
+                            updateAll(
+                              todo,
+                              "description",
+                              e.target.textContent
+                            );
+
+                            e.target.blur();
+                          }
+                        }
+                      }}
+                      onBlur={(e) => resetDescrip(e, todo)}
+                      suppressContentEditableWarning
+                      spellCheck="false"
+                    >
+                      {todo.description}
+                    </div>
                     <div className="deadline">
                       <div className="todo_date">
                         <AlarmIcon fontSize="small" />
