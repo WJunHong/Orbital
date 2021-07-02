@@ -36,16 +36,23 @@
   background-color: #4b4b4b;
   border-radius: 2px;
 }
-
+.progressBox {
+  display: flex;
+  align-items: center;
+}
 .progressInput {
   outline: none;
-  width: 24px;
+  width: 36px;
   border: none;
   background-color: rgba(0, 0, 0, 0);
   color: #9c9c9c;
+  display: inline-block;
 }
 .progressInput:active {
   outline: none;
+}
+.progressInputForm {
+  display: inline-block;
 }
 .close {
   color: white !important;
@@ -71,6 +78,7 @@
   margin-right: 8px;
   width: 120px;
   border-bottom: 1px solid #9c9c9c;
+  margin-bottom: 4px;
 }
 
 .inputProperty:active {

@@ -10,6 +10,8 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Slider from "@material-ui/core/Slider";
 import Chip from "@material-ui/core/Chip";
 import CloseIcon from "@material-ui/icons/Close";
+import LockOpenRoundedIcon from "@material-ui/icons/LockOpenRounded";
+import LockRoundedIcon from "@material-ui/icons/LockRounded";
 export {
   CheckBoxOutlineBlankOutlinedIcon,
   AlarmIcon,
@@ -23,4 +25,6 @@ export {
   Slider,
   Chip,
   CloseIcon,
+  LockOpenRoundedIcon,
+  LockRoundedIcon,
 };

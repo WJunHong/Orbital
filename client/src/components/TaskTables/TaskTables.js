@@ -13,6 +13,8 @@ import {
   Slider,
   Chip,
   CloseIcon,
+  LockOpenRoundedIcon,
+  LockRoundedIcon,
 } from "../../design/table_icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -56,7 +58,30 @@ const muiTheme1 = createMuiTheme({
 const TaskTables = ({ name }) => {
   // Array of main tasks
   const [todos, setTodos] = useState([]);
+  const [progress, setProgress] = useState({});
+  const [newProperty, setNewProperty] = useState({});
+  const [properties, setProperties] = useState([]);
 
+  const getProperties = async () => {
+    try {
+      const user = app.auth().currentUser;
+      const user_id = user.uid;
+      // Calls the GET all properties route method
+      const response = await fetch("/filter/properties", {
+        method: "GET",
+        headers: { user_id },
+      });
+      const jsonData = await response.json();
+      const { unique_properties } = jsonData;
+      if (unique_properties !== null) {
+        setProperties(unique_properties);
+      } else {
+        setProperties([]);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
   const getTodos = async () => {
     try {
       const user = app.auth().currentUser;
@@ -344,44 +369,22 @@ const TaskTables = ({ name }) => {
     return filterMe;
   };
 
-  const alterDate = async (
-    deadline,
-    todoDate,
-    description,
-    priority,
-    progress,
-    properties,
-    id
-  ) => {
-    try {
-      const completed = false;
-      console.log(deadline);
-      console.log(todoDate);
-      const body = {
-        description,
-        completed,
-        deadline,
-        todoDate,
-        priority,
-        progress,
-        properties,
-      };
-      const complete_task = await fetch(`/todos/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
   //the todo object, para of the operation, val to be passed in
   const updateAll = async (todo, para, val) => {
     try {
       const body = {
         ...todo,
       };
-      console.log(val);
+      if (body.deadline != null) {
+        var deadlineTime = new Date(body.deadline).getTime();
+        var deadline = new Date(deadlineTime - 28800000);
+        body.deadline = deadline;
+      }
+      if (body.tododate != null) {
+        var todoDeadlineTime = new Date(body.tododate).getTime();
+        var todoDeadline = new Date(todoDeadlineTime - 28800000);
+        body.tododate = todoDeadline;
+      }
       switch (para) {
         case "priority":
           body.priority = val;
@@ -394,9 +397,6 @@ const TaskTables = ({ name }) => {
           break;
         case "tododate":
           body.tododate = val;
-          var todoDeadlineTime = new Date(body.deadline).getTime();
-          var todoDeadline = new Date(todoDeadlineTime - 28800000);
-          body.deadline = todoDeadline;
           break;
         case "deadline":
           body.tododate = null;
@@ -404,6 +404,17 @@ const TaskTables = ({ name }) => {
           break;
         case "description":
           body.description = val;
+          break;
+        case "properties":
+          const number = body.todo_id;
+          document.getElementById(`propertyInput${number}`).value = "";
+          if (!body.properties.includes(val)) {
+            const old = body.properties;
+            body.properties = [...old, val];
+          }
+          break;
+        case "propertyDelete":
+          body.properties = body.properties.filter((i) => i != val);
           break;
         default:
           console.log("no match!");
@@ -422,11 +433,16 @@ const TaskTables = ({ name }) => {
     e.preventDefault();
     e.target.textContent = todo.description;
   };
-  const nothing = () => {};
+  const toggleMe = (val) => {
+    document.getElementById(`taskData${val}`).classList.toggle("hidden");
+    document
+      .getElementById(`expandedTaskData${val}`)
+      .classList.toggle("hidden");
+  };
   useEffect(() => {
     getTodos();
   }, [todos]);
-
+  useEffect(() => getProperties(), [todos]);
   const MainTask = (
     <>
       <FSD name={name} todos={todos} />
@@ -443,9 +459,14 @@ const TaskTables = ({ name }) => {
               var todoDateTime = new Date(todo.tododate).getTime();
               var todoDeadline = new Date(todoDeadlineTime - 28800000);
               var todoDaate = new Date(todoDateTime - 28800000);
+              var number = todo.todo_id;
               return (
                 <>
-                  <tr key={todo.todo_id} className="taskData">
+                  <tr
+                    key={todo.todo_id}
+                    className="taskData"
+                    id={`taskData${number}`}
+                  >
                     <td>
                       <div className="checkbox">
                         <CheckBoxOutlineBlankOutlinedIcon
@@ -516,7 +537,9 @@ const TaskTables = ({ name }) => {
                           <DatePicker
                             className="deadlineTime"
                             placeholderText="-"
-                            selected={todoDeadline}
+                            selected={
+                              todo.deadline == null ? null : todoDeadline
+                            }
                             onChange={(date) =>
                               updateAll(todo, "deadline", date)
                             }
@@ -562,7 +585,9 @@ const TaskTables = ({ name }) => {
                     </td>
                     <td>
                       <div className="dropdown">
-                        <ArrowDropDownRoundedIcon />
+                        <ArrowDropDownRoundedIcon
+                          onClick={(e) => toggleMe(number)}
+                        />
                       </div>
                     </td>
                   </tr>
@@ -576,7 +601,11 @@ const TaskTables = ({ name }) => {
                   .
                   panded row*/}
 
-                  <tr key={todo.todo_id * -1} className="expandedTaskData">
+                  <tr
+                    key={todo.todo_id * -1}
+                    className="expandedTaskData hidden"
+                    id={`expandedTaskData${number}`}
+                  >
                     {/* First row */}
                     <div className="expandedTaskData1">
                       {" "}
@@ -620,6 +649,7 @@ const TaskTables = ({ name }) => {
                       <div className="dropdown1">
                         <ArrowDropDownRoundedIcon
                           className={styles.expandedDropdown}
+                          onClick={(e) => toggleMe(number)}
                         />
                       </div>
                     </div>
@@ -672,18 +702,50 @@ const TaskTables = ({ name }) => {
                       </div>
                       <div>
                         <div className="progress_value1">
-                          <div>
+                          <div className={styles.progressBox}>
                             Progress:{" "}
-                            <input
-                              value={`${todo.progress}`}
-                              className={styles.progressInput}
-                            />
+                            <form
+                              onSubmit={(e) => {
+                                e.preventDefault();
+                                if (
+                                  document.getElementById(
+                                    `progressInput_${todo.todo_id}`
+                                  ).value == ""
+                                ) {
+                                  console.log(1);
+                                } else {
+                                  updateAll(todo, "progress", progress.number);
+                                }
+                              }}
+                              className={styles.progressInputForm}
+                            >
+                              <input
+                                placeholder={todo.progress}
+                                className={styles.progressInput}
+                                id={`progressInput_${todo.todo_id}`}
+                                type="text"
+                                min={0}
+                                max={100}
+                                onChange={(e) => {
+                                  setProgress({
+                                    ...progress,
+                                    number: e.target.value,
+                                  });
+                                }}
+                              />
+                            </form>
                             %
                           </div>
                           <ThemeProvider theme={muiTheme1}>
                             <Slider
+                              onChange={(e, val) => {
+                                document.querySelector(
+                                  `#progressInput_${todo.todo_id}`
+                                ).value = "";
+                                updateAll(todo, "progress", val);
+                              }}
+                              value={todo.progress}
                               marks={marks}
-                              defaultValue={todo.progress}
                               getArialValueText={todo.progress + "%"}
                               className="progressSlider1"
                             />
@@ -695,15 +757,42 @@ const TaskTables = ({ name }) => {
                     <div className="expandedTaskData3">
                       <div className="properties1">
                         <div>Properties</div>
-                        <input
-                          placeholder="Add property"
-                          className={styles.inputProperty}
-                        />
+                        <form
+                          id={`propertyAdd${todo.todo_id}`}
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            updateAll(todo, "properties", newProperty.number);
+                          }}
+                        >
+                          <input
+                            autoComplete="off"
+                            placeholder="Add property"
+                            className={styles.inputProperty}
+                            type="text"
+                            list={`propertyList${number}`}
+                            id={`propertyInput${number}`}
+                            name={`propertyAdd${todo.todo_id}`}
+                            onChange={(e) =>
+                              setNewProperty({
+                                ...newProperty,
+                                number: e.target.value,
+                              })
+                            }
+                          />
+                          <datalist id={`propertyList${number}`}>
+                            {properties.map((ppty) => (
+                              <option value={ppty} />
+                            ))}
+                          </datalist>
+                        </form>
                         {todo.properties.map((data) => (
                           <Chip
                             label={data}
                             key={data}
-                            onDelete={(e) => console.log(e)}
+                            onDelete={(e) => {
+                              e.preventDefault();
+                              updateAll(todo, "propertyDelete", data);
+                            }}
                             size="small"
                             variant="outlined"
                             className={styles.propertyChip}
