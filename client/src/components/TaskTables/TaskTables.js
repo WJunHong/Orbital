@@ -24,6 +24,8 @@ import FSD from "../FSD";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 
+const TZOFFSET = 28800000;
+
 const marks = [
   {
     value: 0,
@@ -377,12 +379,12 @@ const TaskTables = ({ name }) => {
       };
       if (body.deadline != null) {
         var deadlineTime = new Date(body.deadline).getTime();
-        var deadline = new Date(deadlineTime - 28800000);
+        var deadline = new Date(deadlineTime - TZOFFSET);
         body.deadline = deadline;
       }
       if (body.tododate != null) {
         var todoDeadlineTime = new Date(body.tododate).getTime();
-        var todoDeadline = new Date(todoDeadlineTime - 28800000);
+        var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
         body.tododate = todoDeadline;
       }
       switch (para) {
@@ -457,9 +459,9 @@ const TaskTables = ({ name }) => {
             .map((todo) => {
               var todoDeadlineTime = new Date(todo.deadline).getTime();
               var todoDateTime = new Date(todo.tododate).getTime();
-              var todoDeadline = new Date(todoDeadlineTime - 28800000);
-              var todoDaate = new Date(todoDateTime - 28800000);
               var number = todo.todo_id;
+              var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
+              var todoDaate = new Date(todoDateTime - TZOFFSET);
               return (
                 <>
                   <tr
@@ -570,7 +572,27 @@ const TaskTables = ({ name }) => {
                     </td>
                     <td>
                       <div className="priority">
-                        <FlagRoundedIcon />
+                        <FlagRoundedIcon
+                          style={{
+                            color:
+                              todo.priority == 1
+                                ? "red"
+                                : todo.priority == 2
+                                ? "rgb(218, 109, 7)"
+                                : todo.priority == 3
+                                ? "rgb(255, 217, 0)"
+                                : todo.priority == 4
+                                ? "rgb(27, 228, 1)"
+                                : "white",
+                          }}
+                          onClick={() => {
+                            updateAll(
+                              todo,
+                              "priority",
+                              (todo.priority % 5) + 1
+                            );
+                          }}
+                        />
                       </div>
                     </td>
                     <td>
@@ -651,6 +673,7 @@ const TaskTables = ({ name }) => {
                           className={styles.expandedDropdown}
                           onClick={(e) => toggleMe(number)}
                         />
+                        <div>{`${todo.progress}%`}</div>
                       </div>
                     </div>
                     {/* second row */}
@@ -835,8 +858,8 @@ const TaskTables = ({ name }) => {
             .map((todo) => {
               var todoDeadlineTime = new Date(todo.deadline).getTime();
               var todoDateTime = new Date(todo.tododate).getTime();
-              var todoDeadline = new Date(todoDeadlineTime - 28800000);
-              var todoDaate = new Date(todoDateTime - 28800000);
+              var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
+              var todoDaate = new Date(todoDateTime - TZOFFSET);
               return (
                 <tr
                   key={todo.todo_id}
@@ -973,8 +996,8 @@ const TaskTables = ({ name }) => {
             .map((todo) => {
               var todoDeadlineTime = new Date(todo.deadline).getTime();
               var todoDateTime = new Date(todo.tododate).getTime();
-              var todoDeadline = new Date(todoDeadlineTime - 28800000);
-              var todoDaate = new Date(todoDateTime - 28800000);
+              var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
+              var todoDaate = new Date(todoDateTime - TZOFFSET);
               return (
                 <tr
                   key={todo.todo_id}
@@ -1070,7 +1093,13 @@ const TaskTables = ({ name }) => {
                   </td>
                   <td>
                     <div className="priority">
-                      <FlagRoundedIcon />
+                      <FlagRoundedIcon
+                        id={`priority${todo.todo_id}`}
+                        // style={{color: "green"}}
+                        onClick={() => {
+                          updateAll(todo, "priority", (todo.priority % 5) + 1);
+                        }}
+                      />
                     </div>
                   </td>
                   <td>
