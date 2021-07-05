@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import InputSubtasks from "../subtasks/InputSubtasks";
+import ListSubtasks from "../subtasks/ListSubtasks";
 import app from "../../base";
 
 import {
@@ -595,9 +597,11 @@ const TaskTables = ({ name }) => {
                         />
                       </div>
                     </td>
+                    {/*
                     <td>
                       <EditTodo todo={todo} />
                     </td>
+                    */}
                     <td>
                       <div className="deleteTask">
                         <DeleteRoundedIcon
@@ -719,7 +723,28 @@ const TaskTables = ({ name }) => {
                           />
                         </div>
                         <div className="priority1">
-                          <FlagRoundedIcon className="priorityIcon1" /> Priority
+                          <FlagRoundedIcon className="priorityIcon1" 
+                            style={{
+                              color:
+                                todo.priority == 1
+                                  ? "red"
+                                  : todo.priority == 2
+                                  ? "rgb(218, 109, 7)"
+                                  : todo.priority == 3
+                                  ? "rgb(255, 217, 0)"
+                                  : todo.priority == 4
+                                  ? "rgb(27, 228, 1)"
+                                  : "white",
+                            }}
+                            onClick={() => {
+                              updateAll(
+                                todo,
+                                "priority",
+                                (todo.priority % 5) + 1
+                              );
+                            }}
+                          
+                          /> Priority
                           {"  " + todo.priority}
                         </div>
                       </div>
@@ -830,6 +855,14 @@ const TaskTables = ({ name }) => {
                           />
                         </Tooltip>
                       </div>
+                    </div>
+                    {/* 4th row */}
+                    <div className="expandedTaskData4">
+                      <ListSubtasks todo={todo} />
+                    </div>
+                    {/* 5th row */}
+                    <div className="expandedTaskData5">
+                      <InputSubtasks todo={todo} />
                     </div>
                   </tr>
                 </>
@@ -955,7 +988,27 @@ const TaskTables = ({ name }) => {
                   </td>
                   <td>
                     <div className="priority">
-                      <FlagRoundedIcon />
+                      <FlagRoundedIcon
+                        style={{
+                          color:
+                            todo.priority == 1
+                              ? "red"
+                              : todo.priority == 2
+                              ? "rgb(218, 109, 7)"
+                              : todo.priority == 3
+                              ? "rgb(255, 217, 0)"
+                              : todo.priority == 4
+                              ? "rgb(27, 228, 1)"
+                              : "white",
+                        }}
+                        onClick={() => {
+                          updateAll(
+                            todo,
+                            "priority",
+                            (todo.priority % 5) + 1
+                          );
+                        }}
+                    />
                     </div>
                   </td>
                   <td>
