@@ -5,10 +5,10 @@ const pool = require("../db1");
 router.post("/", async (req, res) => {
   try {
     // Obtain the user_id and description of the task
-    const { user_id, description, startDate, todoDate, priority, properties } =
+    const { user_id, description, startDate, todoDate, priority, properties, listName } =
       req.body;
     const newTodo = await pool.query(
-      "INSERT INTO todo (user_id, description, completed, deadline,tododate,priority, properties,progress) VALUES($1, $2, $3, $4, $5,$6,$7,$8) RETURNING *",
+      "INSERT INTO todo (user_id, description, completed, deadline,tododate,priority, properties,progress, list) VALUES($1, $2, $3, $4, $5,$6,$7,$8, $9) RETURNING *",
       [
         user_id,
         description,
@@ -18,21 +18,45 @@ router.post("/", async (req, res) => {
         priority,
         properties,
         0,
+        listName
       ]
     );
 
-    /*properties.forEach(async (property) => {
-      try {
-        const updateProperties = await pool.query(
-          "INSERT INTO properties (user_id, property_name) VALUES($1, $2) RETURNING *",
-          [user_id, property]
-        );
-      } catch (err) {
-        console.error(err);
-      }
-    });*/
-
     res.json(newTodo.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// Add a list
+router.post("/lists", async (req, res) => {
+  try {
+    // Obtain the user_id and description of the task
+    const { user_id, listName } =
+      req.body;
+    const newList = await pool.query(
+      "INSERT INTO lists (user_id, list) VALUES($1, $2) RETURNING *",
+      [user_id, listName]
+    );
+
+    res.json(newList.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// Get all lists of a user
+router.get("/lists", async (req, res) => {
+  try {
+    // Obtain the user_id and description of the task
+    const { user_id } = req.headers;
+    const lists = await pool.query(
+      // "SELECT list FROM lists WHERE user_id = $1",
+      "SELECT array_agg(list) lists from lists WHERE user_id = $1",
+      [user_id]
+    );
+
+    res.json(lists.rows[0].lists);
   } catch (err) {
     console.error(err.message);
   }
@@ -53,8 +77,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:listName", async (req, res) => {
+  try {
+    const { user_id } = req.headers;
+    const { listName } = req.params;
+    const allTodos = await pool.query(
+      "SELECT user_id, todo_id, description, deadline::timestamptz + INTERVAL '8 hour' as deadline, tododate::timestamptz + INTERVAL '8 hour' as tododate, priority, progress, properties, completed FROM todo WHERE user_id = $1 AND completed = false AND list = $2 ORDER BY todo_id ASC",
+      [user_id, listName]
+    );
+    res.json(allTodos.rows);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
 // Get all completed todos
-router.get("/", async (req, res) => {
+router.get("/completed", async (req, res) => {
   try {
     const { user_id } = req.headers;
     const allTodos = await pool.query(

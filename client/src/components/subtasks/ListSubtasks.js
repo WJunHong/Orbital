@@ -1,5 +1,6 @@
 // Imports
 import React, { Fragment, useEffect, useState } from "react";
+import styles from "./Subtasks.module.css";
 
 /**
  * Component that handles listing of subtasks.
@@ -65,8 +66,8 @@ const ListSubtasks = ({ todo }) => {
 
   return (
     <Fragment>
-      {" "}
-      <table className="table mt-5 text-center">
+      <div clas></div>
+      <table className={styles.table}>
         <tbody>
           {subtaskList.map((subtask) => (
             <tr key={subtask.subtask_id}>
@@ -77,6 +78,7 @@ const ListSubtasks = ({ todo }) => {
                   }
                 >
                   <input
+                    className={styles.editSubtasks}
                     type="text"
                     id={`edit_subtask${subtask.subtask_id}`}
                     defaultValue={subtask.description}

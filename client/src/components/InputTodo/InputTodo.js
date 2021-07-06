@@ -17,7 +17,7 @@ import Button from "@material-ui/core/Button";
  * A functional component representing the input of a task
  * @returns JSX of input field and add button
  */
-const InputToDo = () => {
+const InputToDo = ({name}) => {
   // Description of a task
   const [descrip, setDescrip] = useState("");
   const [startDate, setStartDate] = useState(null);
@@ -57,6 +57,7 @@ const InputToDo = () => {
         // Fetches user_id
         const user = app.auth().currentUser;
         const user_id = user.uid;
+        const listName = name;
 
         // Sends a request to create the new task in server
         const body = {
@@ -66,6 +67,7 @@ const InputToDo = () => {
           todoDate,
           priority,
           properties,
+          listName
         };
         const response = await fetch("/todos", {
           method: "POST",
@@ -335,7 +337,7 @@ const InputToDo = () => {
             form="lmao"
             className={styles.confirmButton}
           >
-            Confirm
+            Add
           </Button>
           <Button
             type="button"

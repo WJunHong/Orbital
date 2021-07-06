@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import InputSubtasks from "../subtasks/InputSubtasks";
+import ListSubtasks from "../subtasks/ListSubtasks";
 import app from "../../base";
 
 import {
@@ -96,8 +98,15 @@ const TaskTables = ({ name }) => {
         });
         const jsonData = await response.json();
         setTodos(jsonData);
-      } else {
+      } else if (name === "Ov") {
         const response = await fetch("/filter/todos", {
+          method: "GET",
+          headers: { user_id },
+        });
+        const jsonData = await response.json();
+        setTodos(jsonData);
+      } else {
+        const response = await fetch(`/todos/${name}`, {
           method: "GET",
           headers: { user_id },
         });
@@ -450,6 +459,7 @@ const TaskTables = ({ name }) => {
     getTodos();
   }, [todos]);
   useEffect(() => getProperties(), [todos]);
+
   const MainTask = (
     <>
       <FSD name={name} todos={todos} />
@@ -610,9 +620,11 @@ const TaskTables = ({ name }) => {
                         </div>
                       </Tooltip>
                     </td>
+                    {/*
                     <td>
                       <EditTodo todo={todo} />
                     </td>
+                    */}
                     <td>
                       <div className="deleteTask">
                         <Tooltip title="Delete Task">
@@ -738,7 +750,29 @@ const TaskTables = ({ name }) => {
                           />
                         </div>
                         <div className="priority1">
-                          <FlagRoundedIcon className="priorityIcon1" /> Priority
+                          <FlagRoundedIcon
+                            className="priorityIcon1"
+                            style={{
+                              color:
+                                todo.priority == 1
+                                  ? "red"
+                                  : todo.priority == 2
+                                  ? "rgb(218, 109, 7)"
+                                  : todo.priority == 3
+                                  ? "rgb(255, 217, 0)"
+                                  : todo.priority == 4
+                                  ? "rgb(27, 228, 1)"
+                                  : "white",
+                            }}
+                            onClick={() => {
+                              updateAll(
+                                todo,
+                                "priority",
+                                (todo.priority % 5) + 1
+                              );
+                            }}
+                          />{" "}
+                          Priority
                           {"  " + todo.priority}
                         </div>
                       </div>
@@ -849,6 +883,14 @@ const TaskTables = ({ name }) => {
                           />
                         </Tooltip>
                       </div>
+                    </div>
+                    {/* 4th row */}
+                    <div className="expandedTaskData4">
+                      <ListSubtasks todo={todo} />
+                    </div>
+                    {/* 5th row */}
+                    <div className="expandedTaskData5">
+                      <InputSubtasks todo={todo} />
                     </div>
                   </tr>
                 </>
@@ -877,8 +919,8 @@ const TaskTables = ({ name }) => {
             .map((todo) => {
               var todoDeadlineTime = new Date(todo.deadline).getTime();
               var todoDateTime = new Date(todo.tododate).getTime();
+              var number = todo.todo_id;
               var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
-              const number = todo.todo_id;
               var todoDaate = new Date(todoDateTime - TZOFFSET);
               return (
                 <>
@@ -1023,9 +1065,11 @@ const TaskTables = ({ name }) => {
                         </div>
                       </Tooltip>
                     </td>
+                    {/*
                     <td>
                       <EditTodo todo={todo} />
                     </td>
+                    */}
                     <td>
                       <div className="deleteTask">
                         <Tooltip title="Delete Task">
@@ -1151,7 +1195,29 @@ const TaskTables = ({ name }) => {
                           />
                         </div>
                         <div className="priority1">
-                          <FlagRoundedIcon className="priorityIcon1" /> Priority
+                          <FlagRoundedIcon
+                            className="priorityIcon1"
+                            style={{
+                              color:
+                                todo.priority == 1
+                                  ? "red"
+                                  : todo.priority == 2
+                                  ? "rgb(218, 109, 7)"
+                                  : todo.priority == 3
+                                  ? "rgb(255, 217, 0)"
+                                  : todo.priority == 4
+                                  ? "rgb(27, 228, 1)"
+                                  : "white",
+                            }}
+                            onClick={() => {
+                              updateAll(
+                                todo,
+                                "priority",
+                                (todo.priority % 5) + 1
+                              );
+                            }}
+                          />{" "}
+                          Priority
                           {"  " + todo.priority}
                         </div>
                       </div>
@@ -1262,6 +1328,14 @@ const TaskTables = ({ name }) => {
                           />
                         </Tooltip>
                       </div>
+                    </div>
+                    {/* 4th row */}
+                    <div className="expandedTaskData4">
+                      <ListSubtasks todo={todo} />
+                    </div>
+                    {/* 5th row */}
+                    <div className="expandedTaskData5">
+                      <InputSubtasks todo={todo} />
                     </div>
                   </tr>
                 </>
@@ -1287,7 +1361,7 @@ const TaskTables = ({ name }) => {
             .map((todo) => {
               var todoDeadlineTime = new Date(todo.deadline).getTime();
               var todoDateTime = new Date(todo.tododate).getTime();
-              const number = todo.todo_id;
+              var number = todo.todo_id;
               var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
               var todoDaate = new Date(todoDateTime - TZOFFSET);
               return (
@@ -1433,9 +1507,11 @@ const TaskTables = ({ name }) => {
                         </div>
                       </Tooltip>
                     </td>
+                    {/*
                     <td>
                       <EditTodo todo={todo} />
                     </td>
+                    */}
                     <td>
                       <div className="deleteTask">
                         <Tooltip title="Delete Task">
@@ -1561,7 +1637,29 @@ const TaskTables = ({ name }) => {
                           />
                         </div>
                         <div className="priority1">
-                          <FlagRoundedIcon className="priorityIcon1" /> Priority
+                          <FlagRoundedIcon
+                            className="priorityIcon1"
+                            style={{
+                              color:
+                                todo.priority == 1
+                                  ? "red"
+                                  : todo.priority == 2
+                                  ? "rgb(218, 109, 7)"
+                                  : todo.priority == 3
+                                  ? "rgb(255, 217, 0)"
+                                  : todo.priority == 4
+                                  ? "rgb(27, 228, 1)"
+                                  : "white",
+                            }}
+                            onClick={() => {
+                              updateAll(
+                                todo,
+                                "priority",
+                                (todo.priority % 5) + 1
+                              );
+                            }}
+                          />{" "}
+                          Priority
                           {"  " + todo.priority}
                         </div>
                       </div>
@@ -1673,6 +1771,14 @@ const TaskTables = ({ name }) => {
                         </Tooltip>
                       </div>
                     </div>
+                    {/* 4th row */}
+                    <div className="expandedTaskData4">
+                      <ListSubtasks todo={todo} />
+                    </div>
+                    {/* 5th row */}
+                    <div className="expandedTaskData5">
+                      <InputSubtasks todo={todo} />
+                    </div>
                   </tr>
                 </>
               );
@@ -1681,10 +1787,10 @@ const TaskTables = ({ name }) => {
       </table>
     </>
   );
-  if (name === "mt") {
-    return MainTask;
-  } else {
+  if (name === "Ov") {
     return OverviewTasks;
+  } else {
+    return MainTask;
   }
 };
 
