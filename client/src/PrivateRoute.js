@@ -13,7 +13,7 @@ const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
         !!currentUser ? (
           <>
             <Heading />
-            <SideBar />
+            <SideBar name={rest.path} />
             <RouteComponent {...routeProps} />
           </>
         ) : (

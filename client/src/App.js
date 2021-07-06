@@ -21,6 +21,7 @@ import Login from "./components/Login/Login";
 import Register from "./components/Register";
 import Overview from "./components/Overview";
 import SideBar from "./components/SideBar";
+import Profile from "./components/Profile";
 
 /**
  * Functional Component of our main app
@@ -33,6 +34,7 @@ function App() {
         <div>
           <PrivateRoute exact path="/" component={Overview} />
           <PrivateRoute exact path="/taskpage" component={TaskPage} />
+          <PrivateRoute exact path="/profile" component={Profile} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
         </div>

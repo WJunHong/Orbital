@@ -15,6 +15,7 @@ import ArrowDownwardRoundedIcon from "@material-ui/icons/ArrowDownwardRounded";
 import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "@material-ui/core/styles";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const muiTheme = createMuiTheme({
   overrides: {
@@ -316,24 +317,28 @@ const FSD = ({ name, todos }) => {
   return (
     <div className={styles.buttonZs}>
       <div className={styles.buttonDiv}>
-        <Fab
-          style={{ backgroundColor: `${clickedF ? "red" : "#4b4b4b"}` }}
-          size="small"
-          aria-label="filter"
-          className={styles.filterButton}
-          onClick={toggleFilterOptions}
-        >
-          {clickedF ? <ClearIcon /> : <FilterListRoundedIcon />}
-        </Fab>
-        <Fab
-          style={{ backgroundColor: `${clickedS ? "red" : "#4b4b4b"}` }}
-          size="small"
-          aria-label="filter"
-          className={styles.sortButton}
-          onClick={toggleSortOptions}
-        >
-          {clickedS ? <ClearIcon /> : <SortRoundedIcon />}
-        </Fab>
+        <Tooltip title="Filter" placement="right-end">
+          <Fab
+            style={{ backgroundColor: `${clickedF ? "red" : "#4b4b4b"}` }}
+            size="small"
+            aria-label="filter"
+            className={styles.filterButton}
+            onClick={toggleFilterOptions}
+          >
+            {clickedF ? <ClearIcon /> : <FilterListRoundedIcon />}
+          </Fab>
+        </Tooltip>
+        <Tooltip title="Sort" placement="right-end">
+          <Fab
+            style={{ backgroundColor: `${clickedS ? "red" : "#4b4b4b"}` }}
+            size="small"
+            aria-label="filter"
+            className={styles.sortButton}
+            onClick={toggleSortOptions}
+          >
+            {clickedS ? <ClearIcon /> : <SortRoundedIcon />}
+          </Fab>
+        </Tooltip>
       </div>
       <div className={styles.sideHandler}>
         <div className={`${styles.filterOptions} hidden`}>

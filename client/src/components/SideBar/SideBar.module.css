@@ -3,7 +3,7 @@
   position: fixed;
   height: 100vh;
   /* Change this*/
-  width: max(140px, 15vw);
+  width: max(150px, 15vw);
   z-index: 2;
   top: 64px;
 }
@@ -18,12 +18,12 @@
 }
 .sideBar ul li {
   margin-left: 16px;
-  width: max(108px, calc(15vw - 32px));
+  width: max(112px, calc(15vw - 32px));
 }
 .sideBar ul a {
   display: flex;
   /* Change this*/
-  width: max(108px, calc(15vw - 32px));
+  width: max(112px, calc(15vw - 32px));
   height: 40px;
   align-items: center;
   color: #808080;

@@ -5,7 +5,7 @@
   min-width: 661px;
   display: grid;
   position: fixed;
-  grid-template-columns: 300px 6fr 150px 100px;
+  grid-template-columns: 300px 6fr 10vw 100px;
   z-index: 2;
   top: 0%;
 }
@@ -59,6 +59,9 @@
   text-align: center;
   line-height: 64px;
   font-family: "Nunito", sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .avatarControl {
   display: flex;
@@ -75,6 +78,9 @@
 .logout {
   color: #efeff1;
   padding-right: 120px;
+}
+.profSettings {
+  color: #efeff1;
 }
 
 .profileDropdown {

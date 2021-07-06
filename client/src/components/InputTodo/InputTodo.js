@@ -102,10 +102,15 @@ const InputToDo = () => {
       document.querySelector(`.${styles.deadlineText}`).style.color = "white";
       document.querySelector(`.${styles.deadlineText}`).style.borderColor =
         "white";
-      document.querySelector(`.alarmIcon`).style.color = "white";
-      setTodoDate(null);
     } else {
-      // Change this back to original
+      // If todoDate is now after the deadline, set the todoDate to null
+      if (
+        startDate.getFullYear() <= todoDate.getFullYear() &&
+        startDate.getMonth() <= todoDate.getMonth() &&
+        startDate.getDate() <= todoDate.getDate()
+      ) {
+        setTodoDate(null);
+      }
       const testDate = {
         year: new Date().getFullYear(),
         month: new Date().getMonth(),
@@ -311,7 +316,6 @@ const InputToDo = () => {
               </div>
               <div className={styles.sideButton}>
                 <DatePicker
-                  disabled={startDate == null}
                   selected={todoDate}
                   onChange={(date) => setTodoDate(date)}
                   customInput={
@@ -319,7 +323,7 @@ const InputToDo = () => {
                       <AlarmIcon className="alarmIcon" />
                     </div>
                   }
-                  maxDate={startDate}
+                  maxDate={startDate == null ? null : startDate}
                   minDate={new Date()}
                 />
               </div>
@@ -343,21 +347,6 @@ const InputToDo = () => {
             Cancel
           </Button>
         </form>
-        {/* Old stuff 
-        <form
-          className={`${styles.addTaskMenu} d-flex`}
-          onSubmit={onSubmitForm}
-        >
-          <input
-            type="text"
-            className="form-control add_task"
-            placeholder="Input task"
-            onChange={(e) => setDescription(e.target.value)}
-            autoComplete="off"
-          />
-
-          <button className="btn btn-success add_button"> Add</button>
-        </form>*/}
       </div>
     </Fragment>
   );

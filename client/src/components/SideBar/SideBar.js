@@ -1,5 +1,5 @@
 // Imports
-import React, { Fragment } from "react";
+import React, { useEffect } from "react";
 
 import EventNoteIcon from "@material-ui/icons/EventNote";
 import ExploreIcon from "@material-ui/icons/Explore";
@@ -11,12 +11,22 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
  * A functional component representing a side bar
  * @returns JSX of a sidebar component
  */
-function SideBar() {
+function SideBar({ name }) {
+  function highlight() {
+    if (name == "/") {
+      document.querySelector(".overviewPage").style.backgroundColor = "#273469";
+      document.querySelector(".overviewPage").style.color = "white";
+    } else if (name == "/taskpage") {
+      document.querySelector(".taskPage").style.backgroundColor = "#273469";
+      document.querySelector(".taskPage").style.color = "white";
+    }
+  }
+  useEffect(() => highlight(), []);
   return (
     <div className={styles.sideBar}>
       <ul>
         <li className={styles.overview}>
-          <a href="/">
+          <a href="/" className="overviewPage">
             <ExploreIcon className={styles.overviewIcon} />
             <div>Overview</div>
           </a>
@@ -28,9 +38,9 @@ function SideBar() {
           </a>
         </li>
         <li className={styles.mainTask}>
-          <a href="/taskpage">
+          <a href="/taskpage" className="taskPage">
             <AllInboxIcon className={styles.maintaskIcon} />
-            <div>Main Task</div>
+            <div>Main Tasks</div>
           </a>
         </li>
       </ul>

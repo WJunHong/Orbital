@@ -69,8 +69,7 @@ const Login = ({ history }) => {
       setPL("Password");
       textError.style.display = "inline";
       if (errorMsg === "auth/too-many-requests") {
-        textError.innerHTML =
-          "Too many failed login attempts. Please try again later.";
+        textError.innerHTML = "Excessive login attempts. Try again later.";
       } else if (errorMsg === "auth/wrong-password") {
         textError.innerHTML = "Invalid email or password";
       } else if (errorMsg === "auth/user-not-found") {
