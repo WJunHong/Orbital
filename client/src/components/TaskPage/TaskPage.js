@@ -10,18 +10,31 @@ import TabName from "../TabName";
 import TabBody from "../TabBody";
 import TaskTables from "../TaskTables";
 
-// List have 4 definite properties, up to 8 custom properties
-const TaskPage = () => {
-  return (
-    <Background>
-      <TabName name={"Main Tasks"} />
-      <TabBody>
-        <TaskTables name={"mt"} />
-        <InputTodo />
-      </TabBody>
-      <div className={styles.bottom}></div>
-    </Background>
-  );
+const TaskPage = ({match}) => {
+  if (match.path == "/lists/:listName") {
+    const { params: { listName } } = match;
+    return (
+      <Background>
+        <TabName name={listName} />
+        <TabBody>
+          <TaskTables name={listName} />
+          <InputTodo name={listName} />
+        </TabBody>
+        <div className={styles.bottom}></div>
+      </Background>
+    );
+  } else {
+    return (
+      <Background>
+        <TabName name={"Main Tasks"} />
+        <TabBody>
+          <TaskTables name={"mt"} />
+          <InputTodo />
+        </TabBody>
+        <div className={styles.bottom}></div>
+      </Background>
+    );
+  }
 };
 
 export default TaskPage;

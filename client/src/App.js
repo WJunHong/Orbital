@@ -27,12 +27,14 @@ import SideBar from "./components/SideBar";
  * @returns JSX for our main app
  */
 function App() {
+
   return (
     <AuthProvider>
       <Router>
         <div>
           <PrivateRoute exact path="/" component={Overview} />
           <PrivateRoute exact path="/taskpage" component={TaskPage} />
+          <PrivateRoute exact path="/lists/:listName" component={TaskPage} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
         </div>

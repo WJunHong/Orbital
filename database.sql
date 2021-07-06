@@ -9,7 +9,8 @@ CREATE TABLE todo(
     priority integer,
     progress integer,
     properties TEXT[],
-    completed boolean
+    completed boolean,
+    list VARCHAR
 );
 
 CREATE TABLE subtasks(
@@ -20,12 +21,10 @@ CREATE TABLE subtasks(
     completed boolean
 );
 
-CREATE TABLE properties(
-  user_id VARCHAR,
-  property_name VARCHAR(255),
-  todo_id INTEGER
+CREATE TABLE lists(
+    user_id VARCHAR NOT NULL,
+    list VARCHAR UNIQUE
 );
-
 
 --ALTER TABLE table
 --DROP COLUMN column_name;

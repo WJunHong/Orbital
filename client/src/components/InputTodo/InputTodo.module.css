@@ -25,11 +25,11 @@
 }
 
 .addTaskButton:hover {
-  background-color: rgb(245, 158, 46) !important;
+background-color: rgb(245, 158, 46) !important;
 }
 
 .addTaskButton:focus {
-  outline: none;
+outline: none;
 }
 
 /* Add Task Box*/

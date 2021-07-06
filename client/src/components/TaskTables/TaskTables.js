@@ -98,8 +98,15 @@ const TaskTables = ({ name }) => {
         });
         const jsonData = await response.json();
         setTodos(jsonData);
-      } else {
+      } else if (name === "Ov") {
         const response = await fetch("/filter/todos", {
+          method: "GET",
+          headers: { user_id },
+        });
+        const jsonData = await response.json();
+        setTodos(jsonData);
+      } else {
+        const response = await fetch(`/todos/${name}`, {
           method: "GET",
           headers: { user_id },
         });
@@ -447,6 +454,7 @@ const TaskTables = ({ name }) => {
     getTodos();
   }, [todos]);
   useEffect(() => getProperties(), [todos]);
+
   const MainTask = (
     <>
       <FSD name={name} todos={todos} />
@@ -1177,10 +1185,10 @@ const TaskTables = ({ name }) => {
       </table>
     </>
   );
-  if (name === "mt") {
-    return MainTask;
-  } else {
+  if (name === "Ov") {
     return OverviewTasks;
+  } else {
+    return MainTask;
   }
 };
 
