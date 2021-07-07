@@ -3,7 +3,7 @@
   position: fixed;
   height: 100vh;
   /* Change this*/
-  width: max(140px, 15vw);
+  width: max(150px, 15vw);
   z-index: 2;
   top: 64px;
 }
@@ -18,12 +18,12 @@
 }
 .sideBar ul li {
   margin-left: 16px;
-  width: max(108px, calc(15vw - 32px));
+  width: max(112px, calc(15vw - 32px));
 }
 .sideBar ul a {
   display: flex;
   /* Change this*/
-  width: max(108px, calc(15vw - 32px));
+  width: max(112px, calc(15vw - 32px));
   height: 40px;
   align-items: center;
   color: #808080;
@@ -108,15 +108,16 @@
   margin-top: 8px !important;
   margin-right: 8px !important;
   color: white !important;
-  background-color: rgb(0, 100, 0) !important;
+  background-color: #bda5fc !important;
   font-family: "Nunito", sans-serif !important;
   font-size: 14px !important;
   margin-bottom: 16px !important;
   outline: none !important;
+  font-weight: 700 !important;
 }
 
 .confirmButton:hover {
-  background-color: rgb(0, 128, 0) !important;
+  background-color: #865df0 !important;
   transition: all 0.2s ease-in !important;
   font-weight: bold !important;
 }
@@ -131,8 +132,16 @@
 }
 
 .addListName {
-  padding-left: 30px;
+  padding: 8px;
   align-items: center;
   width: 150px;
   color: white;
+  outline: none;
+
+  border: 1px solid rgb(133, 133, 133);
+}
+.addListName:active {
+  outline: none;
+}
+.addListName:focus {
 }

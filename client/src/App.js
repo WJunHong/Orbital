@@ -19,19 +19,20 @@ import TaskPage from "./components/TaskPage";
 import Login from "./components/Login/Login";
 import Register from "./components/Register";
 import Overview from "./components/Overview";
+import Profile from "./components/Profile";
 
 /**
  * Functional Component of our main app
  * @returns JSX for our main app
  */
 function App() {
-
   return (
     <AuthProvider>
       <Router>
         <div>
           <PrivateRoute exact path="/" component={Overview} />
           <PrivateRoute exact path="/taskpage" component={TaskPage} />
+          <PrivateRoute exact path="/profile" component={Profile} />
           <PrivateRoute exact path="/lists/:listName" component={TaskPage} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />

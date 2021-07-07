@@ -17,7 +17,7 @@ import Button from "@material-ui/core/Button";
  * A functional component representing the input of a task
  * @returns JSX of input field and add button
  */
-const InputToDo = ({name}) => {
+const InputToDo = ({ name }) => {
   // Description of a task
   const [descrip, setDescrip] = useState("");
   const [startDate, setStartDate] = useState(null);
@@ -67,7 +67,7 @@ const InputToDo = ({name}) => {
           todoDate,
           priority,
           properties,
-          listName
+          listName,
         };
         const response = await fetch("/todos", {
           method: "POST",
@@ -104,10 +104,16 @@ const InputToDo = ({name}) => {
       document.querySelector(`.${styles.deadlineText}`).style.color = "white";
       document.querySelector(`.${styles.deadlineText}`).style.borderColor =
         "white";
-      document.querySelector(`.alarmIcon`).style.color = "white";
-      setTodoDate(null);
     } else {
-      // Change this back to original
+      // If todoDate is now after the deadline, set the todoDate to null
+      if (
+        todoDate == null ||
+        (startDate.getFullYear() <= todoDate.getFullYear() &&
+          startDate.getMonth() <= todoDate.getMonth() &&
+          startDate.getDate() <= todoDate.getDate())
+      ) {
+        setTodoDate(null);
+      }
       const testDate = {
         year: new Date().getFullYear(),
         month: new Date().getMonth(),
@@ -313,7 +319,6 @@ const InputToDo = ({name}) => {
               </div>
               <div className={styles.sideButton}>
                 <DatePicker
-                  disabled={startDate == null}
                   selected={todoDate}
                   onChange={(date) => setTodoDate(date)}
                   customInput={
@@ -321,7 +326,7 @@ const InputToDo = ({name}) => {
                       <AlarmIcon className="alarmIcon" />
                     </div>
                   }
-                  maxDate={startDate}
+                  maxDate={startDate == null ? null : startDate}
                   minDate={new Date()}
                 />
               </div>
@@ -345,21 +350,6 @@ const InputToDo = ({name}) => {
             Cancel
           </Button>
         </form>
-        {/* Old stuff 
-        <form
-          className={`${styles.addTaskMenu} d-flex`}
-          onSubmit={onSubmitForm}
-        >
-          <input
-            type="text"
-            className="form-control add_task"
-            placeholder="Input task"
-            onChange={(e) => setDescription(e.target.value)}
-            autoComplete="off"
-          />
-
-          <button className="btn btn-success add_button"> Add</button>
-        </form>*/}
       </div>
     </Fragment>
   );

@@ -43,31 +43,11 @@ const Heading = () => {
   useEffect(() => {
     currentTime();
   }, []);
-
-  const logout = async (e) => {
-    e.preventDefault();
-    try {
-      localStorage.removeItem("token");
-      localStorage.removeItem("auth");
-      //toast.success("Logout successfully");
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-  {
-    /*<a
-    href="/login"
-    onClick={(e) => logout(e)}
-    className={styles.logout}
-  >
-    Logout
-    </a>*/
-  }
   return (
     <>
       <ThemeProvider theme={theme}>
         <nav className={styles.heading}>
-          <a href="#" className={styles.logo}></a>
+          <a href="/" className={styles.logo}></a>
           <div className={styles.navigation}>
             <a href="#">HOME</a>
             <a href="#">LEARN</a>
@@ -92,15 +72,15 @@ const Heading = () => {
           <ul>
             <li className={styles.tabProfile}>
               <Avatar alt="Mei Leng" src={profile} />
-              <div className={styles.tabName}>User</div>
+              <div className={styles.tabName}>{displayName}</div>
             </li>
             <li>
-              <a href="/" className={styles.logout}>
+              <a href="/profile" className={styles.profSettings}>
                 <FaceRoundedIcon
                   fontSize="small"
                   className={styles.profileIcon}
                 />
-                <span className={styles.profileTab}>View Profile</span>
+                <span className={styles.profileTab}>Profile Settings</span>
               </a>
             </li>
             <li>

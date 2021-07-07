@@ -4,15 +4,16 @@ import "../../design/TaskBox.css";
 import styles from "./TaskPage.module.css";
 // Components
 import InputTodo from "../InputTodo/InputTodo";
-import ListTodo from "../ListTodo";
 import Background from "../Background";
 import TabName from "../TabName";
 import TabBody from "../TabBody";
 import TaskTables from "../TaskTables";
 
-const TaskPage = ({match}) => {
+const TaskPage = ({ match }) => {
   if (match.path == "/lists/:listName") {
-    const { params: { listName } } = match;
+    const {
+      params: { listName },
+    } = match;
     return (
       <Background>
         <TabName name={listName} />

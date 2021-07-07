@@ -89,6 +89,7 @@
   color: #e2e2e2;
   background-color: #525252;
   border-radius: 2px;
+  cursor: pointer;
 }
 
 .deadline {
@@ -216,7 +217,6 @@
   background-color: #525252;
   border-radius: 2px;
   transition: background-color 0.3s linear;
-  cursor: pointer;
 }
 .priority {
   color: #9c9c9c;

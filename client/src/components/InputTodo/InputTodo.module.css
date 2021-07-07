@@ -17,6 +17,8 @@
   background-color: #f2aa4cff !important;
   outline: none;
   margin-right: 16px !important;
+  position: relative;
+  top: 0px;
 }
 
 .addButtonPlus {
@@ -25,11 +27,13 @@
 }
 
 .addTaskButton:hover {
-background-color: rgb(245, 158, 46) !important;
+  background-color: rgb(245, 158, 46) !important;
+  top: -2px;
+  transition: top linear 0.2s;
 }
 
 .addTaskButton:focus {
-outline: none;
+  outline: none;
 }
 
 /* Add Task Box*/

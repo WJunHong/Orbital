@@ -14,7 +14,17 @@ import Button from "@material-ui/core/Button";
  * A functional component representing a side bar
  * @returns JSX of a sidebar component
  */
-function SideBar() {
+function SideBar({ name }) {
+  function highlight() {
+    if (name == "/") {
+      document.querySelector(".overviewPage").style.backgroundColor = "#273469";
+      document.querySelector(".overviewPage").style.color = "white";
+    } else if (name == "/taskpage") {
+      document.querySelector(".taskPage").style.backgroundColor = "#273469";
+      document.querySelector(".taskPage").style.color = "white";
+    }
+  }
+  useEffect(() => highlight(), []);
   const arr = ["CS2100", "CS2040S", "CS2030S"];
   const [allLists, setAllLists] = useState([]);
 
@@ -28,6 +38,10 @@ function SideBar() {
 
   const toggleAddList = () => {
     document.querySelector("#addList1").classList.toggle("hidden");
+
+    document
+      .querySelector("#addList123")
+      .setAttribute("data-placeholder", "Untitled List");
   };
   const addList = async (e) => {
     // Prevents page from reloading on form submission
@@ -95,7 +109,7 @@ function SideBar() {
     <div className={styles.sideBar}>
       <ul>
         <li className={styles.overview}>
-          <a href="/">
+          <a href="/" className="overviewPage">
             <ExploreIcon className={styles.overviewIcon} />
             <div>Overview</div>
           </a>
@@ -107,9 +121,9 @@ function SideBar() {
           </a>
         </li>
         <li className={styles.mainTask}>
-          <a href="/taskpage">
+          <a href="/taskpage" className="taskPage">
             <AllInboxIcon className={styles.maintaskIcon} />
-            <div>Main Task</div>
+            <div>Main Tasks</div>
           </a>
         </li>
         {allLists.map((list) => {
@@ -141,6 +155,11 @@ function SideBar() {
             className={styles.addListName}
             contentEditable
             data-placeholder="Untitled List"
+            onFocus={() =>
+              document
+                .querySelector("#addList123")
+                .setAttribute("data-placeholder", "Untitled List")
+            }
           ></div>
           <Button
             variant="contained"

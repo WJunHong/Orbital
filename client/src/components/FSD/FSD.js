@@ -17,6 +17,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "@material-ui/core/styles";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import styles from "./FSD.module.css";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const muiTheme = createMuiTheme({
   overrides: {
@@ -174,23 +175,23 @@ const FSD = ({ name, todos }) => {
       // Calls the DELETE task route method
       const deleteTodos = await fetch(`/todos/${name}/todos`, {
         method: "DELETE",
-        headers: { user_id }
+        headers: { user_id },
       });
 
       // Calls the DELETE subtasks route method
       const deleteSubtasks = await fetch(`/todos/${name}/subtasks/`, {
         method: "DELETE",
-        headers: { user_id }
+        headers: { user_id },
       });
 
       const deleteList = await fetch(`/todos/${name}/`, {
         method: "DELETE",
-        headers: { user_id }
+        headers: { user_id },
       });
     } catch (err) {
       console.error(err.message);
     }
-    window.location="/taskpage"
+    window.location = "/taskpage";
   };
 
   const handleSelect = (str, property, arr, set) => {
@@ -353,51 +354,58 @@ const FSD = ({ name, todos }) => {
   return (
     <div className={styles.buttonZs}>
       <div className={styles.buttonDiv}>
-        <Fab
-          style={{ backgroundColor: `${clickedF ? "red" : "#4b4b4b"}` }}
-          size="small"
-          aria-label="filter"
-          className={styles.filterButton}
-          onClick={toggleFilterOptions}
-        >
-          {clickedF ? <ClearIcon /> : <FilterListRoundedIcon />}
-        </Fab>
-        <Fab
-          style={{ backgroundColor: `${clickedS ? "red" : "#4b4b4b"}` }}
-          size="small"
-          aria-label="filter"
-          className={styles.sortButton}
-          onClick={toggleSortOptions}
-        >
-          {clickedS ? <ClearIcon /> : <SortRoundedIcon />}
-        </Fab>
-        {(name !== "mt") ?
+        <Tooltip title="Filter" placement="right-end">
+          <Fab
+            style={{ backgroundColor: `${clickedF ? "red" : "#4b4b4b"}` }}
+            size="small"
+            aria-label="filter"
+            className={styles.filterButton}
+            onClick={toggleFilterOptions}
+          >
+            {clickedF ? <ClearIcon /> : <FilterListRoundedIcon />}
+          </Fab>
+        </Tooltip>
+        <Tooltip title="Sort" placement="right-end">
+          <Fab
+            style={{ backgroundColor: `${clickedS ? "red" : "#4b4b4b"}` }}
+            size="small"
+            aria-label="sort"
+            className={styles.sortButton}
+            onClick={toggleSortOptions}
+          >
+            {clickedS ? <ClearIcon /> : <SortRoundedIcon />}
+          </Fab>
+        </Tooltip>
+        {name !== "mt" ? (
           <Fragment>
-            <Fab
-              style={{ backgroundColor: "#4b4b4b" }}
-              size="small"
-              aria-label="delete"
-              className={styles.deleteButton}
-              onClick={() => {
-                setConfirmDialog({
-                  isOpen: true,
-                  title: "Are you sure to delete this list?",
-                  subTitle: "You can't undo this operation",
-                  onConfirm: () => {
-                    deleteList();
-                  },
-                });
-              }}
-            >
-              <DeleteForeverRoundedIcon />
-            </Fab>
-            <ConfirmDialog
-              confirmDialog={confirmDialog}
-              setConfirmDialog={setConfirmDialog}
-            />
-          </Fragment> 
-          : <Fragment></Fragment>
-        }
+            <Tooltip title="Delete list" placement="right-end">
+              <Fab
+                style={{ backgroundColor: "#4b4b4b" }}
+                size="small"
+                aria-label="delete"
+                className={styles.deleteButton}
+                onClick={() => {
+                  setConfirmDialog({
+                    isOpen: true,
+                    title: "Are you sure to delete this list?",
+                    subTitle: "You can't undo this operation",
+                    onConfirm: () => {
+                      deleteList();
+                    },
+                  });
+                }}
+              >
+                <DeleteForeverRoundedIcon />
+              </Fab>
+            </Tooltip>
+              <ConfirmDialog
+                confirmDialog={confirmDialog}
+                setConfirmDialog={setConfirmDialog}
+              />
+          </Fragment>
+        ) : (
+          <Fragment></Fragment>
+        )}
       </div>
       <div className={styles.sideHandler}>
         <div className={`${styles.filterOptions} hidden`}>
