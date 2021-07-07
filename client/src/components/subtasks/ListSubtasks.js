@@ -1,6 +1,7 @@
 // Imports
 import React, { Fragment, useEffect, useState } from "react";
 import styles from "./Subtasks.module.css";
+import {DeleteRoundedIcon, Tooltip} from "../../design/table_icons";
 
 /**
  * Component that handles listing of subtasks.
@@ -44,7 +45,7 @@ const ListSubtasks = ({ todo }) => {
     }
   };
 
-  const deleteTodo = async (id, subtask_id) => {
+  const deleteSubtask = async (id, subtask_id) => {
     try {
       // Calls the DELETE subtask route method
       const deleteTodo = await fetch(`/subtasks/${id}/${subtask_id}`, {
@@ -68,6 +69,7 @@ const ListSubtasks = ({ todo }) => {
     <Fragment>
       <div clas></div>
       <table className={styles.table}>
+        <thead className={styles.subtasksHeader}>Subtasks</thead>
         <tbody>
           {subtaskList.map((subtask) => (
             <tr key={subtask.subtask_id}>
@@ -91,12 +93,12 @@ const ListSubtasks = ({ todo }) => {
                 </form>
               </td>
               <td>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => deleteTodo(todo.todo_id, subtask.subtask_id)}
-                >
-                  Delete
-                </button>
+                <Tooltip title="Delete Subtask">
+                  <DeleteRoundedIcon
+                    className={styles.deleteSubtask}
+                    onClick={() => deleteSubtask(todo.todo_id, subtask.subtask_id)}
+                  />
+                </Tooltip>
               </td>
             </tr>
           ))}

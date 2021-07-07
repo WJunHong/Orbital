@@ -26,6 +26,7 @@
 }
 .sortButton {
   background-color: #4b4b4b;
+  margin-bottom: 16px !important;
   color: white !important;
   outline: none !important;
 }
@@ -36,6 +37,19 @@
   outline: none !important;
 }
 
+.deleteButton {
+  background-color: #4b4b4b;
+  margin-bottom: 16px !important;
+  outline: none !important;
+  color: white !important;
+}
+
+.deleteButton:hover {
+  background-color: #4a1a57 !important;
+}
+.deleteButton:active {
+  outline: none !important;
+}
 .filterOptions {
   color: white;
   width: 300px;
@@ -259,3 +273,4 @@
 .clearSortButton:hover {
   cursor: pointer;
 }
+

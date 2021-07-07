@@ -685,7 +685,6 @@ const TaskTables = ({ name }) => {
                           className={styles.expandedDropdown}
                           onClick={(e) => toggleMe(number)}
                         />
-                        <div>{`${todo.progress}%`}</div>
                       </div>
                     </div>
                     {/* second row */}
@@ -856,13 +855,6 @@ const TaskTables = ({ name }) => {
                           />
                         ))}
                       </div>
-                      <div className="deleteTask1">
-                        <Tooltip title="Delete Task">
-                          <DeleteRoundedIcon
-                            onClick={() => deleteTodo(todo.todo_id)}
-                          />
-                        </Tooltip>
-                      </div>
                     </div>
                     {/* 4th row */}
                     <div className="expandedTaskData4">
@@ -871,6 +863,13 @@ const TaskTables = ({ name }) => {
                     {/* 5th row */}
                     <div className="expandedTaskData5">
                       <InputSubtasks todo={todo} />
+                    </div>
+                    <div className="deleteTask1">
+                      <Tooltip title="Delete Task">
+                        <DeleteRoundedIcon
+                          onClick={() => deleteTodo(todo.todo_id)}
+                        />
+                      </Tooltip>
                     </div>
                   </tr>
                 </>

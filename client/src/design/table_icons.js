@@ -12,6 +12,7 @@ import Chip from "@material-ui/core/Chip";
 import CloseIcon from "@material-ui/icons/Close";
 import LockOpenRoundedIcon from "@material-ui/icons/LockOpenRounded";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
+import TextField from "@material-ui/core/TextField";
 export {
   CheckBoxOutlineBlankOutlinedIcon,
   AlarmIcon,
@@ -27,4 +28,5 @@ export {
   CloseIcon,
   LockOpenRoundedIcon,
   LockRoundedIcon,
+  TextField
 };
