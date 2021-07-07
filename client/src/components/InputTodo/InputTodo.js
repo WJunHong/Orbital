@@ -17,7 +17,7 @@ import Button from "@material-ui/core/Button";
  * A functional component representing the input of a task
  * @returns JSX of input field and add button
  */
-const InputToDo = ({name}) => {
+const InputToDo = ({ name }) => {
   // Description of a task
   const [descrip, setDescrip] = useState("");
   const [startDate, setStartDate] = useState(null);
@@ -67,7 +67,7 @@ const InputToDo = ({name}) => {
           todoDate,
           priority,
           properties,
-          listName
+          listName,
         };
         const response = await fetch("/todos", {
           method: "POST",
@@ -107,9 +107,10 @@ const InputToDo = ({name}) => {
     } else {
       // If todoDate is now after the deadline, set the todoDate to null
       if (
-        startDate.getFullYear() <= todoDate.getFullYear() &&
-        startDate.getMonth() <= todoDate.getMonth() &&
-        startDate.getDate() <= todoDate.getDate()
+        todoDate == null ||
+        (startDate.getFullYear() <= todoDate.getFullYear() &&
+          startDate.getMonth() <= todoDate.getMonth() &&
+          startDate.getDate() <= todoDate.getDate())
       ) {
         setTodoDate(null);
       }

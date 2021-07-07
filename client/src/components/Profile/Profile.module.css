@@ -9,35 +9,61 @@
   left: max(20vw, 200px);
   width: 200px !important;
   height: 200px !important;
+  border: 2px solid white;
+  cursor: pointer;
 }
 .details {
   display: flex;
   flex-direction: column;
 }
 .displayName {
-  display: inline-block;
+  display: inline-flex;
   position: relative;
   left: max(24vw, 232px);
   font-size: 32px;
   font-family: "Nunito", sans-serif;
   color: rgb(219, 219, 219);
   cursor: default;
+  align-items: center;
+  width: 332px;
+}
+.displayName div {
+  width: 300px;
+  line-break: auto;
+  height: fit-content;
+  overflow-wrap: break-word;
+}
+.editName {
+  margin-left: 8px;
+  cursor: pointer;
+}
+.editName:active {
+  color: rgb(180, 180, 180);
 }
 .emailStuff {
-  display: inline-block;
+  display: inline-flex;
   position: relative;
   left: max(24vw, 232px);
   font-size: 16px;
   font-family: "Nunito", sans-serif;
   color: rgb(182, 182, 182);
   cursor: default;
+  align-items: center;
+}
+.editEmail {
+  margin-left: 8px;
+  color: white;
+  cursor: pointer;
+}
+.editEmail:active {
+  color: rgb(182, 182, 182);
 }
 .password {
   display: inline-block;
   position: relative;
   left: max(24vw, 232px);
   background-color: rgb(100, 0, 0);
-  width: 130px;
+  width: 180px;
   color: rgb(180, 180, 180);
   height: 40px;
   line-height: 40px;
@@ -55,16 +81,42 @@
   flex-direction: column;
   position: relative;
   left: max(35vw, 350px);
-  top: 200px;
+  top: 150px;
   border: 1px solid white;
   padding: 20px;
   border-radius: 10px;
+}
+.form1 {
+  display: inline-flex;
+  flex-direction: column;
+  position: relative;
+  left: max(24vw, 232px);
+  background-color: rgba(0, 0, 0, 0);
+}
+.form2 {
+  display: inline-flex;
+  flex-direction: column;
+  position: relative;
+  left: max(24vw, 232px);
+  background-color: rgba(0, 0, 0, 0);
+}
+.form3 {
+  display: inline-flex;
+  flex-direction: column;
+  position: relative;
+  left: max(24vw, 232px);
+  background-color: rgba(0, 0, 0, 0);
+  margin-top: 8px;
 }
 
 .inputName {
   width: 200px !important;
   outline: none;
-  margin-left: 35px;
+  background-color: rgb(0, 0, 0, 0);
+  border: none;
+  color: white;
+  padding: 8px;
+  border: 1px solid rgb(133, 133, 133);
 }
 
 .inputName:active {
@@ -73,19 +125,50 @@
 .inputEmail {
   width: 200px !important;
   outline: none;
-  margin-left: 38px;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid rgb(133, 133, 133);
+  padding: 8px;
+  color: white;
+  margin-top: 8px;
 }
 
 .inputEmail:active {
   outline: none;
 }
+.inputEmailO {
+  width: 200px !important;
+  outline: none;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid rgb(133, 133, 133);
+  padding: 8px;
+  color: white;
+}
+.inputEmailO:active {
+  outline: none;
+}
 .inputPassword {
   width: 200px !important;
   outline: none;
-  margin-left: 8px;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid rgb(133, 133, 133);
+  padding: 8px;
+  color: white;
 }
 
 .inputPassword:active {
+  outline: none;
+}
+.inputPasswordO {
+  width: 200px !important;
+  outline: none;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid rgb(133, 133, 133);
+  padding: 8px;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.inputPasswordO:active {
   outline: none;
 }
 label {
@@ -94,6 +177,8 @@ label {
 .buttons {
   display: flex;
   justify-content: space-between;
+  width: fit-content;
+  margin-top: 8px;
 }
 .confirm {
   width: 100px;
@@ -117,6 +202,7 @@ label {
   border-radius: 5px;
   color: white;
   outline: none !important;
+  margin-left: 8px;
 }
 .cancel:hover {
   background-color: rgb(245, 41, 41);

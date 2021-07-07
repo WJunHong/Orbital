@@ -15,13 +15,10 @@ import {
   Slider,
   Chip,
   CloseIcon,
-  LockOpenRoundedIcon,
-  LockRoundedIcon,
 } from "../../design/table_icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./TaskTables.module.css";
-import EditTodo from "../EditTodo";
 import FSD from "../FSD";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
@@ -134,46 +131,6 @@ const TaskTables = ({ name }) => {
       });
     } catch (err) {
       console.error(err.message);
-    }
-  };
-
-  const completeTask = async (todo) => {
-    try {
-      const description = todo.description;
-      const completed = true;
-      const deadline = todo.deadline;
-      const todoDate = todo.tododate;
-      const priority = todo.priority;
-      const progress = todo.progress;
-      const properties = todo.properties;
-      const body = {
-        description,
-        completed,
-        deadline,
-        todoDate,
-        priority,
-        progress,
-        properties,
-      };
-      const comeplete_task = await fetch(`/todos/${todo.todo_id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
-  const someFunc = (e, todo) => {
-    if (
-      e.target.tagName == "TD" ||
-      e.target.tagName == "TR" ||
-      e.target.className == "deadline"
-    ) {
-      console.log(todo.description);
-    } else {
-      console.log(e.target);
     }
   };
 

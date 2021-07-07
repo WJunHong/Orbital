@@ -38,6 +38,10 @@ function SideBar({ name }) {
 
   const toggleAddList = () => {
     document.querySelector("#addList1").classList.toggle("hidden");
+
+    document
+      .querySelector("#addList123")
+      .setAttribute("data-placeholder", "Untitled List");
   };
   const addList = async (e) => {
     // Prevents page from reloading on form submission
@@ -149,6 +153,11 @@ function SideBar({ name }) {
             className={styles.addListName}
             contentEditable
             data-placeholder="Untitled List"
+            onFocus={() =>
+              document
+                .querySelector("#addList123")
+                .setAttribute("data-placeholder", "Untitled List")
+            }
           ></div>
           <Button
             variant="contained"
