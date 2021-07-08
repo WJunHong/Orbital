@@ -4,8 +4,33 @@
   padding: 8px;
 }
 
+.subtasksHeader {
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputSubtasks {
+  background-color:#242424;
+  color: #FFFFFF !important;
+  border-color: #FFFFFF !important;
+}
+
 .editSubtasks {
   background-color: #242424;
   color: #FFFFFF;
   border: 0px;
+}
+
+.deleteSubtask {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  color: rgb(180, 34, 34);
+}
+
+.deleteSubtask:hover {
+  color: rgb(250, 46, 46);
+  cursor: pointer;
 }

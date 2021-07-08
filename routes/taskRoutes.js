@@ -62,6 +62,51 @@ router.get("/lists", async (req, res) => {
   }
 });
 
+// Delete all tasks in a list
+router.delete("/:list/todos", async (req, res) => {
+  try {
+    const { list } = req.params;
+    const { user_id } = req.headers;
+    const deleteAllTasks = await pool.query(
+      "DELETE FROM todo WHERE user_id = $1 AND list = $2",
+      [user_id, list]
+    );
+    res.json("All tasks in a list deleted!");
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+// Delete all subtasks in a list
+router.delete("/:list/subtasks", async (req, res) => {
+  try {
+    const { list } = req.params;
+    const { user_id } = req.headers;
+    const deleteAllTasks = await pool.query(
+      "DELETE FROM subtasks WHERE user_id = $1 AND list = $2",
+      [user_id, list]
+    );
+    res.json("All subtasks in a list deleted!");
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+// Delete a list
+router.delete("/:list", async (req, res) => {
+  try {
+    const { list } = req.params;
+    const { user_id } = req.headers;
+    const deleteAllTasks = await pool.query(
+      "DELETE FROM lists WHERE user_id = $1 AND list = $2",
+      [user_id, list]
+    );
+    res.json("List deleted!");
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
 // Get all uncompleted todos
 
 router.get("/", async (req, res) => {

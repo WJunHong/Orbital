@@ -94,7 +94,9 @@ function SideBar({ name }) {
       });
 
       const jsonData = await response.json();
-      setAllLists(jsonData);
+      if (jsonData !== null) {
+        setAllLists(jsonData);
+      }
     } catch (err) {
       console.log(err);
     }

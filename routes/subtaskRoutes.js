@@ -4,10 +4,14 @@ const pool = require("../db1");
 // Creating a subtask
 router.post("/", async (req, res) => {
   try {
-    const { user_id, task_id, description } = req.body;
+    const { user_id, task_id, description} = req.body;
+    const list = await pool.query(
+      "SELECT list FROM todo WHERE user_id = $1 AND todo_id = $2",
+      [user_id, task_id]
+    );
     const newTodo = await pool.query(
-      "INSERT INTO subtasks (user_id, todo_id, description, completed) VALUES($1, $2, $3, $4) RETURNING *",
-      [user_id, task_id, description, false]
+      "INSERT INTO subtasks (user_id, todo_id, description, completed, list) VALUES($1, $2, $3, $4, $5) RETURNING *",
+      [user_id, task_id, description, false, list.rows[0].list]
     );
     res.json(newTodo.rows[0]);
   } catch (err) {

@@ -4,7 +4,7 @@ import app from "../../base";
 import Fab from "@material-ui/core/Fab";
 import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import SortRoundedIcon from "@material-ui/icons/SortRounded";
-import styles from "./FSD.module.css";
+import DeleteForeverRoundedIcon from "@material-ui/icons/DeleteForeverRounded";
 import ClearIcon from "@material-ui/icons/Clear";
 import Slider from "@material-ui/core/Slider";
 import { createMuiTheme } from "@material-ui/core/styles";
@@ -15,6 +15,8 @@ import ArrowDownwardRoundedIcon from "@material-ui/icons/ArrowDownwardRounded";
 import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "@material-ui/core/styles";
+import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
+import styles from "./FSD.module.css";
 import Tooltip from "@material-ui/core/Tooltip";
 
 const muiTheme = createMuiTheme({
@@ -85,6 +87,11 @@ const FSD = ({ name, todos }) => {
   const [selectedProperties, setSelectedProperties] = useState(
     filterObj.properties
   );
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    title: "",
+    subTitle: "",
+  });
 
   const handleClick = (e, num) => {
     if (e.target.style.backgroundColor != "black") {
@@ -155,6 +162,36 @@ const FSD = ({ name, todos }) => {
   const toggleSortOptions = () => {
     document.querySelector(`.${styles.sortOptions}`).classList.toggle(`hidden`);
     setClickS(!clickedS);
+  };
+
+  const deleteList = async () => {
+    setConfirmDialog({
+      ...ConfirmDialog,
+      isOpen: false,
+    });
+    try {
+      const user = app.auth().currentUser;
+      const user_id = user.uid;
+      // Calls the DELETE task route method
+      const deleteTodos = await fetch(`/todos/${name}/todos`, {
+        method: "DELETE",
+        headers: { user_id },
+      });
+
+      // Calls the DELETE subtasks route method
+      const deleteSubtasks = await fetch(`/todos/${name}/subtasks/`, {
+        method: "DELETE",
+        headers: { user_id },
+      });
+
+      const deleteList = await fetch(`/todos/${name}/`, {
+        method: "DELETE",
+        headers: { user_id },
+      });
+    } catch (err) {
+      console.error(err.message);
+    }
+    window.location = "/taskpage";
   };
 
   const handleSelect = (str, property, arr, set) => {
@@ -332,13 +369,43 @@ const FSD = ({ name, todos }) => {
           <Fab
             style={{ backgroundColor: `${clickedS ? "red" : "#4b4b4b"}` }}
             size="small"
-            aria-label="filter"
+            aria-label="sort"
             className={styles.sortButton}
             onClick={toggleSortOptions}
           >
             {clickedS ? <ClearIcon /> : <SortRoundedIcon />}
           </Fab>
         </Tooltip>
+        {name !== "mt" ? (
+          <Fragment>
+            <Tooltip title="Delete list" placement="right-end">
+              <Fab
+                style={{ backgroundColor: "#4b4b4b" }}
+                size="small"
+                aria-label="delete"
+                className={styles.deleteButton}
+                onClick={() => {
+                  setConfirmDialog({
+                    isOpen: true,
+                    title: "Are you sure to delete this list?",
+                    subTitle: "You can't undo this operation",
+                    onConfirm: () => {
+                      deleteList();
+                    },
+                  });
+                }}
+              >
+                <DeleteForeverRoundedIcon />
+              </Fab>
+            </Tooltip>
+              <ConfirmDialog
+                confirmDialog={confirmDialog}
+                setConfirmDialog={setConfirmDialog}
+              />
+          </Fragment>
+        ) : (
+          <Fragment></Fragment>
+        )}
       </div>
       <div className={styles.sideHandler}>
         <div className={`${styles.filterOptions} hidden`}>

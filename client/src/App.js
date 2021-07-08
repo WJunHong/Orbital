@@ -15,12 +15,10 @@ import PrivateRoute from "./PrivateRoute";
 
 // Components
 
-import Heading from "./components/Heading";
 import TaskPage from "./components/TaskPage";
 import Login from "./components/Login/Login";
 import Register from "./components/Register";
 import Overview from "./components/Overview";
-import SideBar from "./components/SideBar";
 import Profile from "./components/Profile";
 
 /**
