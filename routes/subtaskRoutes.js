@@ -34,23 +34,7 @@ router.get("/:todo_id", async (req, res) => {
   }
 });
 
-// Update a subtask based on main task id and sub task id
-
-router.put("/:todo_id/:sid", async (req, res) => {
-  try {
-    const { sid } = req.params;
-    const { description } = req.body;
-    const updateTodo = await pool.query(
-      "UPDATE subtasks SET description = $1 WHERE subtask_id = $2",
-      [description, sid]
-    );
-    res.json("Subtask was updated!");
-  } catch (error) {
-    console.error(error.message);
-  }
-});
-
-// Complete a subtask
+// Update description or Complete a subtask
 router.put("/:todo_id/:sid", async (req, res) => {
   try {
     const { sid } = req.params;

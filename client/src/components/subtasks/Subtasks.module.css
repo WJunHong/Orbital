@@ -80,3 +80,9 @@
   color: rgb(250, 46, 46);
   cursor: pointer;
 }
+
+.expandedCheck:hover {
+  color: white;
+  background-color: #4b4b4b;
+  border-radius: 2px;
+}

@@ -1,7 +1,11 @@
 // Imports
 import React, { Fragment, useEffect, useState } from "react";
 import styles from "./Subtasks.module.css";
-import { DeleteOutlineRoundedIcon, Tooltip } from "../../design/table_icons";
+import {
+  DeleteOutlineRoundedIcon,
+  Tooltip,
+  CheckBoxOutlineBlankOutlinedIcon,
+} from "../../design/table_icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -25,7 +29,7 @@ const ListSubtasks = ({ todo }) => {
     }
   };
 
-  const updateSubtask = async (e, id, subtask_id) => {
+  const updateSubtask = async (e, id, subtask_id, completed) => {
     try {
       // Calls the UPDATE subtask route method
       e.preventDefault();
@@ -44,21 +48,33 @@ const ListSubtasks = ({ todo }) => {
           progress: undefined,
         });
       } else {
-        const submitThis = { description };
+        const submitThis = { description, completed };
         const updateSubtask = await fetch(`/subtasks/${id}/${subtask_id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(submitThis),
         });
-        toast.success("Subtask updated!", {
-          position: "top-right",
-          autoClose: 1700,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: false,
-          progress: undefined,
-        });
+        if (completed) {
+          toast.success("Yay subtask completed!!", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
+        } else {
+          toast.success("Subtask updated!", {
+            position: "top-right",
+            autoClose: 1700,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
+        }
       }
     } catch (err) {
       console.error(err.message);
@@ -100,39 +116,58 @@ const ListSubtasks = ({ todo }) => {
       <table className={styles.table}>
         <thead className={styles.subtasksHeader}>Subtasks</thead>
         <tbody>
-          {subtaskList.map((subtask) => (
-            <tr key={subtask.subtask_id}>
-              <td>
-                <form
-                  onSubmit={(e) =>
-                    updateSubtask(e, todo.todo_id, subtask.subtask_id)
-                  }
-                >
-                  <input
-                    className={styles.editSubtasks}
-                    type="text"
-                    id={`edit_subtask${subtask.subtask_id}`}
-                    defaultValue={subtask.description}
-                    onBlur={() =>
-                      (document.getElementById(
-                        `edit_subtask${subtask.subtask_id}`
-                      ).value = subtask.description)
+          {subtaskList
+            .filter((subtask) => !subtask.completed)
+            .map((subtask) => (
+              <tr key={subtask.subtask_id}>
+                <td>
+                  <div className="checkbox1">
+                    <Tooltip title="Complete subtask">
+                      <CheckBoxOutlineBlankOutlinedIcon
+                        onClick={(e) =>
+                          updateSubtask(
+                            e,
+                            todo.todo_id,
+                            subtask.subtask_id,
+                            true
+                          )
+                        }
+                        className={styles.expandedCheck}
+                      />
+                    </Tooltip>
+                  </div>
+                </td>
+                <td>
+                  <form
+                    onSubmit={(e) =>
+                      updateSubtask(e, todo.todo_id, subtask.subtask_id, false)
                     }
-                  />
-                </form>
-              </td>
-              <td>
-                <Tooltip title="Delete Subtask" placement="right">
-                  <DeleteOutlineRoundedIcon
-                    className={styles.deleteSubtask}
-                    onClick={() =>
-                      deleteSubtask(todo.todo_id, subtask.subtask_id)
-                    }
-                  />
-                </Tooltip>
-              </td>
-            </tr>
-          ))}
+                  >
+                    <input
+                      className={styles.editSubtasks}
+                      type="text"
+                      id={`edit_subtask${subtask.subtask_id}`}
+                      defaultValue={subtask.description}
+                      onBlur={() =>
+                        (document.getElementById(
+                          `edit_subtask${subtask.subtask_id}`
+                        ).value = subtask.description)
+                      }
+                    />
+                  </form>
+                </td>
+                <td>
+                  <Tooltip title="Delete Subtask" placement="right">
+                    <DeleteOutlineRoundedIcon
+                      className={styles.deleteSubtask}
+                      onClick={() =>
+                        deleteSubtask(todo.todo_id, subtask.subtask_id)
+                      }
+                    />
+                  </Tooltip>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
       <ToastContainer />
