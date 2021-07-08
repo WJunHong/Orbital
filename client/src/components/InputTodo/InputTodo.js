@@ -12,6 +12,9 @@ import app from "../../base";
 import Chip from "@material-ui/core/Chip";
 import CloseIcon from "@material-ui/icons/Close";
 import Button from "@material-ui/core/Button";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Tooltip } from "../../design/table_icons";
 
 /**
  * A functional component representing the input of a task
@@ -53,6 +56,15 @@ const InputToDo = ({ name }) => {
         document
           .getElementById("something1")
           .setAttribute("data-placeholder", "Please type something!!");
+        toast.error("Please type something!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
       } else {
         // Fetches user_id
         const user = app.auth().currentUser;
@@ -77,6 +89,15 @@ const InputToDo = ({ name }) => {
 
         // Reset the input field to empty upon successful task submission
         resetEverything();
+        toast.success("Task Added!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
       }
     } catch (err) {
       console.error(err.message);
@@ -106,11 +127,11 @@ const InputToDo = ({ name }) => {
         "white";
     } else {
       // If todoDate is now after the deadline, set the todoDate to null
-      if (
-        todoDate == null ||
-        (startDate.getFullYear() <= todoDate.getFullYear() &&
-          startDate.getMonth() <= todoDate.getMonth() &&
-          startDate.getDate() <= todoDate.getDate())
+      if (todoDate == null) {
+      } else if (
+        startDate.getFullYear() <= todoDate.getFullYear() &&
+        startDate.getMonth() <= todoDate.getMonth() &&
+        startDate.getDate() <= todoDate.getDate()
       ) {
         setTodoDate(null);
       }
@@ -134,6 +155,15 @@ const InputToDo = ({ name }) => {
         document.querySelector(`.${styles.deadlineText}`).style.borderColor =
           "white";
       }
+      toast.success("Deadline added!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      });
     }
   };
   const toggleAdd = () => {
@@ -178,6 +208,15 @@ const InputToDo = ({ name }) => {
         document.querySelector(`.${styles.sideButton1}`).style.color = "white";
         setPriority(5);
     }
+    toast.success("Priority added!", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+    });
   };
 
   const makeTodoDate = () => {
@@ -189,19 +228,56 @@ const InputToDo = ({ name }) => {
       } else {
         document.querySelector(`.alarmIcon`).style.color = "white";
       }
+      toast.success("Todo Date added!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      });
     }
   };
 
   const addProperty = (e) => {
     if (e.key == "Enter") {
       e.preventDefault();
-      if (properties.includes(e.target.value) || e.target.value == "") {
+      if (properties.includes(e.target.value)) {
+        toast.warning("Property already exists!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
+      } else if (e.target.value == "") {
+        toast.warning("Type a property!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
       } else {
         setPL([
           ...propertyLabels,
           { key: properties.length, label: e.target.value },
         ]);
         setProperties([...properties, e.target.value]);
+        toast.success("Property added!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
       }
       e.target.value = "";
     }
@@ -290,7 +366,9 @@ const InputToDo = ({ name }) => {
             <div>
               <div className={styles.sideButton}>
                 <div className={styles.sideButton1} onClick={togglePriority}>
-                  <OutlinedFlagRoundedIcon />
+                  <Tooltip title="Select Priority" placement="top-start">
+                    <OutlinedFlagRoundedIcon />
+                  </Tooltip>
                 </div>
                 <div className={`${styles.priorityOptions} hidden`}>
                   <ul>
@@ -323,7 +401,12 @@ const InputToDo = ({ name }) => {
                   onChange={(date) => setTodoDate(date)}
                   customInput={
                     <div className={styles.sideButton2}>
-                      <AlarmIcon className="alarmIcon" />
+                      <Tooltip
+                        title="Select Todo date"
+                        placement="bottom-start"
+                      >
+                        <AlarmIcon className="alarmIcon" />
+                      </Tooltip>
                     </div>
                   }
                   maxDate={startDate == null ? null : startDate}
@@ -351,6 +434,7 @@ const InputToDo = ({ name }) => {
           </Button>
         </form>
       </div>
+      <ToastContainer />
     </Fragment>
   );
 };

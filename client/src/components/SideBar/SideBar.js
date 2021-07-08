@@ -17,10 +17,10 @@ import Button from "@material-ui/core/Button";
 function SideBar({ name }) {
   function highlight() {
     if (name == "/") {
-      document.querySelector(".overviewPage").style.backgroundColor = "#273469";
+      document.querySelector(".overviewPage").style.backgroundColor = "#121e4f";
       document.querySelector(".overviewPage").style.color = "white";
     } else if (name == "/taskpage") {
-      document.querySelector(".taskPage").style.backgroundColor = "#273469";
+      document.querySelector(".taskPage").style.backgroundColor = "#121e4f";
       document.querySelector(".taskPage").style.color = "white";
     }
   }
@@ -128,7 +128,7 @@ function SideBar({ name }) {
           var link = "/lists/" + list;
           return (
             <li className={styles.mainTask}>
-              <a href={link}>
+              <a href={link} id={`sl_${list}`}>
                 <AllInboxIcon className={styles.maintaskIcon} />
                 <div>{list}</div>
               </a>

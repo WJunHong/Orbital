@@ -593,11 +593,9 @@ const TaskTables = ({ name }) => {
                     </td>
                     <td>
                       <div className="dropdown">
-                        <Tooltip title="More Info">
-                          <ArrowDropDownRoundedIcon
-                            onClick={(e) => toggleMe(number)}
-                          />
-                        </Tooltip>
+                        <ArrowDropDownRoundedIcon
+                          onClick={(e) => toggleMe(number)}
+                        />
                       </div>
                     </td>
                   </tr>
@@ -1038,11 +1036,9 @@ const TaskTables = ({ name }) => {
                     </td>
                     <td>
                       <div className="dropdown">
-                        <Tooltip title="More Info">
-                          <ArrowDropDownRoundedIcon
-                            onClick={(e) => toggleMe(number)}
-                          />
-                        </Tooltip>
+                        <ArrowDropDownRoundedIcon
+                          onClick={(e) => toggleMe(number)}
+                        />
                       </div>
                     </td>
                   </tr>
@@ -1480,11 +1476,9 @@ const TaskTables = ({ name }) => {
                     </td>
                     <td>
                       <div className="dropdown">
-                        <Tooltip title="More Info">
-                          <ArrowDropDownRoundedIcon
-                            onClick={(e) => toggleMe(number)}
-                          />
-                        </Tooltip>
+                        <ArrowDropDownRoundedIcon
+                          onClick={(e) => toggleMe(number)}
+                        />
                       </div>
                     </td>
                   </tr>
