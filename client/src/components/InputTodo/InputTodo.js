@@ -141,9 +141,9 @@ const InputToDo = ({ name }) => {
         day: new Date().getDate(),
       };
       if (
-        startDate.getFullYear() == testDate["year"] &&
-        startDate.getMonth() == testDate["month"] &&
-        startDate.getDate() == testDate["day"]
+        startDate.getFullYear() === testDate["year"] &&
+        startDate.getMonth() === testDate["month"] &&
+        startDate.getDate() === testDate["day"]
       ) {
         document.querySelector(`.${styles.deadlineIcon}`).style.color = "green";
         document.querySelector(`.${styles.deadlineText}`).style.color = "green";
@@ -223,7 +223,7 @@ const InputToDo = ({ name }) => {
     if (todoDate == null) {
       document.querySelector(`.alarmIcon`).style.color = "white";
     } else {
-      if (new Date().setHours(0, 0, 0, 0) == todoDate.setHours(0, 0, 0, 0)) {
+      if (new Date().setHours(0, 0, 0, 0) === todoDate.setHours(0, 0, 0, 0)) {
         document.querySelector(`.alarmIcon`).style.color = "green";
       } else {
         document.querySelector(`.alarmIcon`).style.color = "white";
@@ -241,7 +241,7 @@ const InputToDo = ({ name }) => {
   };
 
   const addProperty = (e) => {
-    if (e.key == "Enter") {
+    if (e.key === "Enter") {
       e.preventDefault();
       if (properties.includes(e.target.value)) {
         toast.warning("Property already exists!", {
@@ -253,7 +253,7 @@ const InputToDo = ({ name }) => {
           draggable: false,
           progress: undefined,
         });
-      } else if (e.target.value == "") {
+      } else if (e.target.value === "") {
         toast.warning("Type a property!", {
           position: "top-right",
           autoClose: 2000,
@@ -284,7 +284,7 @@ const InputToDo = ({ name }) => {
   };
   const handleDelete = (chipToDelete) => () => {
     setPL(propertyLabels.filter((chip) => chip.key !== chipToDelete.key));
-    setProperties(properties.filter((chip) => chip != chipToDelete.label));
+    setProperties(properties.filter((chip) => chip !== chipToDelete.label));
   };
   useEffect(() => {
     deadlineColors();

@@ -12,7 +12,6 @@ import { Paper } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import styles from "./Login.module.css";
 import GoogleButton from "react-google-button";
-import { lastDayOfQuarter, set } from "date-fns";
 
 const theme = createMuiTheme({
   typography: {

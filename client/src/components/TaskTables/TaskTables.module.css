@@ -48,6 +48,7 @@
   background-color: rgba(0, 0, 0, 0);
   color: #9c9c9c;
   display: inline-block;
+  border-bottom: 1px solid #9c9c9c;
 }
 .progressInput:active {
   outline: none;

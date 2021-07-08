@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./Profile.module.css";
 import Background from "../Background";
 import { Avatar } from "@material-ui/core";
@@ -22,7 +22,7 @@ const Profile = () => {
 
   const submitForm1 = (e) => {
     e.preventDefault();
-    if (name == "") {
+    if (name === "") {
       toast.error("Enter a name!", {
         position: "top-right",
         autoClose: 3000,
@@ -51,7 +51,7 @@ const Profile = () => {
     e.preventDefault();
 
     if (
-      emailOld != email ||
+      emailOld !== email ||
       !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
         emailNew
       )

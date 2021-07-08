@@ -22,6 +22,8 @@ import styles from "./TaskTables.module.css";
 import FSD from "../FSD";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const TZOFFSET = 28800000;
 
@@ -129,6 +131,15 @@ const TaskTables = ({ name }) => {
       const deleteSubtasks = await fetch(`/subtasks/${id}`, {
         method: "DELETE",
       });
+      toast.error("💀 Task deleted!", {
+        position: "top-right",
+        autoClose: 1700,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      });
     } catch (err) {
       console.error(err.message);
     }
@@ -147,7 +158,7 @@ const TaskTables = ({ name }) => {
         };
 
   const sortStuff =
-    localStorage.getItem(`sort-${name}`) != null
+    localStorage.getItem(`sort-${name}`) !== null
       ? JSON.parse(localStorage.getItem(`sort-${name}`))
       : {
           sort: "dateAdded",
@@ -157,21 +168,21 @@ const TaskTables = ({ name }) => {
   // <= 0 sort in same order, > 0 sort in reverse order
   const properSort = (task1, task2) => {
     // Sort by descending order
-    if (sortStuff.direction == "descending") {
+    if (sortStuff.direction === "descending") {
       switch (sortStuff.sort) {
         case "dateAdded":
           return task2.todo_id - task1.todo_id;
-          break;
+
         case "Alphabetical":
           // If 1st is smaller will be negative, no change
           return (
             task2.description[0].toLowerCase().charCodeAt(0) -
             task1.description[0].toLowerCase().charCodeAt(0)
           );
-          break;
+
         case "Priority":
           return task2.priority - task1.priority;
-          break;
+
         case "Deadline":
           if (task1.deadline == null && task2.deadline == null) {
             return 1;
@@ -186,7 +197,7 @@ const TaskTables = ({ name }) => {
               new Date(task1.deadline).getTime()
             );
           }
-          break;
+
         case "todoDate":
           if (task1.tododate == null && task2.tododate == null) {
             return 1;
@@ -201,7 +212,7 @@ const TaskTables = ({ name }) => {
               new Date(task1.tododate).getTime()
             );
           }
-          break;
+
         default:
           console.log("bad");
           break;
@@ -211,17 +222,17 @@ const TaskTables = ({ name }) => {
       switch (sortStuff.sort) {
         case "dateAdded":
           return task1.todo_id - task2.todo_id;
-          break;
+
         case "Alphabetical":
           // If 1st is smaller will be negative, no change
           return (
             task1.description[0].toLowerCase().charCodeAt(0) -
             task2.description[0].toLowerCase().charCodeAt(0)
           );
-          break;
+
         case "Priority":
           return task1.priority - task2.priority;
-          break;
+
         case "Deadline":
           if (task1.deadline == null && task2.deadline == null) {
             return -1;
@@ -236,7 +247,7 @@ const TaskTables = ({ name }) => {
               new Date(task2.deadline).getTime()
             );
           }
-          break;
+
         case "todoDate":
           if (task1.tododate == null && task2.tododate == null) {
             return -1;
@@ -251,7 +262,7 @@ const TaskTables = ({ name }) => {
               new Date(task2.tododate).getTime()
             );
           }
-          break;
+
         default:
           console.log("bad");
           break;
@@ -282,15 +293,15 @@ const TaskTables = ({ name }) => {
     var todoTodoDate =
       todo.tododate == null ? null : new Date(todo.tododate).getTime();
     var filterMe = true;
-    if (filter.properties.length != 0) {
+    if (filter.properties.length !== 0) {
       filterMe =
         filterMe &&
         todo.properties.some((item) => filter.properties.includes(item));
     }
-    if (filter.priority.length != 0) {
+    if (filter.priority.length !== 0) {
       filterMe = filterMe && filter.priority.includes(todo.priority);
     }
-    if (!filter.deadline.every((i) => i == null) && todo.deadline != null) {
+    if (!filter.deadline.every((i) => i == null) && todo.deadline !== null) {
       if (filter.deadline[0] == null) {
         filterMe = filterMe && todoDeadline < filterEndDeadline;
       } else {
@@ -343,12 +354,12 @@ const TaskTables = ({ name }) => {
       const body = {
         ...todo,
       };
-      if (body.deadline != null) {
+      if (body.deadline !== null) {
         var deadlineTime = new Date(body.deadline).getTime();
         var deadline = new Date(deadlineTime - TZOFFSET);
         body.deadline = deadline;
       }
-      if (body.tododate != null) {
+      if (body.tododate !== null) {
         var todoDeadlineTime = new Date(body.tododate).getTime();
         var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
         body.tododate = todoDeadline;
@@ -356,15 +367,42 @@ const TaskTables = ({ name }) => {
       switch (para) {
         case "priority":
           body.priority = val;
+          toast.success("Priority updated!", {
+            position: "top-right",
+            autoClose: 1700,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
           break;
         case "progress":
           body.progress = val;
           break;
         case "completed":
           body.completed = val;
+          toast.success("Yay task completed!!", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
           break;
         case "tododate":
           body.tododate = val;
+          toast.success("Todo date updated!", {
+            position: "top-right",
+            autoClose: 1700,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
           break;
         case "deadline":
           if (
@@ -374,9 +412,27 @@ const TaskTables = ({ name }) => {
             body.tododate = null;
           }
           body.deadline = val;
+          toast.success("Deadline updated!", {
+            position: "top-right",
+            autoClose: 1700,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
           break;
         case "description":
           body.description = val;
+          toast.success("Task updated!", {
+            position: "top-right",
+            autoClose: 1700,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
           break;
         case "properties":
           const number = body.todo_id;
@@ -385,9 +441,27 @@ const TaskTables = ({ name }) => {
             const old = body.properties;
             body.properties = [...old, val];
           }
+          toast.success(`Property ${val} added to task!`, {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
           break;
         case "propertyDelete":
-          body.properties = body.properties.filter((i) => i != val);
+          body.properties = body.properties.filter((i) => i !== val);
+          toast.warn(`Property ${val} deleted from task!`, {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
           break;
         default:
           console.log("no match!");
@@ -535,7 +609,7 @@ const TaskTables = ({ name }) => {
                       <Tooltip title="Progress">
                         <div className="progress_value">
                           {" "}
-                          {todo.progress == 0 ? (
+                          {todo.progress === 0 ? (
                             <div />
                           ) : (
                             <CircularProgress
@@ -556,13 +630,13 @@ const TaskTables = ({ name }) => {
                           <FlagRoundedIcon
                             style={{
                               color:
-                                todo.priority == 1
+                                todo.priority === 1
                                   ? "red"
-                                  : todo.priority == 2
+                                  : todo.priority === 2
                                   ? "rgb(218, 109, 7)"
-                                  : todo.priority == 3
+                                  : todo.priority === 3
                                   ? "rgb(255, 217, 0)"
-                                  : todo.priority == 4
+                                  : todo.priority === 4
                                   ? "rgb(27, 228, 1)"
                                   : "white",
                             }}
@@ -577,11 +651,6 @@ const TaskTables = ({ name }) => {
                         </div>
                       </Tooltip>
                     </td>
-                    {/*
-                    <td>
-                      <EditTodo todo={todo} />
-                    </td>
-                    */}
                     <td>
                       <div className="deleteTask">
                         <Tooltip title="Delete Task">
@@ -614,245 +683,255 @@ const TaskTables = ({ name }) => {
                     className="expandedTaskData hidden"
                     id={`expandedTaskData${number}`}
                   >
-                    {/* First row */}
-                    <div className="expandedTaskData1">
-                      {" "}
-                      <div className="checkbox1">
-                        <Tooltip title="Complete Task">
-                          <CheckBoxOutlineBlankOutlinedIcon
-                            onClick={() => updateAll(todo, "completed", true)}
-                            className={styles.expandedCheck}
-                          />
-                        </Tooltip>
-                      </div>
-                      <div
-                        className="taskDescrip1"
-                        contentEditable
-                        onKeyPress={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            if (e.target.textContent === "") {
-                              e.target.textContent = todo.description;
-                            } else if (
-                              e.target.textContent === todo.description
-                            ) {
-                              // do nothing
-                            } else {
-                              updateAll(
-                                todo,
-                                "description",
-                                e.target.textContent
-                              );
-
-                              e.target.blur();
-                            }
-                          }
-                        }}
-                        onBlur={(e) => resetDescrip(e, todo)}
-                        suppressContentEditableWarning
-                        spellCheck="false"
-                      >
-                        {todo.description}
-                      </div>
-                      <div className="dropdown1">
-                        <ArrowDropDownRoundedIcon
-                          className={styles.expandedDropdown}
-                          onClick={(e) => toggleMe(number)}
-                        />
-                      </div>
-                    </div>
-                    {/* second row */}
-                    <div className="expandedTaskData2">
-                      <div className="leftSide1">
-                        <div className="todo_date1">
-                          <AlarmIcon
-                            fontSize="small"
-                            className="todoDateIcon1"
-                          />
-                          Todo Date:
-                          <DatePicker
-                            className="todoDateText1"
-                            placeholderText="----"
-                            selected={todo.tododate == null ? null : todoDaate}
-                            onChange={(date) =>
-                              updateAll(todo, "tododate", date)
-                            }
-                            dateFormat="yyyy-MM-dd"
-                            maxDate={
-                              todo.deadline == null ? null : todoDeadline
-                            }
-                            minDate={new Date()}
-                          />
-                        </div>
-                        <div className="deadlineBox1">
-                          <CalendarTodayRoundedIcon
-                            fontSize="small"
-                            className="deadlineIcon1"
-                          />
-                          Deadline:
-                          <DatePicker
-                            className="deadlineDate1"
-                            placeholderText="----"
-                            showTimeSelect
-                            selected={
-                              todo.deadline == null ? null : todoDeadline
-                            }
-                            onChange={(date) =>
-                              updateAll(todo, "deadline", date)
-                            }
-                            dateFormat="yyyy-MM-dd h:mm aa"
-                            minDate={new Date()}
-                          />
-                        </div>
-                        <div className="priority1">
-                          <FlagRoundedIcon
-                            className="priorityIcon1"
-                            style={{
-                              color:
-                                todo.priority == 1
-                                  ? "red"
-                                  : todo.priority == 2
-                                  ? "rgb(218, 109, 7)"
-                                  : todo.priority == 3
-                                  ? "rgb(255, 217, 0)"
-                                  : todo.priority == 4
-                                  ? "rgb(27, 228, 1)"
-                                  : "white",
-                            }}
-                            onClick={() => {
-                              updateAll(
-                                todo,
-                                "priority",
-                                (todo.priority % 5) + 1
-                              );
-                            }}
-                          />{" "}
-                          Priority
-                          {"  " + todo.priority}
-                        </div>
-                      </div>
-                      <div>
-                        <div className="progress_value1">
-                          <div className={styles.progressBox}>
-                            Progress:{" "}
-                            <form
-                              onSubmit={(e) => {
-                                e.preventDefault();
-                                if (
-                                  document.getElementById(
-                                    `progressInput_${todo.todo_id}`
-                                  ).value == ""
-                                ) {
-                                  console.log(1);
-                                } else {
-                                  updateAll(todo, "progress", progress.number);
-                                }
-                              }}
-                              className={styles.progressInputForm}
-                            >
-                              <input
-                                placeholder={todo.progress}
-                                className={styles.progressInput}
-                                id={`progressInput_${todo.todo_id}`}
-                                type="text"
-                                min={0}
-                                max={100}
-                                onChange={(e) => {
-                                  setProgress({
-                                    ...progress,
-                                    number: e.target.value,
-                                  });
-                                }}
-                              />
-                            </form>
-                            %
-                          </div>
-                          <ThemeProvider theme={muiTheme1}>
-                            <Slider
-                              onChange={(e, val) => {
-                                document.querySelector(
-                                  `#progressInput_${todo.todo_id}`
-                                ).value = "";
-                                updateAll(todo, "progress", val);
-                              }}
-                              value={todo.progress}
-                              marks={marks}
-                              getArialValueText={todo.progress + "%"}
-                              className="progressSlider1"
+                    <td>
+                      {/* First row */}
+                      <div className="expandedTaskData1">
+                        {" "}
+                        <div className="checkbox1">
+                          <Tooltip title="Complete Task">
+                            <CheckBoxOutlineBlankOutlinedIcon
+                              onClick={() => updateAll(todo, "completed", true)}
+                              className={styles.expandedCheck}
                             />
-                          </ThemeProvider>
+                          </Tooltip>
+                        </div>
+                        <div
+                          className="taskDescrip1"
+                          contentEditable
+                          onKeyPress={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              if (e.target.textContent === "") {
+                                e.target.textContent = todo.description;
+                              } else if (
+                                e.target.textContent === todo.description
+                              ) {
+                                // do nothing
+                              } else {
+                                updateAll(
+                                  todo,
+                                  "description",
+                                  e.target.textContent
+                                );
+
+                                e.target.blur();
+                              }
+                            }
+                          }}
+                          onBlur={(e) => resetDescrip(e, todo)}
+                          suppressContentEditableWarning
+                          spellCheck="false"
+                        >
+                          {todo.description}
+                        </div>
+                        <div className="dropdown1">
+                          <ArrowDropDownRoundedIcon
+                            className={styles.expandedDropdown}
+                            onClick={(e) => toggleMe(number)}
+                          />
                         </div>
                       </div>
-                    </div>
-                    {/* 3rd row */}
-                    <div className="expandedTaskData3">
-                      <div className="properties1">
-                        <div>Properties</div>
-                        <form
-                          id={`propertyAdd${todo.todo_id}`}
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            updateAll(todo, "properties", newProperty.number);
-                          }}
-                        >
-                          <input
-                            autoComplete="off"
-                            placeholder="Add property"
-                            className={styles.inputProperty}
-                            type="text"
-                            list={`propertyList${number}`}
-                            id={`propertyInput${number}`}
-                            name={`propertyAdd${todo.todo_id}`}
-                            onChange={(e) =>
-                              setNewProperty({
-                                ...newProperty,
-                                number: e.target.value,
-                              })
-                            }
-                          />
-                          <datalist id={`propertyList${number}`}>
-                            {properties.map((ppty) => (
-                              <option value={ppty} />
-                            ))}
-                          </datalist>
-                        </form>
-                        {todo.properties.map((data) => (
-                          <Chip
-                            label={data}
-                            key={data}
-                            onDelete={(e) => {
-                              e.preventDefault();
-                              updateAll(todo, "propertyDelete", data);
-                            }}
-                            size="small"
-                            variant="outlined"
-                            className={styles.propertyChip}
-                            deleteIcon={<CloseIcon className={styles.close} />}
-                          />
-                        ))}
+                      {/* second row */}
+                      <div className="expandedTaskData2">
+                        <div className="leftSide1">
+                          <div className="todo_date1">
+                            <AlarmIcon
+                              fontSize="small"
+                              className="todoDateIcon1"
+                            />
+                            Todo Date:
+                            <DatePicker
+                              className="todoDateText1"
+                              placeholderText="----"
+                              selected={
+                                todo.tododate == null ? null : todoDaate
+                              }
+                              onChange={(date) =>
+                                updateAll(todo, "tododate", date)
+                              }
+                              dateFormat="yyyy-MM-dd"
+                              maxDate={
+                                todo.deadline == null ? null : todoDeadline
+                              }
+                              minDate={new Date()}
+                            />
+                          </div>
+                          <div className="deadlineBox1">
+                            <CalendarTodayRoundedIcon
+                              fontSize="small"
+                              className="deadlineIcon1"
+                            />
+                            Deadline:
+                            <DatePicker
+                              className="deadlineDate1"
+                              placeholderText="----"
+                              showTimeSelect
+                              selected={
+                                todo.deadline == null ? null : todoDeadline
+                              }
+                              onChange={(date) =>
+                                updateAll(todo, "deadline", date)
+                              }
+                              dateFormat="yyyy-MM-dd h:mm aa"
+                              minDate={new Date()}
+                            />
+                          </div>
+                          <div className="priority1">
+                            <FlagRoundedIcon
+                              className="priorityIcon1"
+                              style={{
+                                color:
+                                  todo.priority === 1
+                                    ? "red"
+                                    : todo.priority === 2
+                                    ? "rgb(218, 109, 7)"
+                                    : todo.priority === 3
+                                    ? "rgb(255, 217, 0)"
+                                    : todo.priority === 4
+                                    ? "rgb(27, 228, 1)"
+                                    : "white",
+                              }}
+                              onClick={() => {
+                                updateAll(
+                                  todo,
+                                  "priority",
+                                  (todo.priority % 5) + 1
+                                );
+                              }}
+                            />{" "}
+                            Priority
+                            {"  " + todo.priority}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="progress_value1">
+                            <div className={styles.progressBox}>
+                              Progress:{" "}
+                              <form
+                                onSubmit={(e) => {
+                                  e.preventDefault();
+                                  if (
+                                    document.getElementById(
+                                      `progressInput_${todo.todo_id}`
+                                    ).value === ""
+                                  ) {
+                                    console.log(1);
+                                  } else {
+                                    updateAll(
+                                      todo,
+                                      "progress",
+                                      progress.number
+                                    );
+                                  }
+                                }}
+                                className={styles.progressInputForm}
+                              >
+                                <input
+                                  placeholder={todo.progress}
+                                  className={styles.progressInput}
+                                  id={`progressInput_${todo.todo_id}`}
+                                  type="text"
+                                  min={0}
+                                  max={100}
+                                  onChange={(e) => {
+                                    setProgress({
+                                      ...progress,
+                                      number: e.target.value,
+                                    });
+                                  }}
+                                />
+                              </form>
+                              %
+                            </div>
+                            <ThemeProvider theme={muiTheme1}>
+                              <Slider
+                                onChange={(e, val) => {
+                                  document.querySelector(
+                                    `#progressInput_${todo.todo_id}`
+                                  ).value = "";
+                                  updateAll(todo, "progress", val);
+                                }}
+                                value={todo.progress}
+                                marks={marks}
+                                getArialValueText={todo.progress + "%"}
+                                className="progressSlider1"
+                              />
+                            </ThemeProvider>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    {/* 4th row */}
-                    <div className="expandedTaskData4">
-                      <ListSubtasks todo={todo} />
-                    </div>
-                    {/* 5th row */}
-                    <div className="expandedTaskData5">
-                      <InputSubtasks todo={todo} />
-                    </div>
-                    <div className="deleteTask1">
-                      <Tooltip title="Delete Task">
+                      {/* 3rd row */}
+                      <div className="expandedTaskData3">
+                        <div className="properties1">
+                          <div>Properties</div>
+                          <form
+                            id={`propertyAdd${todo.todo_id}`}
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              updateAll(todo, "properties", newProperty.number);
+                            }}
+                          >
+                            <input
+                              autoComplete="off"
+                              placeholder="Add property"
+                              className={styles.inputProperty}
+                              type="text"
+                              list={`propertyList${number}`}
+                              id={`propertyInput${number}`}
+                              name={`propertyAdd${todo.todo_id}`}
+                              onChange={(e) =>
+                                setNewProperty({
+                                  ...newProperty,
+                                  number: e.target.value,
+                                })
+                              }
+                            />
+                            <datalist id={`propertyList${number}`}>
+                              {properties.map((ppty) => (
+                                <option value={ppty} />
+                              ))}
+                            </datalist>
+                          </form>
+                          {todo.properties.map((data) => (
+                            <Chip
+                              label={data}
+                              key={data}
+                              onDelete={(e) => {
+                                e.preventDefault();
+                                updateAll(todo, "propertyDelete", data);
+                              }}
+                              size="small"
+                              variant="outlined"
+                              className={styles.propertyChip}
+                              deleteIcon={
+                                <CloseIcon className={styles.close} />
+                              }
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      {/* 4th row */}
+                      <div className="expandedTaskData4">
+                        <ListSubtasks todo={todo} />
+                      </div>
+                      {/* 5th row */}
+                      <div className="expandedTaskData5">
+                        <InputSubtasks todo={todo} />
+                      </div>
+                      <div className="deleteTask1">
+                        Delete Task
                         <DeleteRoundedIcon
                           onClick={() => deleteTodo(todo.todo_id)}
                         />
-                      </Tooltip>
-                    </div>
+                      </div>
+                    </td>
                   </tr>
                 </>
               );
             })}
         </tbody>
       </table>
+      <ToastContainer />
     </>
   );
   const OverviewTasks = (
@@ -867,7 +946,7 @@ const TaskTables = ({ name }) => {
           {todos
             .filter(
               (todo) =>
-                todo.deadline != null &&
+                todo.deadline !== null &&
                 todo.deadline.substring(0, 10) ===
                   new Date().toISOString().split("T")[0]
             )
@@ -978,7 +1057,7 @@ const TaskTables = ({ name }) => {
                       <Tooltip title="Progress">
                         <div className="progress_value">
                           {" "}
-                          {todo.progress == 0 ? (
+                          {todo.progress === 0 ? (
                             <div />
                           ) : (
                             <CircularProgress
@@ -999,13 +1078,13 @@ const TaskTables = ({ name }) => {
                           <FlagRoundedIcon
                             style={{
                               color:
-                                todo.priority == 1
+                                todo.priority === 1
                                   ? "red"
-                                  : todo.priority == 2
+                                  : todo.priority === 2
                                   ? "rgb(218, 109, 7)"
-                                  : todo.priority == 3
+                                  : todo.priority === 3
                                   ? "rgb(255, 217, 0)"
-                                  : todo.priority == 4
+                                  : todo.priority === 4
                                   ? "rgb(27, 228, 1)"
                                   : "white",
                             }}
@@ -1020,11 +1099,7 @@ const TaskTables = ({ name }) => {
                         </div>
                       </Tooltip>
                     </td>
-                    {/*
-                    <td>
-                      <EditTodo todo={todo} />
-                    </td>
-                    */}
+
                     <td>
                       <div className="deleteTask">
                         <Tooltip title="Delete Task">
@@ -1152,13 +1227,13 @@ const TaskTables = ({ name }) => {
                             className="priorityIcon1"
                             style={{
                               color:
-                                todo.priority == 1
+                                todo.priority === 1
                                   ? "red"
-                                  : todo.priority == 2
+                                  : todo.priority === 2
                                   ? "rgb(218, 109, 7)"
-                                  : todo.priority == 3
+                                  : todo.priority === 3
                                   ? "rgb(255, 217, 0)"
-                                  : todo.priority == 4
+                                  : todo.priority === 4
                                   ? "rgb(27, 228, 1)"
                                   : "white",
                             }}
@@ -1184,7 +1259,7 @@ const TaskTables = ({ name }) => {
                                 if (
                                   document.getElementById(
                                     `progressInput_${todo.todo_id}`
-                                  ).value == ""
+                                  ).value === ""
                                 ) {
                                   console.log(1);
                                 } else {
@@ -1307,8 +1382,8 @@ const TaskTables = ({ name }) => {
           {todos
             .filter(
               (todo) =>
-                todo.deadline != null &&
-                todo.deadline.substring(0, 10) !=
+                todo.deadline !== null &&
+                todo.deadline.substring(0, 10) !==
                   new Date().toISOString().split("T")[0]
             )
             .map((todo) => {
@@ -1418,7 +1493,7 @@ const TaskTables = ({ name }) => {
                       <Tooltip title="Progress">
                         <div className="progress_value">
                           {" "}
-                          {todo.progress == 0 ? (
+                          {todo.progress === 0 ? (
                             <div />
                           ) : (
                             <CircularProgress
@@ -1439,13 +1514,13 @@ const TaskTables = ({ name }) => {
                           <FlagRoundedIcon
                             style={{
                               color:
-                                todo.priority == 1
+                                todo.priority === 1
                                   ? "red"
-                                  : todo.priority == 2
+                                  : todo.priority === 2
                                   ? "rgb(218, 109, 7)"
-                                  : todo.priority == 3
+                                  : todo.priority === 3
                                   ? "rgb(255, 217, 0)"
-                                  : todo.priority == 4
+                                  : todo.priority === 4
                                   ? "rgb(27, 228, 1)"
                                   : "white",
                             }}
@@ -1460,11 +1535,7 @@ const TaskTables = ({ name }) => {
                         </div>
                       </Tooltip>
                     </td>
-                    {/*
-                    <td>
-                      <EditTodo todo={todo} />
-                    </td>
-                    */}
+
                     <td>
                       <div className="deleteTask">
                         <Tooltip title="Delete Task">
@@ -1592,13 +1663,13 @@ const TaskTables = ({ name }) => {
                             className="priorityIcon1"
                             style={{
                               color:
-                                todo.priority == 1
+                                todo.priority === 1
                                   ? "red"
-                                  : todo.priority == 2
+                                  : todo.priority === 2
                                   ? "rgb(218, 109, 7)"
-                                  : todo.priority == 3
+                                  : todo.priority === 3
                                   ? "rgb(255, 217, 0)"
-                                  : todo.priority == 4
+                                  : todo.priority === 4
                                   ? "rgb(27, 228, 1)"
                                   : "white",
                             }}
@@ -1624,7 +1695,7 @@ const TaskTables = ({ name }) => {
                                 if (
                                   document.getElementById(
                                     `progressInput_${todo.todo_id}`
-                                  ).value == ""
+                                  ).value === ""
                                 ) {
                                   console.log(1);
                                 } else {
@@ -1736,6 +1807,7 @@ const TaskTables = ({ name }) => {
             })}
         </tbody>
       </table>
+      <ToastContainer />
     </>
   );
   if (name === "Ov") {

@@ -5,7 +5,7 @@ import app from "../../base";
 // Style imports
 import "../../design/TaskBox.css";
 import { Avatar } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
+
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import profile from "../../meileng.jpeg";
 import styles from "./Heading.module.css";
@@ -18,11 +18,10 @@ const theme = createMuiTheme({
   },
 });
 const Heading = () => {
-  var counter = 0;
   const user = app.auth().currentUser;
   const displayName = user.displayName;
   const [time, setTime] = useState("Morning");
-  var opac = 1;
+
   const toggleProfile = (e) => {
     e.preventDefault();
     document.getElementById("profileD").classList.toggle(`${styles.hidden}`);

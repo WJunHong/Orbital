@@ -45,7 +45,7 @@
 }
 
 .deleteButton:hover {
-  background-color: #4a1a57 !important;
+  background-color: #d23b3b !important;
 }
 .deleteButton:active {
   outline: none !important;
@@ -273,4 +273,3 @@
 .clearSortButton:hover {
   cursor: pointer;
 }
-

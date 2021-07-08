@@ -1,5 +1,5 @@
 // Imports
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import app from "../../base";
 
 import EventNoteIcon from "@material-ui/icons/EventNote";
@@ -7,25 +7,39 @@ import ExploreIcon from "@material-ui/icons/Explore";
 import AllInboxIcon from "@material-ui/icons/AllInbox";
 import styles from "./SideBar.module.css";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import CloseIcon from "@material-ui/icons/Close";
+
 import Button from "@material-ui/core/Button";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 /**
  * A functional component representing a side bar
  * @returns JSX of a sidebar component
  */
-function SideBar({ name }) {
+function SideBar({ match }) {
+  // console.log(name);
   function highlight() {
-    if (name == "/") {
+    if (match.path === "/") {
       document.querySelector(".overviewPage").style.backgroundColor = "#121e4f";
       document.querySelector(".overviewPage").style.color = "white";
-    } else if (name == "/taskpage") {
+    } else if (match.path === "/taskpage") {
       document.querySelector(".taskPage").style.backgroundColor = "#121e4f";
       document.querySelector(".taskPage").style.color = "white";
+    } else {
+      const {
+        params: { listName },
+      } = match;
+      /*
+      IDK why it cannot see the class name
+      console.log(listName);
+      document.querySelector(`.sl_${listName}`).style.backgroundColor =
+        "#121e4f";
+      document.querySelector(`.sl_${listName}`).style.color = "white";
+      */
     }
   }
   useEffect(() => highlight(), []);
-  const arr = ["CS2100", "CS2040S", "CS2030S"];
+
   const [allLists, setAllLists] = useState([]);
 
   const resetEverything = () => {
@@ -79,6 +93,15 @@ function SideBar({ name }) {
         // Reset the input field to empty upon successful task submission
         resetEverything();
         getLists();
+        toast.success(`List ${listName} added!`, {
+          position: "top-right",
+          autoClose: 1700,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
       }
     } catch (err) {
       console.error(err.message);
@@ -128,9 +151,10 @@ function SideBar({ name }) {
         </li>
         {allLists.map((list) => {
           var link = "/lists/" + list;
+
           return (
             <li className={styles.mainTask}>
-              <a href={link} id={`sl_${list}`}>
+              <a href={link} className={`sl_${list}`}>
                 <AllInboxIcon className={styles.maintaskIcon} />
                 <div>{list}</div>
               </a>
@@ -150,7 +174,7 @@ function SideBar({ name }) {
         >
           <div
             id="addList123"
-            input
+            input="true"
             type="text"
             className={styles.addListName}
             contentEditable
@@ -172,6 +196,7 @@ function SideBar({ name }) {
           </Button>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 }

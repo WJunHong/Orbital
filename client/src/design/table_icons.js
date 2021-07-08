@@ -13,6 +13,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import LockOpenRoundedIcon from "@material-ui/icons/LockOpenRounded";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
 import TextField from "@material-ui/core/TextField";
+import DeleteOutlineRoundedIcon from "@material-ui/icons/DeleteOutlineRounded";
 export {
   CheckBoxOutlineBlankOutlinedIcon,
   AlarmIcon,
@@ -28,5 +29,6 @@ export {
   CloseIcon,
   LockOpenRoundedIcon,
   LockRoundedIcon,
-  TextField
+  TextField,
+  DeleteOutlineRoundedIcon,
 };

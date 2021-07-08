@@ -36,7 +36,7 @@
   padding-left: 0px;
   margin-bottom: 4px;
   width: 540px;
-  grid-template-columns: 1fr 5fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 5fr 1fr 1fr 1fr 1fr;
   min-width: 400px;
 }
 
@@ -303,13 +303,17 @@
   width: 540px !important;
   background-color: #242424;
 }
+.expandedTaskData td {
+  padding: 0px;
+  border-style: none;
+}
 .expandedTaskData1 {
   margin-top: 8px;
   margin-bottom: 16px;
   width: 540px;
   height: fit-content;
   display: grid;
-  grid-template-columns: 32px 476px 32px;
+  grid-template-columns: 45px 420px 75px;
 }
 
 .checkbox1 {
@@ -360,6 +364,7 @@
 .priorityIcon1 {
   margin-left: 8px;
   margin-right: 8px;
+  cursor: pointer;
 }
 
 .leftSide1 {
@@ -443,24 +448,14 @@
   color: #9c9c9c;
   font-size: 14px;
   width: 270px;
+  margin-left: 8px;
   justify-content: space-evenly;
 }
 .progressSlider1 {
   width: 200px !important;
   margin-left: 20px;
 }
-.progressLock1 {
-  width: 16px;
-  height: 16px;
-  margin-left: 16px;
-  cursor: pointer;
-}
-.progressLock2 {
-  width: 16px;
-  height: 16px;
-  margin-left: 16px;
-  cursor: pointer;
-}
+
 .properties1 {
   margin-left: 8px;
   color: #9c9c9c;
@@ -479,6 +474,10 @@
   justify-content: flex-end;
   align-items: flex-end;
   color: rgb(180, 34, 34);
+  margin-top: 20px;
+  margin-bottom: 8px;
+  margin-right: 8px;
+  font-size: 12px;
 }
 
 .deleteTask1:hover {

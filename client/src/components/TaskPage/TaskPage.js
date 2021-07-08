@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 
 import "../../design/TaskBox.css";
 import styles from "./TaskPage.module.css";
@@ -10,7 +10,7 @@ import TabBody from "../TabBody";
 import TaskTables from "../TaskTables";
 
 const TaskPage = ({ match }) => {
-  if (match.path == "/lists/:listName") {
+  if (match.path === "/lists/:listName") {
     const {
       params: { listName },
     } = match;

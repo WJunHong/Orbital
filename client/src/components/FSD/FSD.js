@@ -4,7 +4,7 @@ import app from "../../base";
 import Fab from "@material-ui/core/Fab";
 import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import SortRoundedIcon from "@material-ui/icons/SortRounded";
-import DeleteForeverRoundedIcon from "@material-ui/icons/DeleteForeverRounded";
+import HighlightOffRoundedIcon from "@material-ui/icons/HighlightOffRounded";
 import ClearIcon from "@material-ui/icons/Clear";
 import Slider from "@material-ui/core/Slider";
 import { createMuiTheme } from "@material-ui/core/styles";
@@ -94,7 +94,7 @@ const FSD = ({ name, todos }) => {
   });
 
   const handleClick = (e, num) => {
-    if (e.target.style.backgroundColor != "black") {
+    if (e.target.style.backgroundColor !== "black") {
       e.target.style.backgroundColor = "black";
     } else {
       e.target.style.backgroundColor = "#414141";
@@ -196,16 +196,16 @@ const FSD = ({ name, todos }) => {
 
   const handleSelect = (str, property, arr, set) => {
     var newSelection = null;
-    if (str == "priority" || str == "property") {
+    if (str === "priority" || str === "property") {
       // If there is already a selection for the item
       const isSelected = arr.includes(property);
       if (isSelected) {
-        newSelection = arr.filter((currProperty) => currProperty != property);
+        newSelection = arr.filter((currProperty) => currProperty !== property);
       } else {
         newSelection = [...arr, property];
       }
       set(newSelection);
-    } else if (str == "progress") {
+    } else if (str === "progress") {
       newSelection = property;
       set(newSelection);
     }
@@ -243,6 +243,10 @@ const FSD = ({ name, todos }) => {
           ...filterObj,
           properties: newSelection,
         };
+        break;
+      default:
+        console.log("ok");
+        break;
     }
     localStorage.setItem(`filter-${name}`, JSON.stringify(filter));
   };
@@ -270,7 +274,7 @@ const FSD = ({ name, todos }) => {
 
   const sortStyle = (e, item) => {
     e.preventDefault();
-    if (item != sortSelection) {
+    if (item !== sortSelection) {
       document
         .querySelector(`#sort-${item}`)
         .classList.add(`${styles.clickedSortOption}`);
@@ -290,10 +294,10 @@ const FSD = ({ name, todos }) => {
     // Initialize something
     var newSort = null;
     // For sorting button
-    if (str == "sort") {
+    if (str === "sort") {
       // If the item is already in the sort Selection
-      if (item == com) {
-        if (item == "dateAdded") {
+      if (item === com) {
+        if (item === "dateAdded") {
           // Do nothing
         } else {
           set("dateAdded");
@@ -305,7 +309,7 @@ const FSD = ({ name, todos }) => {
       }
       // For arrow button
     } else {
-      if (item != com) {
+      if (item !== com) {
         set(item);
         newSort = item;
       }
@@ -323,6 +327,9 @@ const FSD = ({ name, todos }) => {
           sort: sortSelection,
           direction: newSort,
         };
+        break;
+      default:
+        console.log("ok");
         break;
     }
     localStorage.setItem(`sort-${name}`, JSON.stringify(sortInfo));
@@ -349,7 +356,6 @@ const FSD = ({ name, todos }) => {
   // Called when rendered, adding or deleting a task
   useEffect(() => getProperties(), [todos]);
   useEffect(() => assignSort(), []);
-  //useEffect(() => console.log(sortSelection), [sortSelection]);
   //Testing
   return (
     <div className={styles.buttonZs}>
@@ -395,13 +401,13 @@ const FSD = ({ name, todos }) => {
                   });
                 }}
               >
-                <DeleteForeverRoundedIcon />
+                <HighlightOffRoundedIcon />
               </Fab>
             </Tooltip>
-              <ConfirmDialog
-                confirmDialog={confirmDialog}
-                setConfirmDialog={setConfirmDialog}
-              />
+            <ConfirmDialog
+              confirmDialog={confirmDialog}
+              setConfirmDialog={setConfirmDialog}
+            />
           </Fragment>
         ) : (
           <Fragment></Fragment>
@@ -573,7 +579,7 @@ const FSD = ({ name, todos }) => {
                 id="sort-dateAdded"
               >
                 Date Added{" "}
-                {direction == "descending"
+                {direction === "descending"
                   ? "(Latest - Oldest)"
                   : "(Oldest - Latest)"}
               </li>
@@ -588,24 +594,24 @@ const FSD = ({ name, todos }) => {
                   id={`sort-${item}`}
                 >
                   {item}
-                  {item != "Alphabetical"
+                  {item !== "Alphabetical"
                     ? ""
-                    : direction == "descending"
+                    : direction === "descending"
                     ? " (Z-A)"
                     : " (A-Z)"}
-                  {item != "Priority"
+                  {item !== "Priority"
                     ? ""
-                    : direction == "descending"
+                    : direction === "descending"
                     ? " (Highest-Lowest)"
                     : " (Lowest-Highest)"}
-                  {item != "Progress"
+                  {item !== "Progress"
                     ? ""
-                    : direction == "descending"
+                    : direction === "descending"
                     ? " (Highest-Lowest)"
                     : " (Lowest-Highest)"}
-                  {item != "Deadline"
+                  {item !== "Deadline"
                     ? ""
-                    : direction == "descending"
+                    : direction === "descending"
                     ? " (Furthest-Closest)"
                     : " (Closest-Furthest)"}
                 </li>
@@ -620,7 +626,7 @@ const FSD = ({ name, todos }) => {
                 id="sort-todoDate"
               >
                 Todo Date{" "}
-                {direction == "descending"
+                {direction === "descending"
                   ? "(Furthest - Closest)"
                   : "(Closest - Furthest)"}
               </li>
@@ -629,7 +635,7 @@ const FSD = ({ name, todos }) => {
               Sorted by{" "}
               <span className={styles.spanDirection}>{direction}</span>
               <div>
-                {direction == "descending" ? (
+                {direction === "descending" ? (
                   <ArrowDownwardRoundedIcon
                     onClick={(e) => {
                       e.preventDefault();

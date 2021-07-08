@@ -1,7 +1,9 @@
 // Imports
 import React, { Fragment, useEffect, useState } from "react";
 import styles from "./Subtasks.module.css";
-import {DeleteRoundedIcon, Tooltip} from "../../design/table_icons";
+import { DeleteOutlineRoundedIcon, Tooltip } from "../../design/table_icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 /**
  * Component that handles listing of subtasks.
@@ -30,14 +32,32 @@ const ListSubtasks = ({ todo }) => {
       const description = document.querySelector(
         `#edit_subtask${subtask_id}`
       ).value;
-      if (description == "") {
+      if (description === "") {
         // do nothing
+        toast.warn("Please write something!", {
+          position: "top-right",
+          autoClose: 1700,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
       } else {
         const submitThis = { description };
         const updateSubtask = await fetch(`/subtasks/${id}/${subtask_id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(submitThis),
+        });
+        toast.success("Subtask updated!", {
+          position: "top-right",
+          autoClose: 1700,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
         });
       }
     } catch (err) {
@@ -55,6 +75,15 @@ const ListSubtasks = ({ todo }) => {
       setSubtaskList(
         subtaskList.filter((subtask) => subtask.subtask_id !== subtask_id)
       );
+      toast.error("Subtask Deleted!", {
+        position: "top-right",
+        autoClose: 1700,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      });
     } catch (err) {
       console.error(err.message);
     }
@@ -93,10 +122,12 @@ const ListSubtasks = ({ todo }) => {
                 </form>
               </td>
               <td>
-                <Tooltip title="Delete Subtask">
-                  <DeleteRoundedIcon
+                <Tooltip title="Delete Subtask" placement="right">
+                  <DeleteOutlineRoundedIcon
                     className={styles.deleteSubtask}
-                    onClick={() => deleteSubtask(todo.todo_id, subtask.subtask_id)}
+                    onClick={() =>
+                      deleteSubtask(todo.todo_id, subtask.subtask_id)
+                    }
                   />
                 </Tooltip>
               </td>
@@ -104,6 +135,7 @@ const ListSubtasks = ({ todo }) => {
           ))}
         </tbody>
       </table>
+      <ToastContainer />
     </Fragment>
   );
 };

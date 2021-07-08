@@ -1,11 +1,6 @@
 // Imports
-import React, { Fragment, useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./App.css";
 // import Home from "./Home";
 // import SignUp from "./SignUp";
