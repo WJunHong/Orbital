@@ -5,8 +5,15 @@ const pool = require("../db1");
 router.post("/", async (req, res) => {
   try {
     // Obtain the user_id and description of the task
-    const { user_id, description, startDate, todoDate, priority, properties, listName } =
-      req.body;
+    const {
+      user_id,
+      description,
+      startDate,
+      todoDate,
+      priority,
+      properties,
+      listName,
+    } = req.body;
     const newTodo = await pool.query(
       "INSERT INTO todo (user_id, description, completed, deadline,tododate,priority, properties,progress, list) VALUES($1, $2, $3, $4, $5,$6,$7,$8, $9) RETURNING *",
       [
@@ -18,7 +25,7 @@ router.post("/", async (req, res) => {
         priority,
         properties,
         0,
-        listName
+        listName,
       ]
     );
 
@@ -32,8 +39,7 @@ router.post("/", async (req, res) => {
 router.post("/lists", async (req, res) => {
   try {
     // Obtain the user_id and description of the task
-    const { user_id, listName } =
-      req.body;
+    const { user_id, listName } = req.body;
     const newList = await pool.query(
       "INSERT INTO lists (user_id, list) VALUES($1, $2) RETURNING *",
       [user_id, listName]
@@ -93,7 +99,7 @@ router.delete("/:list/subtasks", async (req, res) => {
 });
 
 // Delete a list
-router.delete("/:list", async (req, res) => {
+router.delete("/lists/:list", async (req, res) => {
   try {
     const { list } = req.params;
     const { user_id } = req.headers;

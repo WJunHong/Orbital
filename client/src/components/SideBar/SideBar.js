@@ -138,7 +138,7 @@ function SideBar({ match }) {
           </a>
         </li>
         <li className={styles.calendar}>
-          <a href="/">
+          <a href="/calendar">
             <EventNoteIcon className={styles.calendarIcon} />
             <div>Calendar</div>
           </a>

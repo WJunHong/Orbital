@@ -184,7 +184,7 @@ const FSD = ({ name, todos }) => {
         headers: { user_id },
       });
 
-      const deleteList = await fetch(`/todos/${name}/`, {
+      const deleteList = await fetch(`/todos/lists/${name}/`, {
         method: "DELETE",
         headers: { user_id },
       });

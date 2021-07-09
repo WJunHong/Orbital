@@ -1,3 +1,5 @@
+import "devextreme/dist/css/dx.common.css";
+import "devextreme/dist/css/dx.light.css";
 // Imports
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -15,6 +17,7 @@ import Login from "./components/Login/Login";
 import Register from "./components/Register";
 import Overview from "./components/Overview";
 import Profile from "./components/Profile";
+import Calendar from "./components/Calendar";
 
 /**
  * Functional Component of our main app
@@ -29,6 +32,7 @@ function App() {
           <PrivateRoute exact path="/taskpage" component={TaskPage} />
           <PrivateRoute exact path="/profile" component={Profile} />
           <PrivateRoute exact path="/lists/:listName" component={TaskPage} />
+          <PrivateRoute exact path="/calendar" component={Calendar} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
         </div>
