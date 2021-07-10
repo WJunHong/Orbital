@@ -51,9 +51,10 @@ const CustomColorCheckbox = withStyles({
 Filter pop-up
 Sort pop up
 */
-const FSD = ({ name, todos }) => {
+const FSD = ({ name, todos, listName }) => {
+  const storageName = name + '/' + (listName == null ? "" : listName);
   var filterObj;
-  if (localStorage.getItem(`filter-${name}`) == null) {
+  if (localStorage.getItem(`filter-${storageName}`) == null) {
     filterObj = {
       priority: [],
       deadline: [null, null],
@@ -62,12 +63,12 @@ const FSD = ({ name, todos }) => {
       properties: [],
     };
   } else {
-    filterObj = JSON.parse(localStorage.getItem(`filter-${name}`));
+    filterObj = JSON.parse(localStorage.getItem(`filter-${storageName}`));
   }
   var sortVariable =
-    localStorage.getItem(`sort-${name}`) == null
+    localStorage.getItem(`sort-${storageName}`) == null
       ? { sort: "dateAdded", direction: "descending" }
-      : JSON.parse(localStorage.getItem(`sort-${name}`));
+      : JSON.parse(localStorage.getItem(`sort-${storageName}`));
 
   const initialPriorities = [1, 2, 3, 4, 5];
   const initialSort = ["Alphabetical", "Priority", "Progress", "Deadline"];
@@ -109,7 +110,7 @@ const FSD = ({ name, todos }) => {
       ...filterObj,
       priority: [],
     };
-    localStorage.setItem(`filter-${name}`, JSON.stringify(newFilterObj));
+    localStorage.setItem(`filter-${storageName}`, JSON.stringify(newFilterObj));
   };
   const handleChange = (event, newValue) => {
     handleSelect("progress", newValue, progress, setProgress);
@@ -121,7 +122,7 @@ const FSD = ({ name, todos }) => {
       ...filterObj,
       progress: [0, 100],
     };
-    localStorage.setItem(`filter-${name}`, JSON.stringify(newFilterObj));
+    localStorage.setItem(`filter-${storageName}`, JSON.stringify(newFilterObj));
   };
 
   const clearDeadlines = () => {
@@ -131,7 +132,7 @@ const FSD = ({ name, todos }) => {
       ...filterObj,
       deadline: [null, null],
     };
-    localStorage.setItem(`filter-${name}`, JSON.stringify(newFilterObj));
+    localStorage.setItem(`filter-${storageName}`, JSON.stringify(newFilterObj));
   };
 
   const clearTodoDate = () => {
@@ -141,7 +142,7 @@ const FSD = ({ name, todos }) => {
       ...filterObj,
       todoDate: [null, null],
     };
-    localStorage.setItem(`filter-${name}`, JSON.stringify(newFilterObj));
+    localStorage.setItem(`filter-${storageName}`, JSON.stringify(newFilterObj));
   };
 
   const clearAllProperties = () => {
@@ -150,7 +151,7 @@ const FSD = ({ name, todos }) => {
       ...filterObj,
       properties: [],
     };
-    localStorage.setItem(`filter-${name}`, JSON.stringify(newFilterObj));
+    localStorage.setItem(`filter-${storageName}`, JSON.stringify(newFilterObj));
   };
 
   const toggleFilterOptions = () => {
@@ -248,7 +249,7 @@ const FSD = ({ name, todos }) => {
         console.log("ok");
         break;
     }
-    localStorage.setItem(`filter-${name}`, JSON.stringify(filter));
+    localStorage.setItem(`filter-${storageName}`, JSON.stringify(filter));
   };
 
   const getProperties = async () => {
@@ -332,10 +333,10 @@ const FSD = ({ name, todos }) => {
         console.log("ok");
         break;
     }
-    localStorage.setItem(`sort-${name}`, JSON.stringify(sortInfo));
+    localStorage.setItem(`sort-${storageName}`, JSON.stringify(sortInfo));
   };
   const assignSort = () => {
-    if (localStorage.getItem(`sort-${name}`) == null) {
+    if (localStorage.getItem(`sort-${storageName}`) == null) {
       document
         .querySelector(`#sort-dateAdded`)
         .classList.add(`${styles.clickedSortOption}`);
@@ -351,7 +352,7 @@ const FSD = ({ name, todos }) => {
     setSS("dateAdded");
     setDirection("descending");
     sortStyle(e, sortSelection);
-    localStorage.setItem(`sort-${name}`, JSON.stringify(newSort));
+    localStorage.setItem(`sort-${storageName}`, JSON.stringify(newSort));
   };
   // Called when rendered, adding or deleting a task
   useEffect(() => getProperties(), [todos]);

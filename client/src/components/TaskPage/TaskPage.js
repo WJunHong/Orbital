@@ -18,8 +18,8 @@ const TaskPage = ({ match }) => {
       <Background>
         <TabName name={listName} />
         <TabBody>
-          <TaskTables name={listName} />
-          <InputTodo name={listName} />
+          <TaskTables name={"lists"} listName={listName}/>
+          <InputTodo listName={listName} />
         </TabBody>
         <div className={styles.bottom}></div>
       </Background>

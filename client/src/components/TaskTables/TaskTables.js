@@ -58,7 +58,7 @@ const muiTheme1 = createMuiTheme({
     },
   },
 });
-const TaskTables = ({ name }) => {
+const TaskTables = ({ name, listName }) => {
   // Array of main tasks
   const [todos, setTodos] = useState([]);
   const [progress, setProgress] = useState({});
@@ -105,7 +105,7 @@ const TaskTables = ({ name }) => {
         const jsonData = await response.json();
         setTodos(jsonData);
       } else {
-        const response = await fetch(`/todos/${name}`, {
+        const response = await fetch(`/todos/${listName}`, {
           method: "GET",
           headers: { user_id },
         });
@@ -146,9 +146,10 @@ const TaskTables = ({ name }) => {
   };
 
   // The fetched filters object
+  const storageName = name + '/' + (listName == null ? "" : listName);
   const filter =
-    localStorage.getItem(`filter-${name}`) !== null
-      ? JSON.parse(localStorage.getItem(`filter-${name}`))
+    localStorage.getItem(`filter-${storageName}`) !== null
+      ? JSON.parse(localStorage.getItem(`filter-${storageName}`))
       : {
           priority: [],
           deadline: [null, null],
@@ -158,8 +159,8 @@ const TaskTables = ({ name }) => {
         };
 
   const sortStuff =
-    localStorage.getItem(`sort-${name}`) !== null
-      ? JSON.parse(localStorage.getItem(`sort-${name}`))
+    localStorage.getItem(`sort-${storageName}`) !== null
+      ? JSON.parse(localStorage.getItem(`sort-${storageName}`))
       : {
           sort: "dateAdded",
           direction: "descending",
@@ -493,7 +494,7 @@ const TaskTables = ({ name }) => {
 
   const MainTask = (
     <>
-      <FSD name={name} todos={todos} />
+      <FSD name={name} todos={todos} listName={listName} />
       <table className="table task_table todo_table">
         <thead>
           <tr className={styles.topBorder}></tr>
