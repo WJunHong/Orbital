@@ -17,8 +17,8 @@ import "react-toastify/dist/ReactToastify.css";
  * @returns JSX of a sidebar component
  */
 function SideBar({ match }) {
-  // console.log(name);
-  function highlight() {
+  const [allLists, setAllLists] = useState([]);
+  const highlight = () => {
     if (match.path === "/") {
       document.querySelector(".overviewPage").style.backgroundColor = "#121e4f";
       document.querySelector(".overviewPage").style.color = "white";
@@ -26,21 +26,8 @@ function SideBar({ match }) {
       document.querySelector(".taskPage").style.backgroundColor = "#121e4f";
       document.querySelector(".taskPage").style.color = "white";
     } else {
-      const {
-        params: { listName },
-      } = match;
-      /*
-      IDK why it cannot see the class name
-      console.log(listName);
-      document.querySelector(`.sl_${listName}`).style.backgroundColor =
-        "#121e4f";
-      document.querySelector(`.sl_${listName}`).style.color = "white";
-      */
     }
-  }
-  useEffect(() => highlight(), []);
-
-  const [allLists, setAllLists] = useState([]);
+  };
 
   const resetEverything = () => {
     toggleAddList();
@@ -119,11 +106,16 @@ function SideBar({ match }) {
       const jsonData = await response.json();
       if (jsonData !== null) {
         setAllLists(jsonData);
+        const {
+          params: { listName },
+        } = match;
       }
     } catch (err) {
       console.log(err);
     }
   };
+  useEffect(() => highlight(), []);
+
   useEffect(() => {
     getLists();
   }, [allLists]);
@@ -154,7 +146,7 @@ function SideBar({ match }) {
 
           return (
             <li className={styles.mainTask}>
-              <a href={link} className={`sl_${list}`}>
+              <a href={link} className={`SL${list}`}>
                 <AllInboxIcon className={styles.maintaskIcon} />
                 <div>{list}</div>
               </a>

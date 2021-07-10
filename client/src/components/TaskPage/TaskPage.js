@@ -18,7 +18,7 @@ const TaskPage = ({ match }) => {
       <Background>
         <TabName name={listName} />
         <TabBody>
-          <TaskTables name={listName} />
+          <TaskTables page={"list"} name={listName} />
           <InputTodo name={listName} />
         </TabBody>
         <div className={styles.bottom}></div>
@@ -29,7 +29,7 @@ const TaskPage = ({ match }) => {
       <Background>
         <TabName name={"Main Tasks"} />
         <TabBody>
-          <TaskTables name={"mt"} />
+          <TaskTables page={"mt"} name={"mt"} />
           <InputTodo />
         </TabBody>
         <div className={styles.bottom}></div>

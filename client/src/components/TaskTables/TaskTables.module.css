@@ -86,3 +86,11 @@
 .inputProperty:active {
   outline: none;
 }
+.moveList {
+  margin-left: 8px;
+  display: inline-block;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  color: #9c9c9c;
+  font-size: 14px;
+}

@@ -58,12 +58,13 @@ const muiTheme1 = createMuiTheme({
     },
   },
 });
-const TaskTables = ({ name }) => {
+const TaskTables = ({ page, name }) => {
   // Array of main tasks
   const [todos, setTodos] = useState([]);
   const [progress, setProgress] = useState({});
   const [newProperty, setNewProperty] = useState({});
   const [properties, setProperties] = useState([]);
+  const [lists, setLists] = useState([]);
 
   const getProperties = async () => {
     try {
@@ -90,7 +91,8 @@ const TaskTables = ({ name }) => {
       const user = app.auth().currentUser;
       const user_id = user.uid;
       // Calls the GET all tasks route method
-      if (name === "mt") {
+      if (name === "mt" && page === "mt") {
+        document.title = "Tickaholic | Main Tasks";
         const response = await fetch("/todos", {
           method: "GET",
           headers: { user_id },
@@ -98,6 +100,7 @@ const TaskTables = ({ name }) => {
         const jsonData = await response.json();
         setTodos(jsonData);
       } else if (name === "Ov") {
+        document.title = "Tickaholic | Overview";
         const response = await fetch("/filter/todos", {
           method: "GET",
           headers: { user_id },
@@ -105,6 +108,7 @@ const TaskTables = ({ name }) => {
         const jsonData = await response.json();
         setTodos(jsonData);
       } else {
+        document.title = `Tickaholic | ${name}`;
         const response = await fetch(`/todos/${name}`, {
           method: "GET",
           headers: { user_id },
@@ -116,7 +120,23 @@ const TaskTables = ({ name }) => {
       console.error(err.message);
     }
   };
+  const getLists = async () => {
+    try {
+      const user = app.auth().currentUser;
+      const user_id = user.uid;
+      const response = await fetch("/todos/lists", {
+        method: "GET",
+        headers: { user_id },
+      });
 
+      const jsonData = await response.json();
+      if (jsonData !== null) {
+        setLists(jsonData);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const deleteTodo = async (id) => {
     try {
       // Calls the DELETE task route method
@@ -490,7 +510,9 @@ const TaskTables = ({ name }) => {
     getTodos();
   }, [todos]);
   useEffect(() => getProperties(), [todos]);
-
+  useEffect(() => {
+    getLists();
+  }, [lists]);
   const MainTask = (
     <>
       <FSD name={name} todos={todos} />
@@ -702,11 +724,28 @@ const TaskTables = ({ name }) => {
                             if (e.key === "Enter") {
                               e.preventDefault();
                               if (e.target.textContent === "") {
+                                toast.warn(`Please write something!`, {
+                                  position: "top-right",
+                                  autoClose: 2000,
+                                  hideProgressBar: false,
+                                  closeOnClick: true,
+                                  pauseOnHover: false,
+                                  draggable: false,
+                                  progress: undefined,
+                                });
                                 e.target.textContent = todo.description;
                               } else if (
                                 e.target.textContent === todo.description
                               ) {
-                                // do nothing
+                                toast.warn(`Nothing changed bro`, {
+                                  position: "top-right",
+                                  autoClose: 2000,
+                                  hideProgressBar: false,
+                                  closeOnClick: true,
+                                  pauseOnHover: false,
+                                  draggable: false,
+                                  progress: undefined,
+                                });
                               } else {
                                 updateAll(
                                   todo,
@@ -917,6 +956,27 @@ const TaskTables = ({ name }) => {
                       {/* 5th row */}
                       <div className="expandedTaskData5">
                         <InputSubtasks todo={todo} />
+                      </div>
+                      {/* 6th row */}
+                      <div className="expandedTaskData6">
+                        <div className={styles.moveList}>Move to List</div>
+                        <form>
+                          <select>
+                            {lists
+                              .filter((i) =>
+                                // If you are in a list, dont include that list in the options
+                                name !== "mt" || name !== "Ov"
+                                  ? i !== name
+                                  : true
+                              )
+                              .map((list) => {
+                                return <option>{list}</option>;
+                              })}
+                          </select>
+                        </form>
+                        <form>
+                          <input type="submit" value="Delete from list" />
+                        </form>
                       </div>
                       <div className="deleteTask1">
                         Delete Task
@@ -1150,11 +1210,28 @@ const TaskTables = ({ name }) => {
                           if (e.key === "Enter") {
                             e.preventDefault();
                             if (e.target.textContent === "") {
+                              toast.warn(`Please write something!`, {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: false,
+                                draggable: false,
+                                progress: undefined,
+                              });
                               e.target.textContent = todo.description;
                             } else if (
                               e.target.textContent === todo.description
                             ) {
-                              // do nothing
+                              toast.warn(`Nothing changed bro`, {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: false,
+                                draggable: false,
+                                progress: undefined,
+                              });
                             } else {
                               updateAll(
                                 todo,
@@ -1586,11 +1663,28 @@ const TaskTables = ({ name }) => {
                           if (e.key === "Enter") {
                             e.preventDefault();
                             if (e.target.textContent === "") {
+                              toast.warn(`Please write something!`, {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: false,
+                                draggable: false,
+                                progress: undefined,
+                              });
                               e.target.textContent = todo.description;
                             } else if (
                               e.target.textContent === todo.description
                             ) {
-                              // do nothing
+                              toast.warn(`Nothing changed bro`, {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: false,
+                                draggable: false,
+                                progress: undefined,
+                              });
                             } else {
                               updateAll(
                                 todo,

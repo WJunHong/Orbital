@@ -309,7 +309,7 @@
 }
 .expandedTaskData1 {
   margin-top: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   width: 540px;
   height: fit-content;
   display: grid;
@@ -350,7 +350,7 @@
   display: grid;
   width: 540px;
   grid-template-columns: 270px 270px;
-  border-top: 1px solid #9c9c9c50;
+  /* border-top: 1px solid #9c9c9c50;*/
   padding-top: 16px;
 }
 
@@ -378,7 +378,7 @@
 .priority1 {
   height: 64px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 .todo_date1 {
   color: #9c9c9c;
@@ -414,7 +414,7 @@
 .deadlineBox1 {
   color: #9c9c9c;
   display: flex !important;
-  align-items: center;
+  align-items: flex-start;
   font-weight: 700;
 }
 
@@ -453,7 +453,8 @@
 }
 .progressSlider1 {
   width: 200px !important;
-  margin-left: 20px;
+  margin-top: 8px;
+  margin-left: 8px;
 }
 
 .properties1 {
