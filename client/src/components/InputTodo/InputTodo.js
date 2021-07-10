@@ -20,7 +20,7 @@ import { Tooltip } from "../../design/table_icons";
  * A functional component representing the input of a task
  * @returns JSX of input field and add button
  */
-const InputToDo = ({ name }) => {
+const InputToDo = ({ listName }) => {
   // Description of a task
   const [descrip, setDescrip] = useState("");
   const [startDate, setStartDate] = useState(null);
@@ -69,7 +69,6 @@ const InputToDo = ({ name }) => {
         // Fetches user_id
         const user = app.auth().currentUser;
         const user_id = user.uid;
-        const listName = name;
 
         // Sends a request to create the new task in server
         const body = {

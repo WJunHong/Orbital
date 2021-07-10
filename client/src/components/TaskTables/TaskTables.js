@@ -58,7 +58,7 @@ const muiTheme1 = createMuiTheme({
     },
   },
 });
-const TaskTables = ({ page, name }) => {
+const TaskTables = ({ name, listName }) => {
   // Array of main tasks
   const [todos, setTodos] = useState([]);
   const [progress, setProgress] = useState({});
@@ -91,7 +91,7 @@ const TaskTables = ({ page, name }) => {
       const user = app.auth().currentUser;
       const user_id = user.uid;
       // Calls the GET all tasks route method
-      if (name === "mt" && page === "mt") {
+      if (listName === "mt" && name === "mt") {
         document.title = "Tickaholic | Main Tasks";
         const response = await fetch("/todos", {
           method: "GET",
@@ -108,8 +108,8 @@ const TaskTables = ({ page, name }) => {
         const jsonData = await response.json();
         setTodos(jsonData);
       } else {
-        document.title = `Tickaholic | ${name}`;
-        const response = await fetch(`/todos/${name}`, {
+        document.title = `Tickaholic | ${listName}`;
+        const response = await fetch(`/todos/${listName}`, {
           method: "GET",
           headers: { user_id },
         });
@@ -166,9 +166,10 @@ const TaskTables = ({ page, name }) => {
   };
 
   // The fetched filters object
+  const storageName = name + "/" + (listName == null ? "" : listName);
   const filter =
-    localStorage.getItem(`filter-${name}`) !== null
-      ? JSON.parse(localStorage.getItem(`filter-${name}`))
+    localStorage.getItem(`filter-${storageName}`) !== null
+      ? JSON.parse(localStorage.getItem(`filter-${storageName}`))
       : {
           priority: [],
           deadline: [null, null],
@@ -178,8 +179,8 @@ const TaskTables = ({ page, name }) => {
         };
 
   const sortStuff =
-    localStorage.getItem(`sort-${name}`) !== null
-      ? JSON.parse(localStorage.getItem(`sort-${name}`))
+    localStorage.getItem(`sort-${storageName}`) !== null
+      ? JSON.parse(localStorage.getItem(`sort-${storageName}`))
       : {
           sort: "dateAdded",
           direction: "descending",
@@ -515,7 +516,7 @@ const TaskTables = ({ page, name }) => {
   }, [lists]);
   const MainTask = (
     <>
-      <FSD name={name} todos={todos} />
+      <FSD name={name} todos={todos} listName={listName} />
       <table className="table task_table todo_table">
         <thead>
           <tr className={styles.topBorder}></tr>
@@ -966,7 +967,7 @@ const TaskTables = ({ page, name }) => {
                               .filter((i) =>
                                 // If you are in a list, dont include that list in the options
                                 name !== "mt" || name !== "Ov"
-                                  ? i !== name
+                                  ? i !== listName
                                   : true
                               )
                               .map((list) => {
