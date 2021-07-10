@@ -472,16 +472,71 @@
 
 .deleteTask1 {
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  color: rgb(180, 34, 34);
+  justify-content: space-between;
   margin-top: 20px;
   margin-bottom: 8px;
   margin-right: 8px;
   font-size: 12px;
+  margin-left: 8px;
+}
+.deleteTask1 div {
+  color: rgb(180, 34, 34);
+  display: flex;
+  align-items: flex-end;
+}
+.deleteTask1 div:hover {
+  color: rgb(250, 46, 46);
+  cursor: pointer;
 }
 
-.deleteTask1:hover {
-  color: rgb(250, 46, 46);
+.expandedTaskData6 {
+  display: flex;
+  flex-direction: column;
+}
+.expandedTaskData6 form {
+  height: 56px;
+  margin-left: 8px;
+  margin-top: 8px;
+}
+.moveList1 {
+  background-color: #5a5a5a;
+  color: white;
+  width: 120px;
+  outline: none;
+  font-family: "Nunito", sans-serif;
+}
+.moveList1:active {
+  outline: none;
+}
+.moveListSubmit1 {
+  color: white;
+  background-color: #00000000;
+  outline: none;
+  border: none;
+  margin-left: 8px;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 8px;
+}
+.moveListSubmit1:hover {
+  background-color: #383838;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+.deleteTask1 form {
+  display: flex;
+  align-items: center;
+  color: rgb(150, 0, 0);
+}
+.deleteTask1 form:hover {
+  color: rgb(240, 0, 0);
+}
+.deleteFromList1 {
+  color: white;
+  background-color: #00000000;
+  border: none;
+  font-weight: bold;
   cursor: pointer;
 }
