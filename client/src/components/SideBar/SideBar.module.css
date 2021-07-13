@@ -144,5 +144,7 @@
 .addListName:active {
   outline: none;
 }
-.addListName:focus {
+.listTabs {
+  max-height: 300px;
+  overflow-y: auto;
 }

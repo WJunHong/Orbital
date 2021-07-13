@@ -48,7 +48,7 @@ const Heading = () => {
         <nav className={styles.heading}>
           <a href="/" className={styles.logo}></a>
           <div className={styles.navigation}>
-            <a href="#">HOME</a>
+            <a href="/home">HOME</a>
             <a href="#">LEARN</a>
             <a href="#">SETTINGS</a>
           </div>

@@ -141,18 +141,20 @@ function SideBar({ match }) {
             <div>Main Tasks</div>
           </a>
         </li>
-        {allLists.map((list) => {
-          var link = "/lists/" + list;
+        <ul className={styles.listTabs}>
+          {allLists.map((list) => {
+            var link = "/lists/" + list;
 
-          return (
-            <li className={styles.mainTask}>
-              <a href={link} className={`SL${list}`}>
-                <AllInboxIcon className={styles.maintaskIcon} />
-                <div>{list}</div>
-              </a>
-            </li>
-          );
-        })}
+            return (
+              <li className={styles.mainTask}>
+                <a href={link} className={`SL${list}`}>
+                  <AllInboxIcon className={styles.maintaskIcon} />
+                  <div>{list}</div>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
       </ul>
       <div className={styles.addListButton} onClick={(e) => toggleAddList(e)}>
         <AddBoxIcon />
