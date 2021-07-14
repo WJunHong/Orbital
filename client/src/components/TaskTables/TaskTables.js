@@ -645,7 +645,7 @@ const TaskTables = ({ name, listName }) => {
                             onChange={(date) =>
                               updateAll(todo, "deadline", date)
                             }
-                            dateFormat="yyyy-MM-dd"
+                            dateFormat="dd-MM-yyyy"
                             minDate={new Date()}
                           />
 

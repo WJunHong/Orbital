@@ -7,6 +7,7 @@ import app from "../../base";
 import React, { useEffect, useState, useCallback } from "react";
 
 import { Scheduler, View, Editing } from "devextreme-react/scheduler";
+import { Slider } from "devextreme/ui/slider"
 //import { appointments } from "./data.js";
 
 function Calendar() {
@@ -23,57 +24,91 @@ function Calendar() {
         headers: { user_id },
       });
       const jsonData = await response.json();
+      /*
       const arr = jsonData.map((todo) => {
         return {
-          title: todo.description,
+          id: todo.id,
+          description: todo.description,
           startDate: new Date("2021-07-23T08:45:00.000Z"),
           endDate: new Date("2021-07-23T09:45:00.000Z"),
+          deadline: todo.deadline,
+          tododate: todo.tododate,
+          priority: todo.priority,
+          progress: todo.progress,
+          properties: todo.properties,
+          completed: todo.completed
         };
       });
-      setTodos(arr);
+      */
+      setTodos(jsonData);
     } catch (err) {
       console.error(err.message);
     }
   };
 
-  const onAppointmentFormOpening = (e) => {
-    e.popup.option("showTitle", true);
-    e.popup.option(
+  const onAppointmentFormOpening = (data) => {
+    data.popup.option("showTitle", true);
+    data.popup.option(
       "title",
-      e.appointmentData.text ? e.appointmentData.text : "Edit task"
+      data.appointmentData.text ? data.appointmentData.text : "Edit task"
     );
 
-    const form = e.form;
-    let mainGroupItems = form.itemOption("mainGroup").items;
-    console.log(mainGroupItems);
-    if (
-      !mainGroupItems.find(function (i) {
-        return i.dataField === "phone";
-      })
-    ) {
-      mainGroupItems.push({
-        colSpan: 2,
-        label: { text: "Phone Number" },
-        editorType: "dxTextBox",
-        dataField: "phone",
-      });
-      form.itemOption("mainGroup", "items", mainGroupItems);
-    }
+    const form = data.form;
 
-    let formItems = form.option("items");
-    if (
-      !formItems.find(function (i) {
-        return i.dataField === "location";
-      })
-    ) {
-      formItems.push({
-        colSpan: 2,
-        label: { text: "Location" },
-        editorType: "dxTextBox",
-        dataField: "location",
-      });
-      form.option("items", formItems);
-    }
+    form.option('items', [
+      {
+        label: {
+          text: 'Description'
+        },
+        editorType: 'dxTextBox',
+        dataField: 'description',
+        editorOptions: {
+        }
+      }, 
+      {
+        label: {
+          text: 'Deadline'
+        },
+        editorType: 'dxDateBox',
+        dataField: 'deadline'
+      }, 
+      {
+        label: {
+          text: 'Todo date'
+        },
+        editorType: 'dxDateBox',
+        dataField: 'tododate'
+      }, 
+      {
+        label: {
+          text: 'Priority'
+        },
+        editorType: 'dxSelectBox',
+        dataField: 'priority',
+        editorOptions: {
+          items: [1,2,3,4,5]
+        }
+      }, 
+      {
+        label: {
+          text: 'Progress'
+        },
+        editorType: 'dxSlider',
+        editorOptions: {
+          value: data.progress,
+        }
+      }, 
+      {
+        label: {
+          text: 'Properties'
+        },
+        editorType: 'dxTagBox',
+        dataField: 'properties',
+        editorOptions: {
+            items: data.properties
+        }
+      }
+    ]);
   };
 
   const handlePropertyChange = useCallback((e) => {
@@ -89,7 +124,8 @@ function Calendar() {
         <Scheduler
           id="scheduler"
           dataSource={todos}
-          textExpr="title"
+          textExpr="description"
+          startDateExpr="tododate"
           allDayExpr="dayLong"
           recurrenceRuleExpr="recurrence"
           currentDate={currentDate}
@@ -97,7 +133,7 @@ function Calendar() {
           width={1000}
           height={window.innerHeight - 250}
           defaultCurrentView="month"
-          timeZone="Singapore"
+          timeZone="UTC"
           adaptivityEnabled={true}
           maxAppointmentsPerCell="auto"
           onAppointmentFormOpening={onAppointmentFormOpening}
