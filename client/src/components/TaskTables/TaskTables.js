@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import InputSubtasks from "../subtasks/InputSubtasks";
 import ListSubtasks from "../subtasks/ListSubtasks";
 import app from "../../base";
+import Slider from "./SliderComponent"
 
 import {
   CheckBoxOutlineBlankOutlinedIcon,
@@ -12,7 +13,6 @@ import {
   CircularProgress,
   ArrowDropDownRoundedIcon,
   Tooltip,
-  Slider,
   Chip,
   CloseIcon,
   RemoveCircleOutlineRoundedIcon,
@@ -791,10 +791,6 @@ const TaskTables = ({ name, listName }) => {
                                   "description",
                                   e.target.textContent
                                 );
-
-                                /*app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-});*/
                                 e.target.blur();
                               }
                             }
@@ -938,18 +934,7 @@ const TaskTables = ({ name, listName }) => {
                               %
                             </div>
                             <ThemeProvider theme={muiTheme1}>
-                              <Slider
-                                onChange={(e, val) => {
-                                  document.querySelector(
-                                    `#progressInput_${todo.todo_id}`
-                                  ).value = "";
-                                  updateAll(todo, "progress", val);
-                                }}
-                                value={todo.progress}
-                                marks={marks}
-                                getArialValueText={todo.progress + "%"}
-                                className="progressSlider1"
-                              />
+                              <Slider todo={todo} updateAll={updateAll} />
                             </ThemeProvider>
                           </div>
                         </div>
@@ -1469,18 +1454,7 @@ const TaskTables = ({ name, listName }) => {
                               %
                             </div>
                             <ThemeProvider theme={muiTheme1}>
-                              <Slider
-                                onChange={(e, val) => {
-                                  document.querySelector(
-                                    `#progressInput_${todo.todo_id}`
-                                  ).value = "";
-                                  updateAll(todo, "progress", val);
-                                }}
-                                value={todo.progress}
-                                marks={marks}
-                                getArialValueText={todo.progress + "%"}
-                                className="progressSlider1"
-                              />
+                              <Slider todo={todo} updateAll={updateAll} className="progressSlider1" />
                             </ThemeProvider>
                           </div>
                         </div>
@@ -1983,18 +1957,7 @@ const TaskTables = ({ name, listName }) => {
                               %
                             </div>
                             <ThemeProvider theme={muiTheme1}>
-                              <Slider
-                                onChange={(e, val) => {
-                                  document.querySelector(
-                                    `#progressInput_${todo.todo_id}`
-                                  ).value = "";
-                                  updateAll(todo, "progress", val);
-                                }}
-                                value={todo.progress}
-                                marks={marks}
-                                getArialValueText={todo.progress + "%"}
-                                className="progressSlider1"
-                              />
+                              <Slider todo={todo} updateAll={updateAll} className="progressSlider1" />
                             </ThemeProvider>
                           </div>
                         </div>
