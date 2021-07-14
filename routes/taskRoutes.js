@@ -10,18 +10,20 @@ router.post("/", async (req, res) => {
       description,
       startDate,
       todoDate,
+      todoEndDate,
       priority,
       properties,
       listName,
     } = req.body;
     const newTodo = await pool.query(
-      "INSERT INTO todo (user_id, description, completed, deadline,tododate,priority, properties,progress, list) VALUES($1, $2, $3, $4, $5,$6,$7,$8, $9) RETURNING *",
+      "INSERT INTO todo (user_id, description, completed, deadline,tododate,todoenddate,priority, properties,progress, list) VALUES($1, $2, $3, $4, $5,$6,$7,$8, $9, $10) RETURNING *",
       [
         user_id,
         description,
         false,
         startDate,
         todoDate,
+        todoEndDate,
         priority,
         properties,
         0,
@@ -119,7 +121,7 @@ router.get("/", async (req, res) => {
   try {
     const { user_id } = req.headers;
     const allTodos = await pool.query(
-      "SELECT user_id, todo_id, description, deadline::timestamptz + INTERVAL '8 hour' as deadline, tododate::timestamptz + INTERVAL '8 hour' as tododate, priority, progress, properties, completed FROM todo WHERE user_id = $1 AND completed = false ORDER BY todo_id ASC",
+      "SELECT user_id, todo_id, description, deadline::timestamptz + INTERVAL '8 hour' as deadline, tododate::timestamptz + INTERVAL '8 hour' as tododate, todoenddate::timestamptz + INTERVAL '8 hour' as todoenddate, priority, progress, properties, completed FROM todo WHERE user_id = $1 AND completed = false ORDER BY todo_id ASC",
       [user_id]
     );
     res.json(allTodos.rows);
@@ -180,19 +182,21 @@ router.put("/:todo_id", async (req, res) => {
       completed,
       deadline,
       tododate,
+      todoenddate,
       priority,
       progress,
       properties,
       list,
     } = req.body;
     const updateTodo = await pool.query(
-      "UPDATE todo SET description = $1, completed = $3, deadline = $4, tododate = $5, priority = $6, progress = $7, properties = $8, list = $9 WHERE todo_id = $2",
+      "UPDATE todo SET description = $1, completed = $3, deadline = $4, tododate = $5, todoenddate = $6, priority = $7, progress = $8, properties = $9, list = $10 WHERE todo_id = $2",
       [
         description,
         todo_id,
         completed,
         deadline,
         tododate,
+        todoenddate,
         priority,
         progress,
         properties,

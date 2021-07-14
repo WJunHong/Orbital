@@ -26,6 +26,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 const TZOFFSET = 28800000;
 
 const marks = [
@@ -426,6 +427,18 @@ const TaskTables = ({ name, listName }) => {
             progress: undefined,
           });
           break;
+        case "todoenddate":
+          body.todoenddate = val;
+          toast.success("Todo date updated!", {
+            position: "top-right",
+            autoClose: 1700,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
+          break;
         case "deadline":
           if (
             new Date(body.deadline).getTime() <
@@ -566,9 +579,11 @@ const TaskTables = ({ name, listName }) => {
             .map((todo) => {
               var todoDeadlineTime = new Date(todo.deadline).getTime();
               var todoDateTime = new Date(todo.tododate).getTime();
+              var todoEndDateTime = new Date(todo.todoenddate).getTime();
               var number = todo.todo_id;
               var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
               var todoDaate = new Date(todoDateTime - TZOFFSET);
+              var todoEndDate = new Date(todoEndDateTime - TZOFFSET);
               return (
                 <>
                   <tr
@@ -626,11 +641,57 @@ const TaskTables = ({ name, listName }) => {
                             onChange={(date) =>
                               updateAll(todo, "tododate", date)
                             }
-                            dateFormat="yyyy-MM-dd"
+                            dateFormat="dd-MM-yyyy"
                             maxDate={
                               todo.deadline == null ? null : todoDeadline
                             }
                             minDate={new Date()}
+                          />
+
+                          <DatePicker
+                            className="deadlineTime"
+                            placeholderText="-"
+                            selected={
+                              todo.tododate == null ? null : todoDaate
+                            }
+                            onChange={(date) =>
+                              updateAll(todo, "tododate", date)
+                            }
+                            showTimeSelect
+                            showTimeSelectOnly
+                            dateFormat="h:mm aa"
+                            timeCaption="Time"
+                          />
+                        </div>
+                        <div className="todo_date">
+                          <AlarmIcon fontSize="small" />
+                          <DatePicker
+                            className="todoDateText"
+                            placeholderText="-"
+                            selected={todo.todoenddate == null ? null : todoEndDate}
+                            onChange={(date) =>
+                              updateAll(todo, "todoenddate", date)
+                            }
+                            dateFormat="dd-MM-yyyy"
+                            maxDate={
+                              todo.deadline == null ? null : todoDeadline
+                            }
+                            minDate={new Date()}
+                          />
+
+                          <DatePicker
+                            className="deadlineTime"
+                            placeholderText="-"
+                            selected={
+                              todo.todoenddate == null ? null : todoEndDate
+                            }
+                            onChange={(date) =>
+                              updateAll(todo, "todoenddate", date)
+                            }
+                            showTimeSelect
+                            showTimeSelectOnly
+                            dateFormat="h:mm aa"
+                            timeCaption="Time"
                           />
                         </div>
                         <div className="deadlineBox">
@@ -823,10 +884,27 @@ const TaskTables = ({ name, listName }) => {
                               selected={
                                 todo.tododate == null ? null : todoDaate
                               }
+                              showTimeSelect
                               onChange={(date) =>
                                 updateAll(todo, "tododate", date)
                               }
-                              dateFormat="yyyy-MM-dd"
+                              dateFormat="dd-MM-yyyy h:mm aa"
+                              maxDate={
+                                todo.deadline == null ? null : todoDeadline
+                              }
+                              minDate={new Date()}
+                            />
+                            <DatePicker
+                              className="todoDateText1"
+                              placeholderText="----"
+                              selected={
+                                todo.todoenddate == null ? null : todoEndDate
+                              }
+                              showTimeSelect
+                              onChange={(date) =>
+                                updateAll(todo, "todoenddate", date)
+                              }
+                              dateFormat="dd-MM-yyyy h:mm aa"
                               maxDate={
                                 todo.deadline == null ? null : todoDeadline
                               }
@@ -849,7 +927,7 @@ const TaskTables = ({ name, listName }) => {
                               onChange={(date) =>
                                 updateAll(todo, "deadline", date)
                               }
-                              dateFormat="yyyy-MM-dd h:mm aa"
+                              dateFormat="dd-MM-yyyy h:mm aa"
                               minDate={new Date()}
                             />
                           </div>
@@ -1144,7 +1222,7 @@ const TaskTables = ({ name, listName }) => {
                             onChange={(date) =>
                               updateAll(todo, "tododate", date)
                             }
-                            dateFormat="yyyy-MM-dd"
+                            dateFormat="dd-MM-yyyy"
                             maxDate={
                               todo.deadline == null ? null : todoDeadline
                             }
@@ -1163,7 +1241,7 @@ const TaskTables = ({ name, listName }) => {
                             onChange={(date) =>
                               updateAll(todo, "deadline", date)
                             }
-                            dateFormat="yyyy-MM-dd"
+                            dateFormat="dd-MM-yyyy"
                             minDate={new Date()}
                           />
 
@@ -1346,7 +1424,7 @@ const TaskTables = ({ name, listName }) => {
                               onChange={(date) =>
                                 updateAll(todo, "tododate", date)
                               }
-                              dateFormat="yyyy-MM-dd"
+                              dateFormat="dd-MM-yyyy"
                               maxDate={
                                 todo.deadline == null ? null : todoDeadline
                               }
@@ -1369,7 +1447,7 @@ const TaskTables = ({ name, listName }) => {
                               onChange={(date) =>
                                 updateAll(todo, "deadline", date)
                               }
-                              dateFormat="yyyy-MM-dd h:mm aa"
+                              dateFormat="dd-MM-yyyy h:mm aa"
                               minDate={new Date()}
                             />
                           </div>
@@ -1679,7 +1757,7 @@ const TaskTables = ({ name, listName }) => {
                             onChange={(date) =>
                               updateAll(todo, "deadline", date)
                             }
-                            dateFormat="yyyy-MM-dd"
+                            dateFormat="dd-MM-yyyy"
                             minDate={new Date()}
                           />
 
@@ -1862,7 +1940,7 @@ const TaskTables = ({ name, listName }) => {
                               onChange={(date) =>
                                 updateAll(todo, "tododate", date)
                               }
-                              dateFormat="yyyy-MM-dd"
+                              dateFormat="dd-MM-yyyy"
                               maxDate={
                                 todo.deadline == null ? null : todoDeadline
                               }
@@ -1885,7 +1963,7 @@ const TaskTables = ({ name, listName }) => {
                               onChange={(date) =>
                                 updateAll(todo, "deadline", date)
                               }
-                              dateFormat="yyyy-MM-dd h:mm aa"
+                              dateFormat="dd-MM-yyyy h:mm aa"
                               minDate={new Date()}
                             />
                           </div>

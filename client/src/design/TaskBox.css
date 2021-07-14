@@ -107,7 +107,7 @@
 .todoDateText {
   margin-left: 6px;
   padding: 2px;
-  width: 90px;
+  width: fit-content;
   text-align: center;
   cursor: pointer;
   background-color: transparent !important;
@@ -385,12 +385,13 @@
   display: flex !important;
   align-items: center;
   font-weight: 700;
+  width: fit-content;
 }
 .todoDateText1 {
   margin-top: -1px;
   margin-left: 6px;
   padding: 2px;
-  width: 90px;
+  width: fit-content;
   text-align: center;
   cursor: pointer;
   background-color: transparent !important;
@@ -451,6 +452,7 @@
   font-size: 14px;
   width: 270px;
   margin-left: 8px;
+  margin-top: 50px;
   justify-content: space-evenly;
 }
 .progressSlider1 {

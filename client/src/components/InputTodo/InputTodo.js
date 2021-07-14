@@ -15,6 +15,7 @@ import Button from "@material-ui/core/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Tooltip } from "../../design/table_icons";
+import Box from '@material-ui/core/Box';
 
 /**
  * A functional component representing the input of a task
@@ -26,6 +27,7 @@ const InputToDo = ({ listName }) => {
   const [startDate, setStartDate] = useState(null);
   const [priority, setPriority] = useState(5);
   const [todoDate, setTodoDate] = useState(null);
+  const [todoEndDate, setTodoEndDate] = useState(null);
   const [properties, setProperties] = useState([]);
   const [propertyLabels, setPL] = useState([]);
 
@@ -35,6 +37,7 @@ const InputToDo = ({ listName }) => {
     setStartDate(null);
     setPriority(5);
     setTodoDate(null);
+    setTodoEndDate(null);
     setProperties([]);
     setPL([]);
     document.getElementById("something1").textContent = "";
@@ -76,6 +79,7 @@ const InputToDo = ({ listName }) => {
           description,
           startDate,
           todoDate,
+          todoEndDate,
           priority,
           properties,
           listName,
@@ -133,6 +137,7 @@ const InputToDo = ({ listName }) => {
         startDate.getDate() <= todoDate.getDate()
       ) {
         setTodoDate(null);
+        setTodoEndDate(null);
       }
       const testDate = {
         year: new Date().getFullYear(),
@@ -219,23 +224,40 @@ const InputToDo = ({ listName }) => {
   };
 
   const makeTodoDate = () => {
-    if (todoDate == null) {
+    if (todoDate == null || todoEndDate == null) {
       document.querySelector(`.alarmIcon`).style.color = "white";
     } else {
-      if (new Date().setHours(0, 0, 0, 0) === todoDate.setHours(0, 0, 0, 0)) {
+      const today = new Date();
+      if (today.getFullYear() == todoDate.getFullYear() && today.getMonth() == todoDate.getMonth()
+        && today.getDate() == todoDate.getDate()) {
         document.querySelector(`.alarmIcon`).style.color = "green";
       } else {
         document.querySelector(`.alarmIcon`).style.color = "white";
       }
-      toast.success("Todo Date added!", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-      });
+      if (todoDate != null && todoEndDate != null) {
+        if (todoDate.getTime() > todoEndDate.getTime()) {
+          setTodoEndDate(null);
+          toast.dark("Todo End Date needs to be later than Todo Start Date!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
+        } else {
+          toast.success("Todo Date added!", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
+        }
+      }
     }
   };
 
@@ -290,7 +312,7 @@ const InputToDo = ({ listName }) => {
   }, [startDate]);
   useEffect(() => {
     makeTodoDate();
-  }, [todoDate]);
+  }, [todoDate, todoEndDate]);
   return (
     <Fragment>
       <div className={styles.addTask}>
@@ -320,6 +342,42 @@ const InputToDo = ({ listName }) => {
               ></div>
               <div className={`${styles.typableArea}`}>
                 <label className={styles.deadlineBox}>
+                  <AlarmIcon
+                    className={`${styles.alarmIcon} alarmIcon`}
+                  />
+                  <DatePicker
+                    selected={todoDate}
+                    onChange={(date) => {
+                      setTodoDate(date);
+                    }}
+                    showTimeSelect
+                    timeIntervals={30}
+                    timeCaption="Time"
+                    dateFormat="dd-MM-yyyy hh:mm aa"
+                    placeholderText="Input Tododate"
+                    minDate={new Date()}
+                    maxDate={startDate == null ? null : startDate}
+                    className={`${styles.todoText}`}
+                  />
+                  <Box className={styles.dashBox}> - </Box>
+                  <DatePicker
+                    selected={todoEndDate}
+                    onChange={(date) => {
+                      setTodoEndDate(date);
+                    }}
+                    showTimeSelect
+                    timeIntervals={30}
+                    timeCaption="Time"
+                    dateFormat="dd-MM-yyyy hh:mm aa"
+                    placeholderText="Input Tododate"
+                    minDate={new Date()}
+                    maxDate={startDate == null ? null : startDate}
+                    className={`${styles.todoText}`}
+                  />
+                </label>
+              </div>
+              <div className={`${styles.typableArea}`}>
+                <label className={styles.deadlineBox}>
                   <CalendarTodayRoundedIcon
                     className={styles.deadlineIcon}
                     onClick={openCalendar}
@@ -332,7 +390,7 @@ const InputToDo = ({ listName }) => {
                     showTimeSelect
                     timeIntervals={30}
                     timeCaption="Time"
-                    dateFormat="yyyy-MM-dd hh:mm aa"
+                    dateFormat="dd-MM-yyyy hh:mm aa"
                     placeholderText="Input Deadline"
                     minDate={new Date()}
                     className={`${styles.deadlineText}`}
@@ -393,24 +451,6 @@ const InputToDo = ({ listName }) => {
                     </li>
                   </ul>
                 </div>
-              </div>
-              <div className={styles.sideButton}>
-                <DatePicker
-                  selected={todoDate}
-                  onChange={(date) => setTodoDate(date)}
-                  customInput={
-                    <div className={styles.sideButton2}>
-                      <Tooltip
-                        title="Select Todo date"
-                        placement="bottom-start"
-                      >
-                        <AlarmIcon className="alarmIcon" />
-                      </Tooltip>
-                    </div>
-                  }
-                  maxDate={startDate == null ? null : startDate}
-                  minDate={new Date()}
-                />
               </div>
             </div>
           </div>

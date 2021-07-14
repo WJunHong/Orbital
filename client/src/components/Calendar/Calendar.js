@@ -24,22 +24,6 @@ function Calendar() {
         headers: { user_id },
       });
       const jsonData = await response.json();
-      /*
-      const arr = jsonData.map((todo) => {
-        return {
-          id: todo.id,
-          description: todo.description,
-          startDate: new Date("2021-07-23T08:45:00.000Z"),
-          endDate: new Date("2021-07-23T09:45:00.000Z"),
-          deadline: todo.deadline,
-          tododate: todo.tododate,
-          priority: todo.priority,
-          progress: todo.progress,
-          properties: todo.properties,
-          completed: todo.completed
-        };
-      });
-      */
       setTodos(jsonData);
     } catch (err) {
       console.error(err.message);
