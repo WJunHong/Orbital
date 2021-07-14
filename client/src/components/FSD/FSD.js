@@ -52,7 +52,7 @@ Filter pop-up
 Sort pop up
 */
 const FSD = ({ name, todos, listName }) => {
-  const storageName = name + '/' + (listName == null ? "" : listName);
+  const storageName = name + "/" + (listName == null ? "" : listName);
   var filterObj;
   if (localStorage.getItem(`filter-${storageName}`) == null) {
     filterObj = {

@@ -11,6 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import { Paper } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import styles from "./Register.module.css";
+import KeyboardReturnRoundedIcon from "@material-ui/icons/KeyboardReturnRounded";
 
 const theme = createMuiTheme({
   typography: {
@@ -146,7 +147,13 @@ const Register = ({ history }) => {
   };
 
   return (
-    <Fragment>
+    <div className={styles.background}>
+      <div className={styles.return}>
+        <KeyboardReturnRoundedIcon />
+        <a href="/home">
+          <p>Return to Home page</p>
+        </a>
+      </div>
       <Paper elevation={10} className={styles.paperStyle}>
         <Grid
           container
@@ -267,7 +274,7 @@ const Register = ({ history }) => {
           </Grid>
         </Grid>
       </Paper>
-    </Fragment>
+    </div>
   );
 };
 

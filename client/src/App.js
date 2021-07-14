@@ -18,6 +18,7 @@ import Register from "./components/Register";
 import Overview from "./components/Overview";
 import Profile from "./components/Profile";
 import Calendar from "./components/Calendar";
+import Home from "./components/Home";
 
 /**
  * Functional Component of our main app
@@ -33,6 +34,7 @@ function App() {
           <PrivateRoute exact path="/profile" component={Profile} />
           <PrivateRoute exact path="/lists/:listName" component={TaskPage} />
           <PrivateRoute exact path="/calendar" component={Calendar} />
+          <Route exact path="/home" component={Home} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
         </div>
