@@ -1,7 +1,7 @@
 .container {
   background-color: hsl(227, 42%, 10%);
   width: 100vw;
-  height: 100vh;
+  height: 100%;
 }
 .heading {
   height: 64px;
@@ -34,6 +34,7 @@
   margin-bottom: 0px;
   margin-left: 4px;
   margin-right: 4px;
+  color: white;
 }
 .divi {
   cursor: default;
@@ -41,27 +42,42 @@
 .register {
   color: #e4d9ff;
 }
-
+.topMost {
+  display: flex;
+  padding-top: 72px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.mainImage {
+  width: 40vw;
+  height: 300px;
+  background-image: url("main.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  margin-left: 100px;
+}
 .top {
-  margin-top: 72px;
-  width: 100vw;
-  height: 450px;
+  height: max-content;
   display: flex;
   flex-direction: column;
 }
-
+.tip {
+  height: 60px;
+}
 .welcome {
   font-family: "Nunito", sans-serif;
   font-weight: bolder;
   color: rgb(228, 228, 228);
-  width: 450px;
+  width: 30vw;
   margin-left: 100px;
 }
 .welcome2 {
   font-family: "Nunito", sans-serif;
   font-weight: bolder;
   color: rgb(228, 228, 228);
-  width: 450px;
+  width: 30vw;
   margin-left: 100px;
 }
 .welcome3 {
@@ -70,14 +86,18 @@
   margin-top: 64px;
   color: rgb(228, 228, 228);
   display: inline-block;
-  width: 500px;
+  width: 35vw;
   margin-left: 100px;
 }
 .tick {
   color: #ffbd59;
 }
+.tick2 {
+  color: #ffbd59;
+  font-weight: bold;
+}
 .topButtons {
-  display: flex;
+  display: inline-flex;
   width: 270px;
   margin-left: 100px;
   justify-content: space-between;
@@ -93,36 +113,47 @@
 .button1:hover {
   background-color: #ffaf37 !important;
   bottom: 1px;
+  color: black;
+}
+.button1:active {
+  color: black;
 }
 .button2 {
   position: relative;
   width: 130px;
   border-color: #ba9eff !important;
   color: #ba9eff !important;
+  outline: none !important;
 }
 .button2:hover {
   border-color: #e4d9ff !important;
   color: #e4d9ff !important;
 }
+.button2:active {
+  outline: none !important;
+}
 .middle {
   display: flex;
   flex-direction: column;
-  width: 100vw;
+  width: 100%;
   height: fit-content;
   align-items: center;
   background-color: #03032e;
-  padding-top: 20px;
 }
 
 .featuresHead {
   display: inline-block;
   color: white;
   font-family: "Nunito", sans-serif;
+  padding-top: 20px;
 }
 .middle2 {
   width: 80vw;
   height: fit-content;
-  border: 1px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 .middleList {
   list-style: none;
@@ -141,9 +172,10 @@
   width: 35vw;
   padding-left: 20px;
   padding-top: 16px;
+  padding-right: 8px;
 }
 .middleList li:hover {
-  background-color: #34345a;
+  background-color: #181847 !important;
   transition: background-color 0.3s linear;
   cursor: pointer;
 }
@@ -205,4 +237,60 @@
   color: rgb(255, 255, 255);
   font-family: "Nunito", sans-serif;
   font-weight: 700;
+}
+.middleR {
+  display: flex;
+  align-items: center;
+}
+.middleR1 {
+  background-image: url("./list.jpg");
+  width: 400px;
+  height: 400px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.middleR2 {
+  background-image: url("./list2.png");
+  width: 400px;
+  height: 400px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.middleR3 {
+  background-image: url("./list3.png");
+  width: 400px;
+  height: 400px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.middleMid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 100px;
+}
+.middleLow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.product {
+  margin-top: 50px;
+  background-image: url("product.png");
+  background-size: contain;
+  background-position: center;
+  width: 70vw;
+  height: 400px;
+  background-repeat: no-repeat;
+  margin-bottom: 100px;
+}
+.remember {
+  margin-top: 50px;
+  background-image: url("remember.png");
+  background-size: contain;
+  background-position: center;
+  width: 70vw;
+  height: 400px;
+  background-repeat: no-repeat;
+  margin-bottom: 100px;
 }

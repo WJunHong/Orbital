@@ -7,7 +7,7 @@ import ExploreIcon from "@material-ui/icons/Explore";
 import AllInboxIcon from "@material-ui/icons/AllInbox";
 import styles from "./SideBar.module.css";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-
+import DnsRoundedIcon from "@material-ui/icons/DnsRounded";
 import Button from "@material-ui/core/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -54,11 +54,29 @@ function SideBar({ match }) {
         document
           .querySelector("#addList123")
           .setAttribute("data-placeholder", "Please type something!");
+        toast.warn(`Please type something!`, {
+          position: "top-right",
+          autoClose: 1700,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
       } else if (allLists.includes(listName)) {
         document.querySelector("#addList123").textContent = "";
         document
           .querySelector("#addList123")
           .setAttribute("data-placeholder", "List already exists!");
+        toast.warn(`List already exists!`, {
+          position: "top-right",
+          autoClose: 1700,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
       } else {
         // Fetches user_id
         const user = app.auth().currentUser;
@@ -148,7 +166,7 @@ function SideBar({ match }) {
             return (
               <li className={styles.mainTask}>
                 <a href={link} className={`SL${list}`}>
-                  <AllInboxIcon className={styles.maintaskIcon} />
+                  <DnsRoundedIcon className={styles.maintaskIcon} />
                   <div>{list}</div>
                 </a>
               </li>
@@ -178,6 +196,11 @@ function SideBar({ match }) {
                 .querySelector("#addList123")
                 .setAttribute("data-placeholder", "Untitled List")
             }
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+              }
+            }}
           ></div>
           <Button
             variant="contained"

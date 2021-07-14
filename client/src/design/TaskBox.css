@@ -387,6 +387,7 @@
   font-weight: 700;
 }
 .todoDateText1 {
+  margin-top: -1px;
   margin-left: 6px;
   padding: 2px;
   width: 90px;
@@ -419,6 +420,7 @@
 }
 
 .deadlineDate1 {
+  margin-top: -1px;
   margin-left: 6px;
   padding: 2px;
   width: 150px;

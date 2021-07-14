@@ -12,6 +12,7 @@ import { Paper } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import styles from "./Login.module.css";
 import GoogleButton from "react-google-button";
+import KeyboardReturnRoundedIcon from "@material-ui/icons/KeyboardReturnRounded";
 
 const theme = createMuiTheme({
   typography: {
@@ -101,26 +102,13 @@ const Login = ({ history }) => {
   };
 
   return (
-    <Fragment>
-      {/*<h1 className="mt-5 text-center">Login</h1>
-      <form onSubmit={onSubmitForm}>
-        <input
-          type="text"
-          name="email"
-          value={email}
-          onChange={(e) => onChange(e)}
-          className="form-control my-3"
-        />
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={(e) => onChange(e)}
-          className="form-control my-3"
-        />
-        <button class="btn btn-success btn-block">Submit</button>
-      </form>
-  <Link to="/register">register</Link>*/}
+    <div className={styles.background}>
+      <div className={styles.return}>
+        <KeyboardReturnRoundedIcon />
+        <a href="/home">
+          <p>Return to Home page</p>
+        </a>
+      </div>
       <Paper elevation={10} className={styles.paperStyle}>
         <Grid
           container
@@ -243,7 +231,7 @@ const Login = ({ history }) => {
           </Grid>
         </Grid>
       </Paper>
-    </Fragment>
+    </div>
   );
 };
 
