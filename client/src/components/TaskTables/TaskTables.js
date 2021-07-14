@@ -792,6 +792,9 @@ const TaskTables = ({ name, listName }) => {
                                   e.target.textContent
                                 );
 
+                                /*app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+});*/
                                 e.target.blur();
                               }
                             }
@@ -888,12 +891,27 @@ const TaskTables = ({ name, listName }) => {
                               <form
                                 onSubmit={(e) => {
                                   e.preventDefault();
+                                  const inputValue = document.getElementById(
+                                    `progressInput_${todo.todo_id}`
+                                  ).value;
                                   if (
-                                    document.getElementById(
-                                      `progressInput_${todo.todo_id}`
-                                    ).value === ""
+                                    isNaN(inputValue) ||
+                                    inputValue == "" ||
+                                    inputValue < 0 ||
+                                    inputValue > 100 
                                   ) {
-                                    console.log(1);
+                                    toast.warn(`Invalid progress input!`, {
+                                      position: "top-right",
+                                      autoClose: 2000,
+                                      hideProgressBar: false,
+                                      closeOnClick: true,
+                                      pauseOnHover: false,
+                                      draggable: false,
+                                      progress: undefined,
+                                    });
+                                    document.getElementById(
+                                    `progressInput_${todo.todo_id}`
+                                  ).value = "";
                                   } else {
                                     updateAll(
                                       todo,
@@ -909,8 +927,6 @@ const TaskTables = ({ name, listName }) => {
                                   className={styles.progressInput}
                                   id={`progressInput_${todo.todo_id}`}
                                   type="text"
-                                  min={0}
-                                  max={100}
                                   onChange={(e) => {
                                     setProgress({
                                       ...progress,
@@ -959,9 +975,9 @@ const TaskTables = ({ name, listName }) => {
                               name={`propertyAdd${todo.todo_id}`}
                               onChange={(e) =>
                                 setNewProperty({
-                                  ...newProperty,
-                                  number: e.target.value,
-                                })
+                                      ...newProperty,
+                                      number: e.target.value,
+                                    })
                               }
                             />
                             <datalist id={`propertyList${number}`}>
@@ -1406,12 +1422,27 @@ const TaskTables = ({ name, listName }) => {
                               <form
                                 onSubmit={(e) => {
                                   e.preventDefault();
+                                  const inputValue = document.getElementById(
+                                    `progressInput_${todo.todo_id}`
+                                  ).value;
                                   if (
-                                    document.getElementById(
-                                      `progressInput_${todo.todo_id}`
-                                    ).value === ""
+                                    isNaN(inputValue) ||
+                                    inputValue == "" ||
+                                    inputValue < 0 ||
+                                    inputValue > 100
                                   ) {
-                                    console.log(1);
+                                    toast.warn(`Invalid progress input!`, {
+                                      position: "top-right",
+                                      autoClose: 2000,
+                                      hideProgressBar: false,
+                                      closeOnClick: true,
+                                      pauseOnHover: false,
+                                      draggable: false,
+                                      progress: undefined,
+                                    });
+                                    document.getElementById(
+                                    `progressInput_${todo.todo_id}`
+                                  ).value = "";
                                   } else {
                                     updateAll(
                                       todo,
@@ -1427,8 +1458,6 @@ const TaskTables = ({ name, listName }) => {
                                   className={styles.progressInput}
                                   id={`progressInput_${todo.todo_id}`}
                                   type="text"
-                                  min={0}
-                                  max={100}
                                   onChange={(e) => {
                                     setProgress({
                                       ...progress,
