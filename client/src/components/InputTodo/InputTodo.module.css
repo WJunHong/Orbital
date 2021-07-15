@@ -83,7 +83,7 @@
 }
 
 .typableArea {
-  height: 50px;
+  height: fit-content;
 }
 /* Represents the container of the priority and todo-date*/
 .sideButton {
@@ -129,6 +129,32 @@
   padding-left: 4px;
   width: fit-content;
   border-bottom: 1px solid white;
+}
+
+.todoTime {
+  color: white;
+  background-color: #1d1d1d;
+  outline: none;
+  font-size: 14px;
+  font-family: "Nunito", sans-serif;
+  border-style: none;
+  padding-left: 4px;
+  width: 100px;
+  border-bottom: 1px solid white;
+}
+
+.alarmIcon {
+  cursor: pointer;
+}
+
+.setEndTimeText {
+  position: relative;
+  width: fit-content;
+  margin-top: 0;
+  margin-left: 30px;
+  color: white;
+  width: fit-content;
+  font-size: 12px;
 }
 
 .dashBox {
