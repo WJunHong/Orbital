@@ -107,7 +107,7 @@
 .todoDateText {
   margin-left: 6px;
   padding: 2px;
-  width: fit-content;
+  width: 100px;
   text-align: center;
   cursor: pointer;
   background-color: transparent !important;

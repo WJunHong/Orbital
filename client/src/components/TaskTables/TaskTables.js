@@ -417,6 +417,7 @@ const TaskTables = ({ name, listName }) => {
           break;
         case "tododate":
           body.tododate = val;
+          body.todoenddate = null;
           toast.success("Todo date updated!", {
             position: "top-right",
             autoClose: 1700,
@@ -654,29 +655,13 @@ const TaskTables = ({ name, listName }) => {
                             selected={
                               todo.tododate == null ? null : todoDaate
                             }
-                            onChange={(date) =>
-                              updateAll(todo, "tododate", date)
-                            }
+                            onChange={(date) => {
+                              updateAll(todo, "tododate", date);
+                            }}
                             showTimeSelect
                             showTimeSelectOnly
                             dateFormat="h:mm aa"
                             timeCaption="Time"
-                          />
-                        </div>
-                        <div className="todo_date">
-                          <AlarmIcon fontSize="small" />
-                          <DatePicker
-                            className="todoDateText"
-                            placeholderText="-"
-                            selected={todo.todoenddate == null ? null : todoEndDate}
-                            onChange={(date) =>
-                              updateAll(todo, "todoenddate", date)
-                            }
-                            dateFormat="dd-MM-yyyy"
-                            maxDate={
-                              todo.deadline == null ? null : todoDeadline
-                            }
-                            minDate={new Date()}
                           />
 
                           <DatePicker
@@ -694,6 +679,8 @@ const TaskTables = ({ name, listName }) => {
                             timeCaption="Time"
                           />
                         </div>
+                      </div>
+                      <div className="deadline">
                         <div className="deadlineBox">
                           <CalendarTodayRoundedIcon fontSize="small" />
 

@@ -110,6 +110,7 @@ function Calendar() {
           dataSource={todos}
           textExpr="description"
           startDateExpr="tododate"
+          endDateExpr="todoenddate"
           allDayExpr="dayLong"
           recurrenceRuleExpr="recurrence"
           currentDate={currentDate}
