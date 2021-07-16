@@ -11,7 +11,7 @@ import njs from "./njs.png";
 import psl from "./psql.png";
 import rct from "./react.png";
 import git from "./git.png";
-import logo from "./logo1.png";
+
 const Home = () => {
   const [selection, setSelection] = useState(1);
   const changeIt = () => {

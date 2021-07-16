@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Slider} from "../../design/table_icons";
+import { Slider } from "../../design/table_icons";
 
 const marks = [
   {
@@ -20,17 +20,18 @@ export default function SliderComponent({ todo, updateAll }) {
   };
 
   return (
-      <Slider
-        value={value}
-        aria-labelledby="continuous-slider"
-        onChange={handleChange}
-        onChangeCommitted={(e, val) => {
-          document.querySelector(`#progressInput_${todo.todo_id}`).value = "";
-          updateAll(todo, "progress", val);
-        }}
-        marks={marks}
-        getArialValueText={todo.progress + "%"}
-        className="progressSlider1"
-      />
+    <Slider
+      value={value}
+      aria-labelledby="continuous-slider"
+      onChange={handleChange}
+      onChangeCommitted={(e, val) => {
+        document.querySelector(`#progressInput_${todo.todo_id}`).value = "";
+        updateAll(todo, "progress", val);
+      }}
+      marks={marks}
+      getArialValueText={todo.progress + "%"}
+      className="progressSlider1"
+      valueLabelDisplay="auto"
+    />
   );
 }
