@@ -8,9 +8,9 @@ router.post("/", async (req, res) => {
     const {
       user_id,
       description,
-      startDate,
-      todoDate,
-      todoEndDate,
+      deadline,
+      tododate,
+      todoenddate,
       priority,
       properties,
       listName,
@@ -21,9 +21,9 @@ router.post("/", async (req, res) => {
         user_id,
         description,
         false,
-        startDate,
-        todoDate,
-        todoEndDate,
+        deadline,
+        tododate,
+        todoenddate,
         priority,
         properties,
         0,
@@ -121,7 +121,7 @@ router.get("/", async (req, res) => {
   try {
     const { user_id } = req.headers;
     const allTodos = await pool.query(
-      "SELECT user_id, todo_id, description, deadline::timestamptz + INTERVAL '8 hour' as deadline, tododate::timestamptz + INTERVAL '8 hour' as tododate, todoenddate::timestamptz + INTERVAL '8 hour' as todoenddate, priority, progress, properties, completed FROM todo WHERE user_id = $1 AND completed = false ORDER BY todo_id ASC",
+      "SELECT user_id, todo_id, description, deadline::timestamptz + INTERVAL '8 hour' as deadline, tododate::timestamptz + INTERVAL '8 hour' as tododate, todoenddate::timestamptz + INTERVAL '8 hour' as todoenddate, priority, progress, properties, completed, list FROM todo WHERE user_id = $1 AND completed = false ORDER BY todo_id ASC",
       [user_id]
     );
     res.json(allTodos.rows);
@@ -135,7 +135,7 @@ router.get("/:listName", async (req, res) => {
     const { user_id } = req.headers;
     const { listName } = req.params;
     const allTodos = await pool.query(
-      "SELECT user_id, todo_id, description, deadline::timestamptz + INTERVAL '8 hour' as deadline, tododate::timestamptz + INTERVAL '8 hour' as tododate, priority, progress, properties, completed FROM todo WHERE user_id = $1 AND completed = false AND list = $2 ORDER BY todo_id ASC",
+      "SELECT user_id, todo_id, description, deadline::timestamptz + INTERVAL '8 hour' as deadline, tododate::timestamptz + INTERVAL '8 hour' as tododate, todoenddate::timestamptz + INTERVAL '8 hour' as todoenddate, priority, progress, properties, completed, list FROM todo WHERE user_id = $1 AND completed = false AND list = $2 ORDER BY todo_id ASC",
       [user_id, listName]
     );
     res.json(allTodos.rows);

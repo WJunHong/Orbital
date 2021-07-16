@@ -383,9 +383,14 @@ const TaskTables = ({ name, listName }) => {
         body.deadline = deadline;
       }
       if (body.tododate !== null) {
-        var todoDeadlineTime = new Date(body.tododate).getTime();
-        var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
-        body.tododate = todoDeadline;
+        var todoTodoTime = new Date(body.tododate).getTime();
+        var todoTodoDate = new Date(todoTodoTime - TZOFFSET);
+        body.tododate = todoTodoDate;
+      }
+      if (body.todoenddate !== null) {
+        var todoTodoEndTime = new Date(body.todoenddate).getTime();
+        var todoTodoEndDate = new Date(todoTodoEndTime - TZOFFSET);
+        body.todoenddate = todoTodoEndDate;
       }
       switch (para) {
         case "priority":
@@ -584,7 +589,7 @@ const TaskTables = ({ name, listName }) => {
               var number = todo.todo_id;
               var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
               var todoDaate = new Date(todoDateTime - TZOFFSET);
-              var todoEndDate = new Date(todoEndDateTime - TZOFFSET);
+              var todoEndDaate = new Date(todoEndDateTime - TZOFFSET);
               return (
                 <>
                   <tr
@@ -668,7 +673,7 @@ const TaskTables = ({ name, listName }) => {
                             className="deadlineTime"
                             placeholderText="-"
                             selected={
-                              todo.todoenddate == null ? null : todoEndDate
+                              todo.todoenddate == null ? null : todoEndDaate
                             }
                             onChange={(date) =>
                               updateAll(todo, "todoenddate", date)
@@ -885,7 +890,7 @@ const TaskTables = ({ name, listName }) => {
                               className="todoDateText1"
                               placeholderText="----"
                               selected={
-                                todo.todoenddate == null ? null : todoEndDate
+                                todo.todoenddate == null ? null : todoEndDaate
                               }
                               showTimeSelect
                               onChange={(date) =>

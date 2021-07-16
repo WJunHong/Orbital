@@ -26,17 +26,16 @@ import Box from "@material-ui/core/Box";
  */
 const InputToDo = ({ listName }) => {
   // Description of a task
-  const [startDate, setStartDate] = useState(null);
+  const [deadline, setDeadline] = useState(null);
   const [priority, setPriority] = useState(5);
-  const [todoDate, setTodoDate] = useState(null);
+  const [tododate, setTodoDate] = useState(null);
   const [todoEndDate, setTodoEndDate] = useState(null);
   const [properties, setProperties] = useState([]);
   const [propertyLabels, setPL] = useState([]);
-  const [checkBoxBool, setCheckBoxBool] = useState(null);
 
   const resetEverything = () => {
     toggleAdd();
-    setStartDate(null);
+    setDeadline(null);
     setPriority(5);
     setTodoDate(null);
     setTodoEndDate(null);
@@ -55,9 +54,9 @@ const InputToDo = ({ listName }) => {
     e.preventDefault();
     const description = document.getElementById("something1").textContent;
     var x = document.getElementById("endTimeOption");
-    var todoEndDate;
+    var todoenddate = todoEndDate;
     if (x.style.visibility === "hidden") {
-      todoEndDate = null;
+      todoenddate = null;
     }
     try {
       if (description === "") {
@@ -83,9 +82,9 @@ const InputToDo = ({ listName }) => {
         const body = {
           user_id,
           description,
-          startDate,
-          todoDate,
-          todoEndDate,
+          deadline,
+          tododate,
+          todoenddate,
           priority,
           properties,
           listName,
@@ -129,18 +128,18 @@ const InputToDo = ({ listName }) => {
       );
 
   const deadlineColors = () => {
-    if (startDate == null) {
+    if (deadline == null) {
       document.querySelector(`.${styles.deadlineIcon}`).style.color = "white";
       document.querySelector(`.${styles.deadlineText}`).style.color = "white";
       document.querySelector(`.${styles.deadlineText}`).style.borderColor =
         "white";
     } else {
-      // If todoDate is now after the deadline, set the todoDate to null
-      if (todoDate == null) {
+      // If tododate is now after the deadline, set the tododate to null
+      if (tododate == null) {
       } else if (
-        startDate.getFullYear() <= todoDate.getFullYear() &&
-        startDate.getMonth() <= todoDate.getMonth() &&
-        startDate.getDate() <= todoDate.getDate()
+        deadline.getFullYear() <= tododate.getFullYear() &&
+        deadline.getMonth() <= tododate.getMonth() &&
+        deadline.getDate() <= tododate.getDate()
       ) {
         setTodoDate(null);
         setTodoEndDate(null);
@@ -151,9 +150,9 @@ const InputToDo = ({ listName }) => {
         day: new Date().getDate(),
       };
       if (
-        startDate.getFullYear() === testDate["year"] &&
-        startDate.getMonth() === testDate["month"] &&
-        startDate.getDate() === testDate["day"]
+        deadline.getFullYear() === testDate["year"] &&
+        deadline.getMonth() === testDate["month"] &&
+        deadline.getDate() === testDate["day"]
       ) {
         document.querySelector(`.${styles.deadlineIcon}`).style.color = "green";
         document.querySelector(`.${styles.deadlineText}`).style.color = "green";
@@ -230,21 +229,21 @@ const InputToDo = ({ listName }) => {
   };
 
   const makeTodoDate = () => {
-    if (todoDate == null || todoEndDate == null) {
+    if (tododate == null || todoEndDate == null) {
       document.querySelector(`.alarmIcon`).style.color = "white";
     } else {
       const today = new Date();
       if (
-        today.getFullYear() == todoDate.getFullYear() &&
-        today.getMonth() == todoDate.getMonth() &&
-        today.getDate() == todoDate.getDate()
+        today.getFullYear() == tododate.getFullYear() &&
+        today.getMonth() == tododate.getMonth() &&
+        today.getDate() == tododate.getDate()
       ) {
         document.querySelector(`.alarmIcon`).style.color = "green";
       } else {
         document.querySelector(`.alarmIcon`).style.color = "white";
       }
-      if (todoDate != null && todoEndDate != null) {
-        if (todoDate.getTime() > todoEndDate.getTime()) {
+      if (tododate != null && todoEndDate != null) {
+        if (tododate.getTime() > todoEndDate.getTime()) {
           setTodoEndDate(null);
           toast.dark("Todo End Date needs to be later than Todo Start Date!", {
             position: "top-right",
@@ -318,7 +317,7 @@ const InputToDo = ({ listName }) => {
   };
   useEffect(() => {
     deadlineColors();
-  }, [startDate]);
+  }, [deadline]);
   return (
     <Fragment>
       <div className={styles.addTask}>
@@ -357,7 +356,7 @@ const InputToDo = ({ listName }) => {
                     }}
                   />
                   <DatePicker
-                    selected={todoDate}
+                    selected={tododate}
                     onChange={(date) => {
                       setTodoDate(date);
                     }}
@@ -368,7 +367,7 @@ const InputToDo = ({ listName }) => {
                     dateFormat="dd-MM-yyyy hh:mm aa"
                     placeholderText="Input Tododate"
                     minDate={new Date()}
-                    maxDate={startDate == null ? null : startDate}
+                    maxDate={deadline == null ? null : deadline}
                     className={`${styles.todoText}`}
                   />
                   <div className={`hidden`} id="endTimeOption">
@@ -378,7 +377,7 @@ const InputToDo = ({ listName }) => {
                       onChange={(date) => {
                         setTodoEndDate(date);
                       }}
-                      onCalendarOpen={() => setTodoEndDate(todoDate)}
+                      onCalendarOpen={() => setTodoEndDate(tododate)}
                       onCalendarClose={makeTodoDate}
                       showTimeSelect
                       showTimeSelectOnly
@@ -386,8 +385,8 @@ const InputToDo = ({ listName }) => {
                       timeCaption="Time"
                       dateFormat="h:mm aa"
                       placeholderText="Input Endtime"
-                      minDate={todoDate}
-                      maxDate={todoDate}
+                      minDate={tododate}
+                      maxDate={tododate}
                       className={`${styles.todoTime}`}
                     />
                   </div>
@@ -403,9 +402,9 @@ const InputToDo = ({ listName }) => {
                     onClick={openCalendar}
                   />
                   <DatePicker
-                    selected={startDate}
+                    selected={deadline}
                     onChange={(date) => {
-                      setStartDate(date);
+                      setDeadline(date);
                     }}
                     showTimeSelect
                     timeIntervals={30}

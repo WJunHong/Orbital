@@ -36,13 +36,19 @@ const store = new CustomStore({
     try {
       const user = app.auth().currentUser;
       const user_id = user.uid;
+      values = {
+        ...values,
+        user_id: user_id,
+      }
       // Calls the GET all tasks route method
       const response = await fetch(`${url}/todos`, {
         method: "POST",
+        body: JSON.stringify(values),
         headers: {
           "Content-Type": "application/json"
          },
       });
+      console.log(values);
     } catch (err) {
       console.error(err.message);
     }
@@ -198,7 +204,7 @@ function Calendar() {
           defaultCurrentView="month"
           timeZone="UTC"
           adaptivityEnabled={true}
-          maxAppointmentsPerCell="auto"
+          maxAppointmentsPerCell="3"
           onAppointmentFormOpening={onAppointmentFormOpening}
         >
           <View type="day" startDayHour={0} endDayHour={24} />
