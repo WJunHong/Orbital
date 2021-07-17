@@ -7,7 +7,7 @@ import ExploreIcon from "@material-ui/icons/Explore";
 import AllInboxIcon from "@material-ui/icons/AllInbox";
 import styles from "./SideBar.module.css";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import DnsRoundedIcon from "@material-ui/icons/DnsRounded";
+import ViewListRoundedIcon from "@material-ui/icons/ViewListRounded";
 import Button from "@material-ui/core/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -166,7 +166,7 @@ function SideBar({ match }) {
             return (
               <li className={styles.mainTask}>
                 <a href={link} className={`SL${list}`}>
-                  <DnsRoundedIcon className={styles.maintaskIcon} />
+                  <ViewListRoundedIcon className={styles.maintaskIcon} />
                   <div>{list}</div>
                 </a>
               </li>

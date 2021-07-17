@@ -107,7 +107,7 @@
 .todoDateText {
   margin-left: 6px;
   padding: 2px;
-  width: 100px;
+  width: 50px;
   text-align: center;
   cursor: pointer;
   background-color: transparent !important;
@@ -140,7 +140,7 @@
 .deadlineDate {
   margin-left: 6px;
   padding: 2px;
-  width: 90px;
+  width: 50px;
   text-align: center;
   cursor: pointer;
   background-color: transparent !important;
@@ -298,10 +298,11 @@
 }
 
 .expandedTaskData {
+  display: inline-block;
   height: fit-content;
-  margin-bottom: 4px;
   width: 540px !important;
   background-color: #242424;
+  margin-top: 8px;
 }
 .expandedTaskData td {
   padding: 0px;
@@ -347,9 +348,12 @@
 }
 
 .expandedTaskData2 {
-  display: grid;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   width: 540px;
-  grid-template-columns: 270px 270px;
+
   /* border-top: 1px solid #9c9c9c50;*/
   padding-top: 16px;
 }
@@ -358,7 +362,7 @@
   color: #9c9c9c;
   display: flex;
   font-weight: 700;
-  align-items: center;
+  align-items: center !important;
 }
 
 .priorityIcon1 {
@@ -367,18 +371,10 @@
   cursor: pointer;
 }
 
-.leftSide1 {
-  font-size: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.leftSide1 .todo_date1,
+.todo_date1,
 .deadlineBox1,
 .priority1 {
   height: 64px;
-  display: flex;
-  align-items: flex-start;
 }
 .todo_date1 {
   color: #9c9c9c;
@@ -391,7 +387,7 @@
   margin-top: -1px;
   margin-left: 6px;
   padding: 2px;
-  width: fit-content;
+  width: 100px;
   text-align: center;
   cursor: pointer;
   background-color: transparent !important;
@@ -416,7 +412,7 @@
 .deadlineBox1 {
   color: #9c9c9c;
   display: flex !important;
-  align-items: flex-start;
+  align-items: center;
   font-weight: 700;
 }
 
@@ -424,7 +420,7 @@
   margin-top: -1px;
   margin-left: 6px;
   padding: 2px;
-  width: 150px;
+  width: 100px;
   text-align: center;
   cursor: pointer;
   background-color: transparent !important;
@@ -445,20 +441,20 @@
 
 .progress_value1 {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   color: #9c9c9c;
   font-size: 14px;
   width: 270px;
   margin-left: 8px;
-  margin-top: 50px;
+  margin-bottom: 8px;
   justify-content: space-evenly;
 }
 .progressSlider1 {
   width: 200px !important;
   margin-top: 8px;
-  margin-left: 8px;
+  margin-left: 40px;
 }
 
 .properties1 {

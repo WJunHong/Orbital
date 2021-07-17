@@ -4,5 +4,5 @@
   position: absolute;
   background-color: #121212;
   font-family: "Nunito", sans-serif;
-  overflow-y: scroll;
+  overflow-y: auto;
 }

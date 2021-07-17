@@ -391,9 +391,9 @@ const InputToDo = ({ listName }) => {
                     />
                   </div>
                 </label>
-                <text className={`${styles.setEndTimeText}`}>
+                <p className={`${styles.setEndTimeText}`}>
                   Click on the Clock Icon to include Endtime
-                </text>
+                </p>
               </div>
               <div className={`${styles.typableArea}`}>
                 <label className={styles.deadlineBox}>

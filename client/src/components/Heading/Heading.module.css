@@ -1,15 +1,49 @@
-.heading {
-  height: 64px;
-  width: 100vw;
-  background-color: #0f1425;
-  min-width: 661px;
-  display: grid;
-  position: fixed;
-  grid-template-columns: 300px 6fr 10vw 100px;
-  z-index: 2;
-  top: 0%;
+@media screen and (min-width: 780px) {
+  .heading {
+    height: 64px;
+    width: 100vw;
+    background-color: #0f1425;
+    display: grid;
+    position: fixed;
+    grid-template-columns: 2fr 6fr 200px 100px;
+    z-index: 2;
+    top: 0%;
+    user-select: none;
+  }
+  .diff {
+    display: none !important;
+  }
+  .first {
+    padding: 20px;
+    font-size: 16px;
+    font-family: "Nunito", sans-serif;
+    color: #b1b2b7;
+  }
 }
-
+@media screen and (max-width: 780px) {
+  .heading {
+    height: 64px;
+    width: 100vw;
+    background-color: #0f1425;
+    display: grid;
+    position: fixed;
+    grid-template-columns: 150px 1fr 0px 100px;
+    z-index: 2;
+    top: 0%;
+    user-select: none;
+  }
+  .diff {
+    display: inline-flex;
+    color: #b1b2b7;
+    height: 64px;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .first {
+    display: none;
+  }
+}
 .logo {
   width: 169px;
   height: 64px;
@@ -30,18 +64,16 @@
   height: 64px;
 }
 
-.navigation a {
-  padding: 20px;
-  font-size: 16px;
-  font-family: "Nunito", sans-serif;
-  color: #b1b2b7;
-}
-
-.navigation a:hover {
+.first:hover {
   color: white;
   text-decoration: none;
   border-bottom: 2px solid white;
   padding-bottom: 18px;
+  transition: all 0.1s ease-in;
+}
+.diff:hover {
+  color: white;
+  border-bottom: 2px solid white;
   transition: all 0.1s ease-in;
 }
 
@@ -85,7 +117,7 @@
 
 .profileDropdown {
   position: fixed;
-  height: 172px;
+  height: fit-content;
   width: 250px;
   background-color: #18181b;
   top: 60px;
@@ -145,7 +177,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 60px !important;
+  height: fit-content !important;
 }
 
 .tabProfile img {
@@ -154,9 +186,11 @@
   border-radius: 16px;
 }
 
-.tabProfile div {
+.tabName {
   padding-left: 4px;
   color: #efeff1;
+  word-wrap: break-word;
+  width: 208px;
 }
 
 .profileTab {

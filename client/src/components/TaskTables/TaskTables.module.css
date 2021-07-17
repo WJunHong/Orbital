@@ -7,7 +7,12 @@
   min-width: 400px;
   height: 24px;
 }
-
+.middle {
+  margin-right: -4px;
+  margin-left: 4px;
+  color: white;
+  font-size: 20px;
+}
 .taskDescrip {
   outline: none;
   line-break: auto;
@@ -49,6 +54,7 @@
   color: #9c9c9c;
   display: inline-block;
   border-bottom: 1px solid #9c9c9c;
+  margin-left: 4px;
 }
 .progressInput:active {
   outline: none;

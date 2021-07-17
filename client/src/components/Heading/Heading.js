@@ -1,5 +1,5 @@
 // Imports
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import app from "../../base";
 
 // Style imports
@@ -11,6 +11,10 @@ import profile from "../../meileng.jpeg";
 import styles from "./Heading.module.css";
 import FaceRoundedIcon from "@material-ui/icons/FaceRounded";
 import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
+import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
+import LocalLibraryRoundedIcon from "@material-ui/icons/LocalLibraryRounded";
+import SettingsRoundedIcon from "@material-ui/icons/SettingsRounded";
+import { Tooltip } from "../../design/table_icons";
 
 const theme = createMuiTheme({
   typography: {
@@ -48,9 +52,30 @@ const Heading = () => {
         <nav className={styles.heading}>
           <a href="/" className={styles.logo}></a>
           <div className={styles.navigation}>
-            <a href="/home">HOME</a>
-            <a href="#">LEARN</a>
-            <a href="#">SETTINGS</a>
+            <a href="/home" className={styles.first}>
+              HOME
+            </a>
+            <a href="#" className={styles.first}>
+              LEARN
+            </a>
+            <a href="#" className={styles.first}>
+              SETTINGS
+            </a>
+            <Tooltip title="Home" placement="bottom">
+              <a href="/home" className={styles.diff}>
+                <HomeRoundedIcon size="small" />
+              </a>
+            </Tooltip>
+            <Tooltip title="Learn" placement="bottom">
+              <a href="#" className={styles.diff}>
+                <LocalLibraryRoundedIcon size="small" />
+              </a>
+            </Tooltip>
+            <Tooltip title="Settings" placement="bottom">
+              <a href="#" className={styles.diff}>
+                <SettingsRoundedIcon size="small" />
+              </a>
+            </Tooltip>
           </div>
           <div className={styles.time}>{`Good ${time} ${
             displayName == null ? "" : ", " + displayName
