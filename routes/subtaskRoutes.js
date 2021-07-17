@@ -4,7 +4,7 @@ const pool = require("../db1");
 // Creating a subtask
 router.post("/", async (req, res) => {
   try {
-    const { user_id, task_id, description} = req.body;
+    const { user_id, task_id, description } = req.body;
     const list = await pool.query(
       "SELECT list FROM todo WHERE user_id = $1 AND todo_id = $2",
       [user_id, task_id]
@@ -19,6 +19,38 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Get all subtasks of a user
+router.get("/", async (req, res) => {
+  try {
+    const { user_id } = req.headers;
+    const todoId = await pool.query(
+      "SELECT array_agg(DISTINCT todo_id) unique_todoIds FROM subtasks WHERE user_id = $1",
+      [user_id]
+    );
+    const allSubtasks = await pool.query(
+      "SELECT * FROM subtasks WHERE user_id = $1",
+      [user_id]
+    );
+    // allSubtasks.rows.map((subtask) =>
+    // res.json(allSubtasks.rows);
+    /*
+    [
+      [1,[st1,st2]],
+      [2, [st3.st4]].
+      [3, [st5,st6]]
+    ]
+    */
+    const todos = todoId.rows[0].unique_todoids;
+    const subtasks = allSubtasks.rows;
+    const arrangedSubtasks = todos.map((id) => [
+      id,
+      subtasks.filter((i) => i.todo_id === id),
+    ]);
+    res.json(arrangedSubtasks);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
 // Get all subtasks related to a maintask based on its id
 
 router.get("/:todo_id", async (req, res) => {

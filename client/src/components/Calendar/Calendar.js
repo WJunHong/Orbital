@@ -13,10 +13,43 @@ function handleErrors(response) {
   return response;
 }
 
+//
 const url = "http://localhost:5000";
 
+/* Tasks
+{
+        "user_id": "EntAuetg2kNXdsDuMR3VUn0O3uk1",
+        "todo_id": 1,
+        "description": "l",
+        "deadline": "2021-07-31T00:00:00.000Z",
+        "tododate": "2021-07-23T22:30:00.000Z",
+        "todoenddate": "2021-07-23T23:00:00.000Z",
+        "priority": 2,
+        "progress": 26,
+        "properties": [],
+        "completed": false,
+        "list": null,
+        "subtasks": [{
+            "subtask_id": 20,
+            "description": "Buy drinks for the party",
+            "completed": false,
+            list": null
+        }, ..........]
+    }
+*/
+/* Subtasks
+{
+        "user_id": "vx8Qsw4Oifbaw1vv0Dertllnn6W2",
+        "subtask_id": 20,
+        "todo_id": 47,
+        "description": "Buy drinks for the party",
+        "completed": false,
+        "list": null
+}
+*/
+
 const store = new CustomStore({
-  key: 'todo_id',
+  key: "todo_id",
   load: async () => {
     try {
       const user = app.auth().currentUser;
@@ -26,8 +59,24 @@ const store = new CustomStore({
         method: "GET",
         headers: { user_id },
       });
-      const jsonData = await response.json();
-      return jsonData;
+      const tasks = await response.json();
+      const res = await fetch(`/subtasks/`, {
+        method: "GET",
+        headers: { user_id },
+      });
+      const _subtasks = await res.json();
+      console.log(_subtasks);
+      const newTasks = tasks.map((task) => {
+        const obj = {
+          ...task,
+          subtasks: _subtasks
+            .filter((i) => i[0] === task.todo_id)
+            .map((i) => i[1]),
+        };
+        return obj;
+      });
+      console.log(newTasks);
+      return newTasks;
     } catch (err) {
       console.error(err.message);
     }
@@ -39,14 +88,14 @@ const store = new CustomStore({
       values = {
         ...values,
         user_id: user_id,
-      }
+      };
       // Calls the GET all tasks route method
       const response = await fetch(`${url}/todos`, {
         method: "POST",
         body: JSON.stringify(values),
         headers: {
-          "Content-Type": "application/json"
-         },
+          "Content-Type": "application/json",
+        },
       });
       console.log(values);
     } catch (err) {
@@ -55,6 +104,22 @@ const store = new CustomStore({
   },
   update: async (key, values) => {
     try {
+      const TZOFFSET = 28800000;
+      if (values.deadline !== null) {
+        var deadlineTime = new Date(values.deadline).getTime();
+        var deadline = new Date(deadlineTime - TZOFFSET);
+        values.deadline = deadline;
+      }
+      if (values.tododate !== null) {
+        var todoTodoTime = new Date(values.tododate).getTime();
+        var todoTodoDate = new Date(todoTodoTime - TZOFFSET);
+        values.tododate = todoTodoDate;
+      }
+      if (values.todoenddate !== null) {
+        var todoTodoEndTime = new Date(values.todoenddate).getTime();
+        var todoTodoEndDate = new Date(todoTodoEndTime - TZOFFSET);
+        values.todoenddate = todoTodoEndDate;
+      }
       const response = await fetch(`${url}/todos/${key}`, {
         method: "PUT",
         body: JSON.stringify(values),
@@ -64,7 +129,6 @@ const store = new CustomStore({
       });
     } catch (err) {
       console.error(err.message);
-
     }
   },
   remove: async (key) => {
@@ -76,9 +140,9 @@ const store = new CustomStore({
         method: "DELETE",
       });
     } catch (err) {
-      console.error(err.message)
+      console.error(err.message);
     }
-  }
+  },
 });
 
 function Calendar() {
@@ -130,6 +194,13 @@ function Calendar() {
         },
         editorType: "dxDateBox",
         dataField: "deadline",
+        editorOptions: {
+          type: "datetime",
+          showAnalogClock: false,
+          dropDownOptions: {
+            position: "right",
+          },
+        },
       },
       {
         label: {
@@ -137,6 +208,13 @@ function Calendar() {
         },
         editorType: "dxDateBox",
         dataField: "tododate",
+        editorOptions: {
+          type: "datetime",
+          showAnalogClock: false,
+          dropDownOptions: {
+            position: "right",
+          },
+        },
       },
       {
         label: {
@@ -144,6 +222,13 @@ function Calendar() {
         },
         editorType: "dxDateBox",
         dataField: "todoenddate",
+        editorOptions: {
+          type: "datetime",
+          showAnalogClock: false,
+          dropDownOptions: {
+            position: "right",
+          },
+        },
       },
       {
         label: {

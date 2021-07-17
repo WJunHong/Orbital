@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import InputSubtasks from "../subtasks/InputSubtasks";
 import ListSubtasks from "../subtasks/ListSubtasks";
 import app from "../../base";
-import Slider from "./SliderComponent"
+import Slider from "./SliderComponent";
 
 import {
   CheckBoxOutlineBlankOutlinedIcon,
@@ -25,7 +25,6 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 
 const TZOFFSET = 28800000;
 
@@ -451,6 +450,7 @@ const TaskTables = ({ name, listName }) => {
             new Date(body.tododate).getTime()
           ) {
             body.tododate = null;
+            body.todoenddate = null;
           }
           body.deadline = val;
           toast.success("Deadline updated!", {
@@ -590,6 +590,7 @@ const TaskTables = ({ name, listName }) => {
               var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
               var todoDaate = new Date(todoDateTime - TZOFFSET);
               var todoEndDaate = new Date(todoEndDateTime - TZOFFSET);
+              var todoTime = new Date(todoDaate).setHours(23, 59);
               return (
                 <>
                   <tr
@@ -657,9 +658,7 @@ const TaskTables = ({ name, listName }) => {
                           <DatePicker
                             className="deadlineTime"
                             placeholderText="-"
-                            selected={
-                              todo.tododate == null ? null : todoDaate
-                            }
+                            selected={todo.tododate == null ? null : todoDaate}
                             onChange={(date) => {
                               updateAll(todo, "tododate", date);
                             }}
@@ -898,9 +897,19 @@ const TaskTables = ({ name, listName }) => {
                               }
                               dateFormat="dd-MM-yyyy h:mm aa"
                               maxDate={
-                                todo.deadline == null ? null : todoDeadline
+                                todo.deadline === null
+                                  ? todo.tododate === null
+                                    ? null
+                                    : todoDaate
+                                  : todo.tododate === null
+                                  ? todoDeadline
+                                  : todoDaate
                               }
-                              minDate={new Date()}
+                              minDate={
+                                todo.tododate === null ? new Date() : todoDaate
+                              }
+                              minTime={todoDaate}
+                              maxTime={todoTime}
                             />
                           </div>
                           <div className="deadlineBox1">
@@ -964,7 +973,7 @@ const TaskTables = ({ name, listName }) => {
                                     isNaN(inputValue) ||
                                     inputValue == "" ||
                                     inputValue < 0 ||
-                                    inputValue > 100 
+                                    inputValue > 100
                                   ) {
                                     toast.warn(`Invalid progress input!`, {
                                       position: "top-right",
@@ -976,8 +985,8 @@ const TaskTables = ({ name, listName }) => {
                                       progress: undefined,
                                     });
                                     document.getElementById(
-                                    `progressInput_${todo.todo_id}`
-                                  ).value = "";
+                                      `progressInput_${todo.todo_id}`
+                                    ).value = "";
                                   } else {
                                     updateAll(
                                       todo,
@@ -1030,9 +1039,9 @@ const TaskTables = ({ name, listName }) => {
                               name={`propertyAdd${todo.todo_id}`}
                               onChange={(e) =>
                                 setNewProperty({
-                                      ...newProperty,
-                                      number: e.target.value,
-                                    })
+                                  ...newProperty,
+                                  number: e.target.value,
+                                })
                               }
                             />
                             <datalist id={`propertyList${number}`}>
@@ -1496,8 +1505,8 @@ const TaskTables = ({ name, listName }) => {
                                       progress: undefined,
                                     });
                                     document.getElementById(
-                                    `progressInput_${todo.todo_id}`
-                                  ).value = "";
+                                      `progressInput_${todo.todo_id}`
+                                    ).value = "";
                                   } else {
                                     updateAll(
                                       todo,
@@ -1524,7 +1533,11 @@ const TaskTables = ({ name, listName }) => {
                               %
                             </div>
                             <ThemeProvider theme={muiTheme1}>
-                              <Slider todo={todo} updateAll={updateAll} className="progressSlider1" />
+                              <Slider
+                                todo={todo}
+                                updateAll={updateAll}
+                                className="progressSlider1"
+                              />
                             </ThemeProvider>
                           </div>
                         </div>
@@ -2027,7 +2040,11 @@ const TaskTables = ({ name, listName }) => {
                               %
                             </div>
                             <ThemeProvider theme={muiTheme1}>
-                              <Slider todo={todo} updateAll={updateAll} className="progressSlider1" />
+                              <Slider
+                                todo={todo}
+                                updateAll={updateAll}
+                                className="progressSlider1"
+                              />
                             </ThemeProvider>
                           </div>
                         </div>
