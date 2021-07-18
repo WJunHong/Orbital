@@ -1,24 +1,29 @@
 import React, { useState, useEffect, Fragment } from "react";
+// Firebase import
 import app from "../../base";
-// Styles
-import Fab from "@material-ui/core/Fab";
-import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
-import SortRoundedIcon from "@material-ui/icons/SortRounded";
-import HighlightOffRoundedIcon from "@material-ui/icons/HighlightOffRounded";
-import ClearIcon from "@material-ui/icons/Clear";
-import Slider from "@material-ui/core/Slider";
+// Style imports
+import {
+  Fab,
+  FilterListRoundedIcon,
+  SortRoundedIcon,
+  HighlightOffRoundedIcon,
+  ClearIcon,
+  ArrowDownwardRoundedIcon,
+  ArrowUpwardRoundedIcon,
+  Slider,
+  Checkbox,
+  Tooltip,
+} from "../../design/table_icons";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+// Datepicker import
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import ArrowDownwardRoundedIcon from "@material-ui/icons/ArrowDownwardRounded";
-import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
-import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "@material-ui/core/styles";
+// Confirm Dialog import
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import styles from "./FSD.module.css";
-import Tooltip from "@material-ui/core/Tooltip";
-
+// MuiThemes
 const muiTheme = createMuiTheme({
   overrides: {
     MuiSlider: {
@@ -43,17 +48,17 @@ const CustomColorCheckbox = withStyles({
   },
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
-/* FSD contains:
-1. Filter button
-2. Sort Button
-3. Delete Button (not applicable to main task)
 
-Filter pop-up
-Sort pop up
-*/
+/**
+ * Filter, sort, delete component
+ * @param {Object} . The props that represent the current page, as well as the todos array
+ * @returns Functional component of Filter, sort and delete button
+ */
 const FSD = ({ name, todos, listName }) => {
+  // The storage name of the filter/sort object
   const storageName = name + "/" + (listName == null ? "" : listName);
   var filterObj;
+  // If there is no filter object in LS, create a default version
   if (localStorage.getItem(`filter-${storageName}`) == null) {
     filterObj = {
       priority: [],
@@ -65,35 +70,52 @@ const FSD = ({ name, todos, listName }) => {
   } else {
     filterObj = JSON.parse(localStorage.getItem(`filter-${storageName}`));
   }
+  // If there is no sort object in LS, create a default version
   var sortVariable =
     localStorage.getItem(`sort-${storageName}`) == null
       ? { sort: "dateAdded", direction: "descending" }
       : JSON.parse(localStorage.getItem(`sort-${storageName}`));
 
+  // Array of priorities
   const initialPriorities = [1, 2, 3, 4, 5];
+  // Array of sort options
   const initialSort = ["Alphabetical", "Priority", "Progress", "Deadline"];
   // Properties from the user
   const [properties, setProperties] = useState([]);
-  // Things which have been selected
+  // Options which have been selected
+  // Priority
   const [priority, setPriority] = useState(filterObj.priority);
+  //Progress
   const [progress, setProgress] = useState(filterObj.progress);
+  //Deadline start + end
   const [deadlineStart, setDS] = useState(filterObj.deadline[0]);
   const [deadlineEnd, setDE] = useState(filterObj.deadline[1]);
+  // Todo date start + end
   const [todoStart, setTS] = useState(filterObj.todoDate[0]);
   const [todoEnd, setTE] = useState(filterObj.todoDate[1]);
+  // Whether filter and sort button have been clicked
   const [clickedF, setClickF] = useState(false);
   const [clickedS, setClickS] = useState(false);
+  // Direction of sort
   const [direction, setDirection] = useState(sortVariable.direction);
+  // What is selected for sorting
   const [sortSelection, setSS] = useState(sortVariable.sort);
+  // Properties selected
   const [selectedProperties, setSelectedProperties] = useState(
     filterObj.properties
   );
+  // State of delete list modal
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
     title: "",
     subTitle: "",
   });
 
+  /**
+   * Function 1: Handles the style of click event on priority numbers
+   * @param {Object} e The event of clicking
+   * @param {int} num The number pertaining to the click
+   */
   const handleClick = (e, num) => {
     if (e.target.style.backgroundColor !== "black") {
       e.target.style.backgroundColor = "black";
@@ -101,6 +123,10 @@ const FSD = ({ name, todos, listName }) => {
       e.target.style.backgroundColor = "#414141";
     }
   };
+
+  /**
+   * Function 2: Resets color of priorities and clears filtered priorities
+   */
   const clearAllPriority = () => {
     document
       .querySelectorAll(`.${styles.priorityButton}`)
@@ -112,10 +138,19 @@ const FSD = ({ name, todos, listName }) => {
     };
     localStorage.setItem(`filter-${storageName}`, JSON.stringify(newFilterObj));
   };
+
+  /**
+   * Function 3: Takes in array of start and end progress filters and passes it to handleSelect function
+   * @param {Object} event
+   * @param {Array} newValue
+   */
   const handleChange = (event, newValue) => {
     handleSelect("progress", newValue, progress, setProgress);
   };
 
+  /**
+   * Function 4: Resets progress values via useState and LS
+   */
   const clearAllProgress = () => {
     setProgress([0, 100]);
     var newFilterObj = {
@@ -125,6 +160,9 @@ const FSD = ({ name, todos, listName }) => {
     localStorage.setItem(`filter-${storageName}`, JSON.stringify(newFilterObj));
   };
 
+  /**
+   * Function 5: Resets deadline values via useState and LS
+   */
   const clearDeadlines = () => {
     setDS(null);
     setDE(null);
@@ -135,6 +173,9 @@ const FSD = ({ name, todos, listName }) => {
     localStorage.setItem(`filter-${storageName}`, JSON.stringify(newFilterObj));
   };
 
+  /**
+   * Function 6: Resets todo date values via useState and LS
+   */
   const clearTodoDate = () => {
     setTE(null);
     setTS(null);
@@ -145,6 +186,9 @@ const FSD = ({ name, todos, listName }) => {
     localStorage.setItem(`filter-${storageName}`, JSON.stringify(newFilterObj));
   };
 
+  /**
+   * Function 7: Resets property filters via useState and LS
+   */
   const clearAllProperties = () => {
     setSelectedProperties([]);
     var newFilterObj = {
@@ -154,17 +198,27 @@ const FSD = ({ name, todos, listName }) => {
     localStorage.setItem(`filter-${storageName}`, JSON.stringify(newFilterObj));
   };
 
+  /**
+   * Function 8: Opens the filter pop-up
+   */
   const toggleFilterOptions = () => {
     document
       .querySelector(`.${styles.filterOptions}`)
       .classList.toggle(`hidden`);
     setClickF(!clickedF);
   };
+
+  /**
+   * Function 9: Opens the sort pop-up
+   */
   const toggleSortOptions = () => {
     document.querySelector(`.${styles.sortOptions}`).classList.toggle(`hidden`);
     setClickS(!clickedS);
   };
 
+  /**
+   * Function 10: Deletes a list, deleting todos, subtasks and the list from database
+   */
   const deleteList = async () => {
     setConfirmDialog({
       ...ConfirmDialog,
@@ -195,6 +249,13 @@ const FSD = ({ name, todos, listName }) => {
     window.location = "/taskpage";
   };
 
+  /**
+   * Function 11: The main filtering function.
+   * @param {String} str The type of filter option used.
+   * @param {*} property The value to be filtered.
+   * @param {*} arr An array of priorities, deadline start and end, todo date start and end, properties or progress start and end values.
+   * @param {*} set The respective setters for each filter.
+   */
   const handleSelect = (str, property, arr, set) => {
     var newSelection = null;
     if (str === "priority" || str === "property") {
@@ -252,6 +313,9 @@ const FSD = ({ name, todos, listName }) => {
     localStorage.setItem(`filter-${storageName}`, JSON.stringify(filter));
   };
 
+  /**
+   * Function 12: Gets all unique properties of the user
+   */
   const getProperties = async () => {
     try {
       const user = app.auth().currentUser;
@@ -272,7 +336,12 @@ const FSD = ({ name, todos, listName }) => {
       console.error(err.message);
     }
   };
-
+  // Manipulates the style of sorting options
+  /**
+   * Function 13: Manipuldate the style of sorting options
+   * @param {Object} e The event of clicking.
+   * @param {int} item The sort option being clicked.
+   */
   const sortStyle = (e, item) => {
     e.preventDefault();
     if (item !== sortSelection) {
@@ -291,6 +360,14 @@ const FSD = ({ name, todos, listName }) => {
         .classList.add(`${styles.clickedSortOption}`);
     }
   };
+
+  /**
+   * Function 14: The main sorting function.
+   * @param {*} str The type of action. Either sort or direction.
+   * @param {*} item The sort option.
+   * @param {*} com The variable to be used to store the option.
+   * @param {*} set The setter for com.
+   */
   const handleSortProper = (str, item, com, set) => {
     // Initialize something
     var newSort = null;
@@ -335,6 +412,9 @@ const FSD = ({ name, todos, listName }) => {
     }
     localStorage.setItem(`sort-${storageName}`, JSON.stringify(sortInfo));
   };
+  /**
+   * Function 15: Change the style of sorting options
+   */
   const assignSort = () => {
     if (localStorage.getItem(`sort-${storageName}`) == null) {
       document
@@ -347,6 +427,10 @@ const FSD = ({ name, todos, listName }) => {
     }
   };
 
+  /**
+   * Function 16: Resets the sorting options
+   * @param {Object} e The object being clicked.
+   */
   const clearSort = (e) => {
     var newSort = { sort: "dateAdded", direction: "descending" };
     setSS("dateAdded");
@@ -357,7 +441,7 @@ const FSD = ({ name, todos, listName }) => {
   // Called when rendered, adding or deleting a task
   useEffect(() => getProperties(), [todos]);
   useEffect(() => assignSort(), []);
-  //Testing
+  // The component
   return (
     <div className={styles.buttonZs}>
       <div className={styles.buttonDiv}>

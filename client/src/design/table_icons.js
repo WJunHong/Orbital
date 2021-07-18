@@ -16,6 +16,14 @@ import TextField from "@material-ui/core/TextField";
 import DeleteOutlineRoundedIcon from "@material-ui/icons/DeleteOutlineRounded";
 import RemoveCircleOutlineRoundedIcon from "@material-ui/icons/RemoveCircleOutlineRounded";
 import ViewListRoundedIcon from "@material-ui/icons/ViewListRounded";
+import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
+import SortRoundedIcon from "@material-ui/icons/SortRounded";
+import HighlightOffRoundedIcon from "@material-ui/icons/HighlightOffRounded";
+import ClearIcon from "@material-ui/icons/Clear";
+import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
+import Checkbox from "@material-ui/core/Checkbox";
+import Fab from "@material-ui/core/Fab";
+import ArrowDownwardRoundedIcon from "@material-ui/icons/ArrowDownwardRounded";
 export {
   CheckBoxOutlineBlankOutlinedIcon,
   AlarmIcon,
@@ -35,4 +43,12 @@ export {
   DeleteOutlineRoundedIcon,
   RemoveCircleOutlineRoundedIcon,
   ViewListRoundedIcon,
+  FilterListRoundedIcon,
+  SortRoundedIcon,
+  HighlightOffRoundedIcon,
+  ClearIcon,
+  ArrowUpwardRoundedIcon,
+  Checkbox,
+  Fab,
+  ArrowDownwardRoundedIcon,
 };
