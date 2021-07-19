@@ -28,16 +28,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 const TZOFFSET = 28800000;
 
-const marks = [
-  {
-    value: 0,
-    label: "0%",
-  },
-  {
-    value: 100,
-    label: "100%",
-  },
-];
 const muiTheme1 = createMuiTheme({
   overrides: {
     MuiSlider: {
@@ -1194,8 +1184,8 @@ const TaskTables = ({ name, listName }) => {
             .map((todo) => {
               var todoDeadlineTime = new Date(todo.deadline).getTime();
               var todoDateTime = new Date(todo.tododate).getTime();
-              var number = todo.todo_id;
               var todoEndDateTime = new Date(todo.todoenddate).getTime();
+              var number = todo.todo_id;
               var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
               var todoDaate = new Date(todoDateTime - TZOFFSET);
               var todoEndDaate = new Date(todoEndDateTime - TZOFFSET);
