@@ -1,6 +1,6 @@
 // Imports
 import styles from "./Subtasks.module.css";
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import app from "../../base";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,6 +16,10 @@ const InputSubtasks = ({ todo }) => {
   // main task id linked to group of subtasks
   const task_id = todo.todo_id;
 
+  /**
+   * Function 1: The function called when subtask is submitted.
+   * @param {Object} e The event object of form submission.
+   */
   const submitSubtask = async (e) => {
     // Prevents the page from reloading
     e.preventDefault();

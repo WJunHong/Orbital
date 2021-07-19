@@ -24,7 +24,43 @@ import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 import Checkbox from "@material-ui/core/Checkbox";
 import Fab from "@material-ui/core/Fab";
 import ArrowDownwardRoundedIcon from "@material-ui/icons/ArrowDownwardRounded";
+import { Avatar } from "@material-ui/core";
+import FaceRoundedIcon from "@material-ui/icons/FaceRounded";
+import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
+import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
+import LocalLibraryRoundedIcon from "@material-ui/icons/LocalLibraryRounded";
+import SettingsRoundedIcon from "@material-ui/icons/SettingsRounded";
+import KeyboardReturnRoundedIcon from "@material-ui/icons/KeyboardReturnRounded";
+
+import OutlinedFlagRoundedIcon from "@material-ui/icons/OutlinedFlagRounded";
+import LabelImportantRoundedIcon from "@material-ui/icons/LabelImportantRounded";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import { Paper } from "@material-ui/core";
+import EditRoundedIcon from "@material-ui/icons/EditRounded";
+import EventNoteIcon from "@material-ui/icons/EventNote";
+import ExploreIcon from "@material-ui/icons/Explore";
+import AllInboxIcon from "@material-ui/icons/AllInbox";
+import AddBoxIcon from "@material-ui/icons/AddBox";
+
 export {
+  EventNoteIcon,
+  ExploreIcon,
+  AddBoxIcon,
+  AllInboxIcon,
+  EditRoundedIcon,
+  Grid,
+  Paper,
+  Box,
+  KeyboardReturnRoundedIcon,
+  OutlinedFlagRoundedIcon,
+  LabelImportantRoundedIcon,
+  Avatar,
+  FaceRoundedIcon,
+  ExitToAppRoundedIcon,
+  HomeRoundedIcon,
+  LocalLibraryRoundedIcon,
+  SettingsRoundedIcon,
   CheckBoxOutlineBlankOutlinedIcon,
   AlarmIcon,
   DeleteRoundedIcon,

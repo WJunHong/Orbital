@@ -1,19 +1,28 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import styles from "./Home.module.css";
 
-import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
-import KeyboardReturnRoundedIcon from "@material-ui/icons/KeyboardReturnRounded";
-import Button from "@material-ui/core/Button";
+import styles from "./Home.module.css";
+import {
+  ExitToAppRoundedIcon,
+  KeyboardReturnRoundedIcon,
+  Button,
+} from "../../design/table_icons";
+
 import fire from "./fire.png";
 import njs from "./njs.png";
 import psl from "./psql.png";
 import rct from "./react.png";
 import git from "./git.png";
 
+/**
+ * The home page.
+ * @returns Functional Component representing home page.
+ */
 const Home = () => {
+  // State of clicking
   const [selection, setSelection] = useState(1);
+  /**
+   * Function 1: Styling of clicked option and image shown.
+   */
   const changeIt = () => {
     if (selection === 1) {
       document.querySelector(".middlelist1").style.backgroundColor = "#2b2b5a";

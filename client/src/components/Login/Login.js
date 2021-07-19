@@ -5,21 +5,26 @@ import app from "../../base";
 import { AuthContext } from "../../Auth";
 
 // Styling imports
+import {
+  KeyboardReturnRoundedIcon,
+  Button,
+  TextField,
+  Grid,
+  Paper,
+} from "../../design/table_icons";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import { Paper } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
 import styles from "./Login.module.css";
 import GoogleButton from "react-google-button";
-import KeyboardReturnRoundedIcon from "@material-ui/icons/KeyboardReturnRounded";
 
 const theme = createMuiTheme({
   typography: {
     fontFamily: ["Nunito", "sans-serif"].join(","),
   },
 });
-
+/**
+ * The login component of the application.
+ *
+ */
 const Login = ({ history }) => {
   // email field
   const [email, setEmail] = useState("");
@@ -29,7 +34,9 @@ const Login = ({ history }) => {
   const [password, setPassword] = useState("");
   const [password_err, setPE] = useState(false);
   const [password_label, setPL] = useState("Password");
-
+  /**
+   * Function 1: The function called when the user clicks login.
+   */
   const SubmitForm = useCallback(
     async (e) => {
       e.preventDefault();
@@ -55,7 +62,10 @@ const Login = ({ history }) => {
   if (currentUser) {
     return <Redirect to="/" />;
   }
-
+  /**
+   * Function 2: The function that handles the error messages on login failures.
+   * @param {String} errorMsg The type of error that had occurred.
+   */
   const toggleErrorMsg = (errorMsg) => {
     const textError = document.getElementById("invalidEP");
     textError.style.display = "none";
@@ -79,6 +89,12 @@ const Login = ({ history }) => {
       }
     }
   };
+  /**
+   * Function 3: Checks if the information passed in is non-empty before it is submitted in submitForm.
+   * @param {String} checkEmail The email passed in.
+   * @param {String} checkPassword The password passed in.
+   * @returns A boolean of whether both email and password are of valid format.
+   */
   const validateInfo = (checkEmail, checkPassword) => {
     var validated = true;
     if (checkEmail === "") {

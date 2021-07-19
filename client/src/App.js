@@ -4,9 +4,6 @@ import "devextreme/dist/css/dx.light.css";
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./App.css";
-// import Home from "./Home";
-// import SignUp from "./SignUp";
-// import Login from "./Login";
 import { AuthProvider } from "./Auth";
 import PrivateRoute from "./PrivateRoute";
 

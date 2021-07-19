@@ -4,32 +4,47 @@ import app from "../../base";
 
 // Style imports
 import "../../design/TaskBox.css";
-import { Avatar } from "@material-ui/core";
 
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import profile from "../../meileng.jpeg";
 import styles from "./Heading.module.css";
-import FaceRoundedIcon from "@material-ui/icons/FaceRounded";
-import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
-import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
-import LocalLibraryRoundedIcon from "@material-ui/icons/LocalLibraryRounded";
-import SettingsRoundedIcon from "@material-ui/icons/SettingsRounded";
-import { Tooltip } from "../../design/table_icons";
+
+import {
+  Tooltip,
+  Avatar,
+  FaceRoundedIcon,
+  ExitToAppRoundedIcon,
+  HomeRoundedIcon,
+  LocalLibraryRoundedIcon,
+  SettingsRoundedIcon,
+} from "../../design/table_icons";
 
 const theme = createMuiTheme({
   typography: {
     fontFamily: ["Nunito", "sans-serif"].join(","),
   },
 });
+/**
+ * The Heading component
+ * @returns Functional component representing the top bar
+ */
 const Heading = () => {
+  // The current user
   const user = app.auth().currentUser;
   const displayName = user.displayName;
+  // Timing of the day
   const [time, setTime] = useState("Morning");
-
+  /**
+   * Function 1: The profile tab toggle.
+   * @param {Object} e The click event.
+   */
   const toggleProfile = (e) => {
     e.preventDefault();
     document.getElementById("profileD").classList.toggle(`${styles.hidden}`);
   };
+  /**
+   * Function 2: Returns the current time of day.
+   */
   const currentTime = () => {
     const time = new Date().getHours();
     if (time >= 6 && time < 12) {

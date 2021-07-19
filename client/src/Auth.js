@@ -7,7 +7,9 @@ export const AuthContext = React.createContext();
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [pending, setPending] = useState(true);
-
+  /**
+   * Function 1: Sets the current user to user and pending status to false.
+   */
   useEffect(() => {
     app.auth().onAuthStateChanged((user) => {
       setCurrentUser(user);

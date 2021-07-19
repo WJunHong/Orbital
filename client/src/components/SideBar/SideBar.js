@@ -2,13 +2,17 @@
 import React, { useState, useEffect } from "react";
 import app from "../../base";
 
-import EventNoteIcon from "@material-ui/icons/EventNote";
-import ExploreIcon from "@material-ui/icons/Explore";
-import AllInboxIcon from "@material-ui/icons/AllInbox";
+import {
+  EventNoteIcon,
+  ExploreIcon,
+  AllInboxIcon,
+  AddBoxIcon,
+  ViewListRoundedIcon,
+  Button,
+} from "../../design/table_icons";
+
 import styles from "./SideBar.module.css";
-import AddBoxIcon from "@material-ui/icons/AddBox";
-import ViewListRoundedIcon from "@material-ui/icons/ViewListRounded";
-import Button from "@material-ui/core/Button";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -28,7 +32,9 @@ function SideBar({ match }) {
     } else {
     }
   };
-
+  /**
+   * Function 1: Resets the list placeholder and input field and styling.
+   */
   const resetEverything = () => {
     toggleAddList();
     document.querySelector("#addList123").textContent = "";
@@ -37,6 +43,9 @@ function SideBar({ match }) {
       .setAttribute("data-placeholder", "Untitled List");
   };
 
+  /**
+   * Function 2: Hides add list content. Does not reset the input fields.
+   */
   const toggleAddList = () => {
     document.querySelector("#addList1").classList.toggle("hidden");
 
@@ -44,6 +53,10 @@ function SideBar({ match }) {
       .querySelector("#addList123")
       .setAttribute("data-placeholder", "Untitled List");
   };
+  /**
+   * Function 3: Adds a new list to the database.
+   * @param {Object} e The form submission event object.
+   */
   const addList = async (e) => {
     // Prevents page from reloading on form submission
     e.preventDefault();
@@ -112,6 +125,9 @@ function SideBar({ match }) {
       console.error(err.message);
     }
   };
+  /**
+   * Function 4: Gets all lists related to the current user.
+   */
   const getLists = async () => {
     try {
       const user = app.auth().currentUser;

@@ -9,8 +9,10 @@ import TabBody from "../TabBody";
 import Background from "../Background";
 import TaskTables from "../TaskTables";
 
-// Pop up
-
+/**
+ * The overall component for the overview page.
+ * @returns A functional component representing the overview.
+ */
 const Overview = () => {
   // Future -> Overview highlighted when on the page
   return (

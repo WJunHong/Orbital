@@ -1,17 +1,25 @@
 import React, { useState } from "react";
-import styles from "./Profile.module.css";
+
 import Background from "../Background";
-import { Avatar } from "@material-ui/core";
 import profile from "../../meileng.jpeg";
+// Firebase
 import app from "../../base";
 import firebase from "firebase";
 import "firebase/auth";
+// Toastify
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import EditRoundedIcon from "@material-ui/icons/EditRounded";
-import { Tooltip } from "../../design/table_icons";
+// Style imports
+import { Tooltip, Avatar, EditRoundedIcon } from "../../design/table_icons";
+import styles from "./Profile.module.css";
+/**
+ * The profile page.
+ * @returns Functional component representing the profile page.
+ */
 const Profile = () => {
+  // The user information fetched from firebase
   const user = app.auth().currentUser;
+  // Default values for editable information.
   const [displayName, setDN] = useState(user.displayName);
   const [email, setEmail] = useState(user.email);
   const [name, setName] = useState("");
@@ -19,7 +27,10 @@ const Profile = () => {
   const [emailOld, setEO] = useState("");
   const [password, setPassword] = useState("");
   const [passwordOld, setPO] = useState("");
-
+  /**
+   * Function 1: The function called when user changes display name.
+   * @param {Object} e The event object when submitting name form.
+   */
   const submitForm1 = (e) => {
     e.preventDefault();
     if (name === "") {
@@ -47,6 +58,10 @@ const Profile = () => {
       });
     }
   };
+  /**
+   * Function 2: The function called when the user changes email.
+   * @param {Object} e The event of submitting form.
+   */
   const submitForm2 = (e) => {
     e.preventDefault();
 
@@ -86,6 +101,10 @@ const Profile = () => {
       });
     }
   };
+  /**
+   * Function 3: The function called when the user changes password.
+   * @param {Object} e The event object of submitting form.
+   */
   const submitForm3 = (e) => {
     e.preventDefault();
     const credentials = firebase.auth.EmailAuthProvider.credential(
@@ -130,29 +149,49 @@ const Profile = () => {
         })
       );
   };
-
+  /**
+   * Function 4: Shows the name form button.
+   */
   const showEdit = () => {
     document.querySelector(`.${styles.editName}`).classList.remove("hidden");
   };
+  /**
+   * Function 5: Hides the name form button.
+   */
   const hideEdit = () => {
     document.querySelector(`.${styles.editName}`).classList.add("hidden");
   };
+  /**
+   * Function 6: Shows the email form button.
+   */
   const showEdit1 = () => {
     document.querySelector(`.${styles.editEmail}`).classList.remove("hidden");
   };
+  /**
+   * Function 7: Hides the email form button.
+   */
   const hideEdit1 = () => {
     document.querySelector(`.${styles.editEmail}`).classList.add("hidden");
   };
+  /**
+   * Function 8: Opens the name form.
+   */
   const showForm1 = () => {
     document.querySelector(`.${styles.form1}`).classList.toggle("hidden");
     setName("");
     removeForm2();
     removeForm3();
   };
+  /**
+   * Function 9: Closes the name form.
+   */
   const removeForm1 = () => {
     setName("");
     document.querySelector(`.${styles.form1}`).classList.add("hidden");
   };
+  /**
+   * Function 10: Opens the email form.
+   */
   const showForm2 = () => {
     document.querySelector(`.${styles.form2}`).classList.toggle("hidden");
     setEN("");
@@ -160,16 +199,25 @@ const Profile = () => {
     removeForm1();
     removeForm3();
   };
+  /**
+   * Function 11: Closes the email form.
+   */
   const removeForm2 = () => {
     setEN("");
     setEO("");
     document.querySelector(`.${styles.form2}`).classList.add("hidden");
   };
+  /**
+   * Function 12: Closes the password form.
+   */
   const removeForm3 = () => {
     setPO("");
     setPassword("");
     document.querySelector(`.${styles.form3}`).classList.add("hidden");
   };
+  /**
+   * Function 13: Opens the password form.
+   */
   const editPassword = () => {
     setPO("");
     setPassword("");

@@ -66,7 +66,30 @@ const TaskTables = ({ name, listName }) => {
   const [newProperty, setNewProperty] = useState({});
   const [properties, setProperties] = useState([]);
   const [lists, setLists] = useState([]);
+  // The fetched filters object
+  const storageName = name + "/" + (listName == null ? "" : listName);
+  const filter =
+    localStorage.getItem(`filter-${storageName}`) !== null
+      ? JSON.parse(localStorage.getItem(`filter-${storageName}`))
+      : {
+          priority: [],
+          deadline: [null, null],
+          progress: [0, 100],
+          todoDate: [null, null],
+          properties: [],
+        };
+  // The fetched sort object.
+  const sortStuff =
+    localStorage.getItem(`sort-${storageName}`) !== null
+      ? JSON.parse(localStorage.getItem(`sort-${storageName}`))
+      : {
+          sort: "dateAdded",
+          direction: "descending",
+        };
 
+  /**
+   * Function 1: Gets all unique properties from all tasks of the user.
+   */
   const getProperties = async () => {
     try {
       const user = app.auth().currentUser;
@@ -87,6 +110,9 @@ const TaskTables = ({ name, listName }) => {
       console.error(err.message);
     }
   };
+  /**
+   * Function 2: Gets all tasks of the user.
+   */
   const getTodos = async () => {
     try {
       const user = app.auth().currentUser;
@@ -121,6 +147,9 @@ const TaskTables = ({ name, listName }) => {
       console.error(err.message);
     }
   };
+  /**
+   * Function 3: Gets all lists of the user.
+   */
   const getLists = async () => {
     try {
       const user = app.auth().currentUser;
@@ -138,6 +167,10 @@ const TaskTables = ({ name, listName }) => {
       console.log(err);
     }
   };
+  /**
+   * Function 4: Removes a task.
+   * @param {String} id The id of the user.
+   */
   const deleteTodo = async (id) => {
     try {
       // Calls the DELETE task route method
@@ -166,28 +199,13 @@ const TaskTables = ({ name, listName }) => {
     }
   };
 
-  // The fetched filters object
-  const storageName = name + "/" + (listName == null ? "" : listName);
-  const filter =
-    localStorage.getItem(`filter-${storageName}`) !== null
-      ? JSON.parse(localStorage.getItem(`filter-${storageName}`))
-      : {
-          priority: [],
-          deadline: [null, null],
-          progress: [0, 100],
-          todoDate: [null, null],
-          properties: [],
-        };
-
-  const sortStuff =
-    localStorage.getItem(`sort-${storageName}`) !== null
-      ? JSON.parse(localStorage.getItem(`sort-${storageName}`))
-      : {
-          sort: "dateAdded",
-          direction: "descending",
-        };
-
   // <= 0 sort in same order, > 0 sort in reverse order
+  /**
+   * Function 5: The main sorting function. Takes in 2 parameters, representing the objects in the array.
+   * @param {Object} task1 The task object on the "left".
+   * @param {Object} task2 The task object on the "right".
+   * @returns A number. If <= 0, task 1 is sorted before 2, if > 0, task 2 is sorted before 1
+   */
   const properSort = (task1, task2) => {
     // Sort by descending order
     if (sortStuff.direction === "descending") {
@@ -291,6 +309,11 @@ const TaskTables = ({ name, listName }) => {
       }
     }
   };
+  /**
+   * Function 6: The filter function. Provides boolean checks to see if the task passes them. Only those will pass will return true.
+   * @param {Object} todo The task.
+   * @returns A boolean of whether the task meets the requirements to be displayed based on filter guidelines.
+   */
   const properFilter = (todo) => {
     const tzOffset = 28800000; // 8 hours in ms
     const day = 86400000; // 1 day in ms
@@ -371,6 +394,12 @@ const TaskTables = ({ name, listName }) => {
   };
 
   //the todo object, para of the operation, val to be passed in
+  /**
+   * Function 7: The function which updates a task.
+   * @param {Object} todo The task to be updated.
+   * @param {String} para The part of the task which needs to be updated.
+   * @param {*} val The value to be updated with. Takes in String, date object, int.
+   */
   const updateAll = async (todo, para, val) => {
     try {
       const body = {
@@ -554,10 +583,19 @@ const TaskTables = ({ name, listName }) => {
       console.error(err.message);
     }
   };
+  /**
+   * Function 8: Resets the description of text of the task.
+   * @param {Object} e The event object.
+   * @param {Object} todo The task object.
+   */
   const resetDescrip = (e, todo) => {
     e.preventDefault();
     e.target.textContent = todo.description;
   };
+  /**
+   * Function 9: The function which displays the expanded view of a task.
+   * @param {int} val The task id of the task to be expanded.
+   */
   const toggleMe = (val) => {
     document.getElementById(`taskData${val}`).classList.toggle("hidden");
     document

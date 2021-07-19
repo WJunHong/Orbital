@@ -14,7 +14,11 @@ const marks = [
 
 export default function SliderComponent({ todo, updateAll }) {
   const [value, setValue] = useState(todo.progress);
-
+  /**
+   * Function 1: Takes in new value for the slider and passes it into the setter.
+   * @param {Object} event The event object tied to slider change.
+   * @param {int} newValue The new value the slider slides to.
+   */
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -25,6 +29,9 @@ export default function SliderComponent({ todo, updateAll }) {
       aria-labelledby="continuous-slider"
       onChange={handleChange}
       onChangeCommitted={(e, val) => {
+        /**
+         * Function 2: Calls the updateAll function and resets the progress input.
+         */
         document.querySelector(`#progressInput_${todo.todo_id}`).value = "";
         updateAll(todo, "progress", val);
       }}

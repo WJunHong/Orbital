@@ -6,12 +6,14 @@ import app from "../../base";
 
 // Style imports
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import { Paper } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
 import styles from "./Register.module.css";
-import KeyboardReturnRoundedIcon from "@material-ui/icons/KeyboardReturnRounded";
+import {
+  TextField,
+  Grid,
+  Paper,
+  Button,
+  KeyboardReturnRoundedIcon,
+} from "../../design/table_icons";
 
 const theme = createMuiTheme({
   typography: {
@@ -19,7 +21,9 @@ const theme = createMuiTheme({
   },
 });
 
-// The registration component page
+/**
+ * The registration page.
+ */
 const Register = ({ history }) => {
   // name field
   const [name, setName] = useState("");
@@ -37,6 +41,9 @@ const Register = ({ history }) => {
   const [confirm_password, setCP] = useState("");
   const [cpassword_err, setCPE] = useState(false);
   const [confirm_password_label, setCPL] = useState("Confirm Password");
+  /**
+   * Function 1: Clears all input fields via their useStates. Removes the signup error message.
+   */
   const clearAll = () => {
     setNE(false);
     setNL("Name");
@@ -48,7 +55,9 @@ const Register = ({ history }) => {
     setCPL("Confirm Password");
     document.getElementById("signupError").style.display = "none";
   };
-
+  /**
+   * Function 2: Called when the user submits registration form.
+   */
   const SubmitForm = useCallback(
     async (e) => {
       e.preventDefault();
@@ -79,7 +88,10 @@ const Register = ({ history }) => {
     },
     [history]
   );
-
+  /**
+   * Function 3: Displays the error message on registration failure.
+   * @param {String} errorMsg
+   */
   const toggleErrorMsg = (errorMsg) => {
     const textError = document.getElementById("signupError");
     textError.style.display = "none";
@@ -103,7 +115,14 @@ const Register = ({ history }) => {
       }
     }
   };
-
+  /**
+   * Function 4: Validates the name, email and password are non-empty.
+   * @param {String} checkName The name.
+   * @param {String} checkEmail The email.
+   * @param {String} checkPassword The password.
+   * @param {String} checkConfirmPassword Reentering the password.
+   * @returns A boolean of whether information is non-empty.
+   */
   const validateInfo = (
     checkName,
     checkEmail,

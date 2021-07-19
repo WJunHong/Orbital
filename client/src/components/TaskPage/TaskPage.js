@@ -9,6 +9,9 @@ import TabName from "../TabName";
 import TabBody from "../TabBody";
 import TaskTables from "../TaskTables";
 
+/**
+ * the main task page or a list page.
+ */
 const TaskPage = ({ match }) => {
   if (match.path === "/lists/:listName") {
     const {

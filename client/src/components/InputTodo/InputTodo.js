@@ -3,22 +3,24 @@ import React, { Fragment, useState, useEffect } from "react";
 import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 import styles from "./InputTodo.module.css";
-import OutlinedFlagRoundedIcon from "@material-ui/icons/OutlinedFlagRounded";
-import LabelImportantRoundedIcon from "@material-ui/icons/LabelImportantRounded";
-import { AlarmIcon, CalendarTodayRoundedIcon } from "../../design/table_icons";
+
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import app from "../../base";
-import Chip from "@material-ui/core/Chip";
-import CloseIcon from "@material-ui/icons/Close";
-import Button from "@material-ui/core/Button";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   Tooltip,
-  CheckBoxOutlineBlankOutlinedIcon,
+  OutlinedFlagRoundedIcon,
+  LabelImportantRoundedIcon,
+  Chip,
+  CloseIcon,
+  Button,
+  AlarmIcon,
+  CalendarTodayRoundedIcon,
+  Box,
 } from "../../design/table_icons";
-import Box from "@material-ui/core/Box";
 
 /**
  * A functional component representing the input of a task
@@ -32,7 +34,9 @@ const InputToDo = ({ listName }) => {
   const [todoEndDate, setTodoEndDate] = useState(null);
   const [properties, setProperties] = useState([]);
   const [propertyLabels, setPL] = useState([]);
-
+  /**
+   * Functon 1: Resets the inputs in the task input.
+   */
   const resetEverything = () => {
     toggleAdd();
     setDeadline(null);
@@ -49,6 +53,10 @@ const InputToDo = ({ listName }) => {
       .getElementById("something1")
       .setAttribute("data-placeholder", "e.g. Watch 2040s recording");
   };
+  /**
+   * Function 2: The function that is called when the new task is submitted. Sends data to database and calls resetEverything().
+   * @param {Object} e The event of submitting a form.
+   */
   const onSubmitForm = async (e) => {
     // Prevents page from reloading on form submission
     e.preventDefault();
@@ -111,6 +119,10 @@ const InputToDo = ({ listName }) => {
       console.error(err.message);
     }
   };
+  /**
+   * Function 3: By clicking an empty space within the input box, focuses the mouse on the editable div.
+   * @param {Object} e The event of clicking.
+   */
   const focusText = (e) => {
     e.preventDefault();
     if (e.target.classList.contains(styles.typableArea)) {
@@ -120,13 +132,20 @@ const InputToDo = ({ listName }) => {
         .setAttribute("data-placeholder", "e.g. Watch 2040s recording");
     }
   };
-  const openCalendar = () =>
+  /**
+   * Function 4: Opens the deadline selector when clicking on the calendar icon.
+   *
+   */
+  const openCalendar = () => {
     document
       .querySelector(`.${styles.deadlineIcon}`)
       .addEventListener("focus", (e) =>
         document.querySelector(`.${styles.deadlineText}`).focus()
       );
-
+  };
+  /**
+   * Function 5: Manipulates the deadline color when TODAY's data is selected.
+   */
   const deadlineColors = () => {
     if (deadline == null) {
       document.querySelector(`.${styles.deadlineIcon}`).style.color = "white";
@@ -175,17 +194,28 @@ const InputToDo = ({ listName }) => {
       });
     }
   };
+  /**
+   * Function 6: Toggles the display of the add button and the add task input field.
+   */
   const toggleAdd = () => {
     document
       .querySelector(`.${styles.addTaskButton}`)
       .classList.toggle("hidden");
     document.querySelector(`.${styles.addALL}`).classList.toggle("hidden");
   };
+  /**
+   * Function 7: Toggles the dropdown of the priority options.
+   */
   const togglePriority = () => {
     document
       .querySelector(`.${styles.priorityOptions}`)
       .classList.toggle("hidden");
   };
+  /**
+   * Function 8: Sets the current value of priority when the user selects the dropdown option.
+   * @param {Object} e The event of clicking.
+   * @param {int} val The value of priority selected.
+   */
   const makePriority = (e, val) => {
     togglePriority();
     switch (val) {
@@ -227,7 +257,9 @@ const InputToDo = ({ listName }) => {
       progress: undefined,
     });
   };
-
+  /**
+   * Function 9: Checks the tododate selected. Changes the style if selected day is TODAY. Also checks if the end date is LATER than the start date if value is given.
+   */
   const makeTodoDate = () => {
     if (tododate == null || todoEndDate == null) {
       document.querySelector(`.alarmIcon`).style.color = "white";
@@ -268,7 +300,10 @@ const InputToDo = ({ listName }) => {
       }
     }
   };
-
+  /**
+   * Function 10: Adds a property to the task. If the property already exists, prevents the user from re-entering it. Also prevents the user from entering an empty property name.
+   * @param {Object} e The event object linked to the input field.
+   */
   const addProperty = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -311,6 +346,11 @@ const InputToDo = ({ listName }) => {
       e.target.value = "";
     }
   };
+  /**
+   * Fucntion 11: Handles the deletion of a property from the task to be added.
+   * @param {Object} chipToDelete The chip object to be deleted.
+   * @returns A lambda that is called when the delete button is pressed.
+   */
   const handleDelete = (chipToDelete) => () => {
     setPL(propertyLabels.filter((chip) => chip.key !== chipToDelete.key));
     setProperties(properties.filter((chip) => chip !== chipToDelete.label));

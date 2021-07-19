@@ -1,5 +1,6 @@
 // Imports
 import React, { Fragment, useEffect, useState } from "react";
+// Style imports
 import styles from "./Subtasks.module.css";
 import {
   DeleteOutlineRoundedIcon,
@@ -17,7 +18,10 @@ import "react-toastify/dist/ReactToastify.css";
 const ListSubtasks = ({ todo }) => {
   // List of subtasks pertaining to todo
   const [subtaskList, setSubtaskList] = useState([]);
-
+  /**
+   * Function 1: Gets all subtasks related to the user.
+   * @param {String} id The id of the user.
+   */
   const getSubtasks = async (id) => {
     try {
       // Calls the GET all subtasks route method
@@ -28,7 +32,13 @@ const ListSubtasks = ({ todo }) => {
       console.error(err.message);
     }
   };
-
+  /**
+   * Function 2: Updates the subtasks of the user via some action (edit description or completion).
+   * @param {Object} e The event object of form submission.
+   * @param {String} id The id of the user.
+   * @param {int} subtask_id The id of subtask to be altered.
+   * @param {boolean} completed The completion status of the task.
+   */
   const updateSubtask = async (e, id, subtask_id, completed) => {
     try {
       // Calls the UPDATE subtask route method
@@ -80,7 +90,11 @@ const ListSubtasks = ({ todo }) => {
       console.error(err.message);
     }
   };
-
+  /**
+   * Function 3: Deletes a subtask.
+   * @param {String} id The id of the user.
+   * @param {int} subtask_id The id of the subtask.
+   */
   const deleteSubtask = async (id, subtask_id) => {
     try {
       // Calls the DELETE subtask route method
