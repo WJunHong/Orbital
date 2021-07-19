@@ -24,23 +24,15 @@ router.get("/", async (req, res) => {
   try {
     const { user_id } = req.headers;
     const todoId = await pool.query(
-      "SELECT array_agg(DISTINCT todo_id) unique_todoIds FROM subtasks WHERE user_id = $1 and completed = false",
+      "SELECT array_agg(DISTINCT todo_id) unique_todoids FROM subtasks WHERE user_id = $1 and completed = false",
       [user_id]
     );
     const allSubtasks = await pool.query(
       "SELECT * FROM subtasks WHERE user_id = $1",
       [user_id]
     );
-    // allSubtasks.rows.map((subtask) =>
-    // res.json(allSubtasks.rows);
-    /*
-    [
-      [1,[st1,st2]],
-      [2, [st3.st4]].
-      [3, [st5,st6]]
-    ]
-    */
-    const todos = todoId.rows[0].unique_todoids;
+
+    const todos = todoId.rows[0].unique_todoids || [];
     const subtasks = allSubtasks.rows;
     const arrangedSubtasks = todos.map((id) => [
       id,

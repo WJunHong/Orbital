@@ -20,6 +20,7 @@ CREATE TABLE subtasks(
     todo_id integer,
     description VARCHAR(255),
     completed boolean
+    list VARCHAR
 );
 
 CREATE TABLE lists(

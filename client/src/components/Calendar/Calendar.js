@@ -87,7 +87,7 @@ const store = new CustomStore({
       values = {
         ...values,
         user_id: user_id,
-        properties: propArr
+        properties: propArr,
       };
       // Calls the GET all tasks route method
       const response = await fetch("/todos", {
@@ -185,8 +185,7 @@ function Calendar() {
         editorType: "dxCheckBox",
         dataField: "completed",
         editorOptions: {
-          Text: "Completed"
-
+          Text: "Completed",
         },
       },
       {
@@ -268,7 +267,8 @@ function Calendar() {
         editorOptions: {
           dataSource: properties,
         },
-      }, 
+      },
+      /*
       data.appointmentData.subtasks.length === 0 ? {} : data.appointmentData.subtasks.map( (subtask) => {
          const option = {
           label: {
@@ -281,6 +281,7 @@ function Calendar() {
          };
          return option;
         })
+        */
     ]);
   };
 
