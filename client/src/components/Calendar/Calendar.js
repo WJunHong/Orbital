@@ -14,7 +14,6 @@ function handleErrors(response) {
 }
 
 //
-const url = "http://localhost:5000";
 
 /* Tasks
 {
@@ -55,12 +54,12 @@ const store = new CustomStore({
       const user = app.auth().currentUser;
       const user_id = user.uid;
       // Calls the GET all tasks route method
-      const response = await fetch(`${url}/todos`, {
+      const response = await fetch("/todos", {
         method: "GET",
         headers: { user_id },
       });
       const tasks = await response.json();
-      const res = await fetch(`/subtasks/`, {
+      const res = await fetch("/subtasks/", {
         method: "GET",
         headers: { user_id },
       });
@@ -90,7 +89,7 @@ const store = new CustomStore({
         user_id: user_id,
       };
       // Calls the GET all tasks route method
-      const response = await fetch(`${url}/todos`, {
+      const response = await fetch("/todos", {
         method: "POST",
         body: JSON.stringify(values),
         headers: {
@@ -120,7 +119,7 @@ const store = new CustomStore({
         var todoTodoEndDate = new Date(todoTodoEndTime - TZOFFSET);
         values.todoenddate = todoTodoEndDate;
       }
-      const response = await fetch(`${url}/todos/${key}`, {
+      const response = await fetch(`/todos/${key}`, {
         method: "PUT",
         body: JSON.stringify(values),
         headers: {
@@ -133,7 +132,7 @@ const store = new CustomStore({
   },
   remove: async (key) => {
     try {
-      const response = await fetch(`${url}/todos/${key}`, {
+      const response = await fetch(`/todos/${key}`, {
         method: "DELETE",
       });
       const deleteSubtasks = await fetch(`/subtasks/${key}`, {
