@@ -55,17 +55,16 @@ const store = new CustomStore({
       const user = app.auth().currentUser;
       const user_id = user.uid;
       // Calls the GET all tasks route method
-      const response = await fetch(`${url}/todos`, {
+      const response = await fetch("/todos", {
         method: "GET",
         headers: { user_id },
       });
       const tasks = await response.json();
-      const res = await fetch(`/subtasks/`, {
+      const res = await fetch("/subtasks/", {
         method: "GET",
         headers: { user_id },
       });
       const _subtasks = await res.json();
-      console.log(_subtasks);
       const newTasks = tasks.map((task) => {
         const obj = {
           ...task,
@@ -85,12 +84,14 @@ const store = new CustomStore({
     try {
       const user = app.auth().currentUser;
       const user_id = user.uid;
+      const propArr = values.properties || [];
       values = {
         ...values,
         user_id: user_id,
+        properties: propArr
       };
       // Calls the GET all tasks route method
-      const response = await fetch(`${url}/todos`, {
+      const response = await fetch("todos", {
         method: "POST",
         body: JSON.stringify(values),
         headers: {
@@ -120,7 +121,7 @@ const store = new CustomStore({
         var todoTodoEndDate = new Date(todoTodoEndTime - TZOFFSET);
         values.todoenddate = todoTodoEndDate;
       }
-      const response = await fetch(`${url}/todos/${key}`, {
+      const response = await fetch(`/todos/${key}`, {
         method: "PUT",
         body: JSON.stringify(values),
         headers: {
@@ -133,7 +134,7 @@ const store = new CustomStore({
   },
   remove: async (key) => {
     try {
-      const response = await fetch(`${url}/todos/${key}`, {
+      const response = await fetch(`/todos/${key}`, {
         method: "DELETE",
       });
       const deleteSubtasks = await fetch(`/subtasks/${key}`, {
@@ -171,6 +172,7 @@ function Calendar() {
   };
 
   const onAppointmentFormOpening = (data) => {
+    console.log(data);
     data.popup.option("showTitle", true);
     data.popup.option(
       "title",
@@ -180,6 +182,14 @@ function Calendar() {
     const form = data.form;
 
     form.option("items", [
+      {
+        editorType: "dxCheckBox",
+        dataField: "completed",
+        editorOptions: {
+          Text: "Completed"
+
+        },
+      },
       {
         label: {
           text: "Description",
@@ -245,8 +255,9 @@ function Calendar() {
           text: "Progress",
         },
         editorType: "dxSlider",
+        dataField: "progress",
         editorOptions: {
-          value: data.progress,
+          value: data.appointmentData.progress,
         },
       },
       {
@@ -256,10 +267,21 @@ function Calendar() {
         editorType: "dxTagBox",
         dataField: "properties",
         editorOptions: {
-          items: data.properties,
           dataSource: properties,
         },
-      },
+      }, 
+      data.appointmentData.subtasks.length === 0 ? {} : data.appointmentData.subtasks.map( (subtask) => {
+         const option = {
+          label: {
+            text: "Subtasks",
+          },
+          editorType: "dxCheckBox",
+          editorOptions: {
+            text: subtask.description
+          }
+         };
+         return option;
+        })
     ]);
   };
 

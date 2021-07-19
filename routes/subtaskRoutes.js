@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
   try {
     const { user_id } = req.headers;
     const todoId = await pool.query(
-      "SELECT array_agg(DISTINCT todo_id) unique_todoIds FROM subtasks WHERE user_id = $1",
+      "SELECT array_agg(DISTINCT todo_id) unique_todoIds FROM subtasks WHERE user_id = $1 and completed = false",
       [user_id]
     );
     const allSubtasks = await pool.query(

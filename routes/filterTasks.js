@@ -45,7 +45,7 @@ router.get("/todos", async (req, res) => {
     var end_date = new Date().addDays(7);
     // Query times which match todays date
     const todayTasks = await pool.query(
-      "SELECT user_id, todo_id, description, deadline::timestamptz + INTERVAL '8 hour' as deadline, tododate, priority, progress, properties, completed FROM todo WHERE user_id = $1 AND deadline >= $2 AND deadline <= $3 AND completed = false",
+      "SELECT user_id, todo_id, description, deadline::timestamptz + INTERVAL '8 hour' as deadline, tododate::timestamptz + INTERVAL '8 hour' as tododate, todoenddate::timestamptz + INTERVAL '8 hour' as todoenddate, priority, progress, properties, completed FROM todo WHERE user_id = $1 AND deadline >= $2 AND deadline <= $3 AND completed = false",
       [user_id, start_date, end_date]
     );
     // Return the tasks happening today for the user
