@@ -14,7 +14,6 @@ function handleErrors(response) {
 }
 
 //
-const url = "http://localhost:5000";
 
 /* Tasks
 {
@@ -91,7 +90,11 @@ const store = new CustomStore({
         properties: propArr
       };
       // Calls the GET all tasks route method
+<<<<<<< HEAD
       const response = await fetch("todos", {
+=======
+      const response = await fetch("/todos", {
+>>>>>>> 3a55b406a7479005cc1aabaa323104e7a8df2abd
         method: "POST",
         body: JSON.stringify(values),
         headers: {
