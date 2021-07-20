@@ -367,6 +367,7 @@ const InputToDo = ({ listName }) => {
             className={styles.addTaskButton}
             size="small"
             onClick={(e) => toggleAdd(e)}
+            data-testid="expand-InputTodo-button"
           >
             <AddIcon className={styles.addButtonPlus} />
           </Fab>
@@ -376,6 +377,7 @@ const InputToDo = ({ listName }) => {
           onSubmit={(e) => onSubmitForm(e)}
           className={`${styles.addALL} hidden`}
           id="lmao"
+          data-testid="InputTodo-form"
         >
           <div className={`${styles.addTaskBox}`} onClick={(e) => focusText(e)}>
             <div className={styles.textDeadlineLabel}>
