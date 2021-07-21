@@ -6,6 +6,7 @@ import TabName from "../TabName";
 import app from "../../base";
 import React, { useState, useCallback } from "react";
 import { Scheduler, View, Editing } from "devextreme-react/scheduler";
+import { Slider } from 'devextreme-react/slider';
 import CustomStore from "devextreme/data/custom_store";
 
 function handleErrors(response) {
@@ -73,7 +74,6 @@ const store = new CustomStore({
         };
         return obj;
       });
-      console.log(newTasks);
       return newTasks;
     } catch (err) {
       console.error(err.message);
@@ -97,7 +97,6 @@ const store = new CustomStore({
           "Content-Type": "application/json",
         },
       });
-      console.log(values);
     } catch (err) {
       console.error(err.message);
     }
