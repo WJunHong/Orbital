@@ -9,7 +9,8 @@
   },
   "scripts": {
     "start": "node index.js",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -31,5 +32,6 @@
     "pg": "^8.6.0",
     "react-calendar": "^3.4.0",
     "react-datepicker": "^4.1.1"
-  }
+  },
+  "devDependencies": {}
 }

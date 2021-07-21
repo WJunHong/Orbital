@@ -24,27 +24,19 @@ router.get("/", async (req, res) => {
   try {
     const { user_id } = req.headers;
     const todoId = await pool.query(
-      "SELECT array_agg(DISTINCT todo_id) unique_todoIds FROM subtasks WHERE user_id = $1 and completed = false",
+      "SELECT array_agg(DISTINCT todo_id) unique_todoids FROM subtasks WHERE user_id = $1 and completed = false",
       [user_id]
     );
     const allSubtasks = await pool.query(
-      "SELECT * FROM subtasks WHERE user_id = $1",
+      "SELECT * FROM subtasks WHERE user_id = $1 and completed = false",
       [user_id]
     );
-    // allSubtasks.rows.map((subtask) =>
-    // res.json(allSubtasks.rows);
-    /*
-    [
-      [1,[st1,st2]],
-      [2, [st3.st4]].
-      [3, [st5,st6]]
-    ]
-    */
-    const todos = todoId.rows[0].unique_todoids;
+
+    const todos = todoId.rows[0].unique_todoids || [];
     const subtasks = allSubtasks.rows;
     const arrangedSubtasks = todos.map((id) => [
       id,
-      subtasks.filter((i) => i.todo_id === id),
+      subtasks.filter((i) => i.todo_id === id)
     ]);
     res.json(arrangedSubtasks);
   } catch (err) {
@@ -80,6 +72,26 @@ router.put("/:todo_id/:sid", async (req, res) => {
     console.error(error.message);
   }
 });
+
+// Strictly complete a task
+router.put("/complete/subtask/:boolean", async (req, res) => {
+  try {
+    const { boolean } = req.params
+    const { subtaskIds } = req.body;
+    const updateTodo = async (id) => pool.query(
+      "UPDATE subtasks SET completed = $1 WHERE subtask_id = $2",
+      [boolean, id]
+    );
+    subtaskIds.forEach((sid) => {
+       updateTodo(sid)
+    });
+
+    res.json("Subtask was completed!");
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
 // Delete a subtask based on main task id and sub task id
 
 router.delete("/:todo_id/:sid", async (req, res) => {

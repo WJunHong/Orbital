@@ -154,7 +154,7 @@ const TaskTables = ({ name, listName }) => {
         setLists(jsonData);
       }
     } catch (err) {
-      console.log(err);
+      console.err(err);
     }
   };
   /**
@@ -524,7 +524,6 @@ const TaskTables = ({ name, listName }) => {
           });
           break;
         case "addToList":
-          console.log(val);
           if (val === "") {
             toast.warn(`Please select a list!`, {
               position: "top-right",
