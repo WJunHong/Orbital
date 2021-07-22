@@ -67,6 +67,7 @@ const FSD = ({ name, todos, listName }) => {
       todoDate: [null, null],
       properties: [],
     };
+    localStorage.setItem(`filter-${storageName}`, JSON.stringify(filterObj));
   } else {
     filterObj = JSON.parse(localStorage.getItem(`filter-${storageName}`));
   }

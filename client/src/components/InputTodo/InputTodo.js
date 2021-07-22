@@ -26,7 +26,7 @@ import {
  * A functional component representing the input of a task
  * @returns JSX of input field and add button
  */
-const InputToDo = ({ listName }) => {
+const InputToDo = ({ listName, handleSubmit }) => {
   // Description of a task
   const [deadline, setDeadline] = useState(null);
   const [priority, setPriority] = useState(5);
@@ -374,7 +374,9 @@ const InputToDo = ({ listName }) => {
           Add Task
         </div>
         <form
-          onSubmit={(e) => onSubmitForm(e)}
+          onSubmit={
+            handleSubmit == null ? (e) => onSubmitForm(e) : handleSubmit
+          }
           className={`${styles.addALL} hidden`}
           id="lmao"
           data-testid="InputTodo-form"
@@ -419,7 +421,9 @@ const InputToDo = ({ listName }) => {
                       onChange={(date) => {
                         setTodoEndDate(date);
                       }}
-                      onCalendarOpen={() => setTodoEndDate(tododate)}
+                      onCalendarOpen={() => {
+                        if (todoEndDate == null) setTodoEndDate(tododate);
+                      }}
                       onCalendarClose={makeTodoDate}
                       showTimeSelect
                       showTimeSelectOnly
@@ -472,10 +476,16 @@ const InputToDo = ({ listName }) => {
                       label={data.label}
                       onDelete={handleDelete(data)}
                       key={data.key}
+                      data-testid={data.label}
                       size="small"
                       className={styles.propertyChip}
                       variant="outlined"
-                      deleteIcon={<CloseIcon className={styles.close} />}
+                      deleteIcon={
+                        <CloseIcon
+                          className={styles.close}
+                          data-testid={`${data.label}_close`}
+                        />
+                      }
                     />
                   ))}
                 </div>
@@ -490,7 +500,7 @@ const InputToDo = ({ listName }) => {
                 </div>
                 <div className={`${styles.priorityOptions} hidden`}>
                   <ul>
-                    <li onClick={(e) => makePriority(e, 1)}>
+                    <li onClick={(e) => makePriority(e, 1)} data-testid="test1">
                       <OutlinedFlagRoundedIcon className={styles.po1} />
                       Priority 1
                     </li>
