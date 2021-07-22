@@ -145,7 +145,7 @@ function SideBar({ match }) {
         } = match;
       }
     } catch (err) {
-      console.log(err);
+      console.err(err);
     }
   };
   useEffect(() => highlight(), []);

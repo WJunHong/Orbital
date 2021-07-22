@@ -6,12 +6,10 @@ import TabName from "../TabName";
 import app from "../../base";
 import React, { useState, useCallback } from "react";
 import { Scheduler, View, Editing } from "devextreme-react/scheduler";
+// eslint-disable-next-line no-unused-vars
+import { Slider } from 'devextreme-react/slider';
 import CustomStore from "devextreme/data/custom_store";
-
-function handleErrors(response) {
-  if (!response.ok) throw Error(response.statusText);
-  return response;
-}
+import ArrayStore from 'devextreme/data/array_store';
 
 //
 
@@ -69,11 +67,10 @@ const store = new CustomStore({
           ...task,
           subtasks: _subtasks
             .filter((i) => i[0] === task.todo_id)
-            .map((i) => i[1]),
+            .flatMap((i) => i[1]),
         };
         return obj;
       });
-      console.log(newTasks);
       return newTasks;
     } catch (err) {
       console.error(err.message);
@@ -90,14 +87,13 @@ const store = new CustomStore({
         properties: propArr,
       };
       // Calls the GET all tasks route method
-      const response = await fetch("/todos", {
+      await fetch("/todos", {
         method: "POST",
         body: JSON.stringify(values),
         headers: {
           "Content-Type": "application/json",
         },
       });
-      console.log(values);
     } catch (err) {
       console.error(err.message);
     }
@@ -120,7 +116,7 @@ const store = new CustomStore({
         var todoTodoEndDate = new Date(todoTodoEndTime - TZOFFSET);
         values.todoenddate = todoTodoEndDate;
       }
-      const response = await fetch(`/todos/${key}`, {
+      await fetch(`/todos/${key}`, {
         method: "PUT",
         body: JSON.stringify(values),
         headers: {
@@ -133,10 +129,10 @@ const store = new CustomStore({
   },
   remove: async (key) => {
     try {
-      const response = await fetch(`/todos/${key}`, {
+      await fetch(`/todos/${key}`, {
         method: "DELETE",
       });
-      const deleteSubtasks = await fetch(`/subtasks/${key}`, {
+      await fetch(`/subtasks/${key}`, {
         method: "DELETE",
       });
     } catch (err) {
@@ -148,6 +144,7 @@ const store = new CustomStore({
 function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [properties, setProperties] = useState([]);
+  const [subtaskIds, setSubtaskIds] = useState([]);
 
   const getProperties = async () => {
     try {
@@ -170,44 +167,52 @@ function Calendar() {
     }
   };
 
+  const submitSubtasks = async (e) => {
+    try {
+      const body = { subtaskIds };
+      await fetch("/subtasks/complete/subtask/true", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+    } catch(err) {
+      console.error(err);
+    }
+
+  }
+
+  const completeSubtask = (args) => {
+    if (args.name === "selectedItemKeys") {
+      setSubtaskIds(args.value);
+    }
+  };
+
+
   const onAppointmentFormOpening = (data) => {
-    console.log(data);
     data.popup.option("showTitle", true);
     data.popup.option(
       "title",
       data.appointmentData.text ? data.appointmentData.text : "Edit task"
     );
 
-    const form = data.form;
+    let form = data.form;
+
+    const subtasksStore = new ArrayStore({
+      key: 'subtask_id',
+      data: data.appointmentData.subtasks
+    });
+
+
 
     form.option("items", [
-      {
-        editorType: "dxCheckBox",
-        dataField: "completed",
-        editorOptions: {
-          Text: "Completed",
-        },
-      },
       {
         label: {
           text: "Description",
         },
-        editorType: "dxTextBox",
+        editorType: "dxTextArea",
         dataField: "description",
-        editorOptions: {},
-      },
-      {
-        label: {
-          text: "Deadline",
-        },
-        editorType: "dxDateBox",
-        dataField: "deadline",
+        colSpan: 2,
         editorOptions: {
-          type: "datetime",
-          showAnalogClock: false,
-          dropDownOptions: {
-            position: "right",
-          },
         },
       },
       {
@@ -240,6 +245,20 @@ function Calendar() {
       },
       {
         label: {
+          text: "Deadline",
+        },
+        editorType: "dxDateBox",
+        dataField: "deadline",
+        editorOptions: {
+          type: "datetime",
+          showAnalogClock: false,
+          dropDownOptions: {
+            position: "right",
+          },
+        },
+      },
+      {
+        label: {
           text: "Priority",
         },
         editorType: "dxSelectBox",
@@ -254,8 +273,13 @@ function Calendar() {
         },
         editorType: "dxSlider",
         dataField: "progress",
+        colSpan: 2,
         editorOptions: {
           value: data.appointmentData.progress,
+          tooltip: {
+            enabled: true,
+            position: "bottom",
+          }
         },
       },
       {
@@ -268,20 +292,28 @@ function Calendar() {
           dataSource: properties,
         },
       },
-      /*
-      data.appointmentData.subtasks.length === 0 ? {} : data.appointmentData.subtasks.map( (subtask) => {
-         const option = {
-          label: {
-            text: "Subtasks",
-          },
-          editorType: "dxCheckBox",
-          editorOptions: {
-            text: subtask.description
-          }
-         };
-         return option;
-        })
-        */
+      {
+        editorType: "dxCheckBox",
+        dataField: "completed",
+        editorOptions: {
+          Text: "Completed",
+        },
+      },
+      {
+        label: {
+          text: "Subtasks"
+        },
+        editorType: "dxList",
+        colSpan: 2,
+        editorOptions: {
+          showSelectionControls: true,
+          dataSource: subtasksStore,
+          displayExpr: "description",
+          selectionMode: "multiple",
+          onOptionChanged: completeSubtask,
+          noDataText: "No subtasks currently. Add subtasks in Main Tasks or Lists."
+        },
+      },
     ]);
   };
 
@@ -313,6 +345,7 @@ function Calendar() {
           adaptivityEnabled={true}
           maxAppointmentsPerCell="3"
           onAppointmentFormOpening={onAppointmentFormOpening}
+          onAppointmentUpdating={submitSubtasks}
         >
           <View type="day" startDayHour={0} endDayHour={24} />
           <View type="week" startDayHour={0} endDayHour={24} />

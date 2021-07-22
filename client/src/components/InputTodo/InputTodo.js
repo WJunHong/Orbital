@@ -97,7 +97,7 @@ const InputToDo = ({ listName, handleSubmit }) => {
           properties,
           listName,
         };
-        const response = await fetch("/todos", {
+        await fetch("/todos", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
@@ -266,9 +266,9 @@ const InputToDo = ({ listName, handleSubmit }) => {
     } else {
       const today = new Date();
       if (
-        today.getFullYear() == tododate.getFullYear() &&
-        today.getMonth() == tododate.getMonth() &&
-        today.getDate() == tododate.getDate()
+        today.getFullYear() === tododate.getFullYear() &&
+        today.getMonth() === tododate.getMonth() &&
+        today.getDate() === tododate.getDate()
       ) {
         document.querySelector(`.alarmIcon`).style.color = "green";
       } else {
