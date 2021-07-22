@@ -86,6 +86,23 @@ const store = new CustomStore({
         user_id: user_id,
         properties: propArr,
       };
+
+      const TZOFFSET = 28800000;
+      if (values.deadline !== null) {
+        var deadlineTime = new Date(values.deadline).getTime();
+        var deadline = new Date(deadlineTime - TZOFFSET);
+        values.deadline = deadline;
+      }
+      if (values.tododate !== null) {
+        var todoTodoTime = new Date(values.tododate).getTime();
+        var todoTodoDate = new Date(todoTodoTime - TZOFFSET);
+        values.tododate = todoTodoDate;
+      }
+      if (values.todoenddate !== null) {
+        var todoTodoEndTime = new Date(values.todoenddate).getTime();
+        var todoTodoEndDate = new Date(todoTodoEndTime - TZOFFSET);
+        values.todoenddate = todoTodoEndDate;
+      }
       // Calls the GET all tasks route method
       await fetch("/todos", {
         method: "POST",
