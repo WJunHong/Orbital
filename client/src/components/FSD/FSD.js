@@ -513,6 +513,7 @@ const FSD = ({ name, todos, listName }) => {
                   <li
                     style={{ backgroundColor: `${selectedColour}` }}
                     className={styles.priorityButton}
+                    data-testid={"priority" + item}
                     onClick={(e) => {
                       handleClick(e, item);
                       handleSelect("priority", item, priority, setPriority);
@@ -557,14 +558,18 @@ const FSD = ({ name, todos, listName }) => {
                   onChange={(date) =>
                     handleSelect("deadline", date, [date, deadlineEnd], setDS)
                   }
+                  dateFormat="dd-MM-yyyy"
                   placeholderText="Start"
-                  className={styles.deadlineInput}
+                  className={`${styles.deadlineInput} deadlineStart`}
+                  data-testid="deadlineStart"
                   maxDate={
                     deadlineEnd == null ? undefined : new Date(deadlineEnd)
                   }
                 />
                 <DatePicker
                   selected={deadlineEnd == null ? null : new Date(deadlineEnd)}
+                  data-testid="deadlineEnd"
+                  dateFormat="dd-MM-yyyy"
                   onChange={(date) =>
                     handleSelect("deadline", date, [deadlineStart, date], setDE)
                   }
@@ -587,6 +592,8 @@ const FSD = ({ name, todos, listName }) => {
               Todo Date
               <div className={styles.deadlineContainer}>
                 <DatePicker
+                  data-testid="todoDateStart"
+                  dateFormat="dd-MM-yyyy"
                   selected={todoStart == null ? null : new Date(todoStart)}
                   onChange={(date) =>
                     handleSelect("todoDate", date, [date, todoEnd], setTS)
@@ -596,6 +603,8 @@ const FSD = ({ name, todos, listName }) => {
                   maxDate={todoEnd == null ? undefined : new Date(todoEnd)}
                 />
                 <DatePicker
+                  data-testid="todoDateEnd"
+                  dateFormat="dd-MM-yyyy"
                   selected={todoEnd == null ? null : new Date(todoEnd)}
                   onChange={(date) =>
                     handleSelect("todoDate", date, [todoStart, date], setTE)

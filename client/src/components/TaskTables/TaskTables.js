@@ -154,7 +154,7 @@ const TaskTables = ({ name, listName }) => {
         setLists(jsonData);
       }
     } catch (err) {
-      console.err(err);
+      console.error(err.message);
     }
   };
   /**

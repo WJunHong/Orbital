@@ -9,11 +9,7 @@ const pool = new Pool({
   connectionString:
     process.env.NODE_ENV === "production" ? proConfig : devConfig,
 
-<<<<<<< HEAD
   //ssl: { rejectUnauthorized: false },
-=======
-  // ssl: { rejectUnauthorized: false },
->>>>>>> 1a738f56aca87e37c0b3dce44e6bc71a63e4e7dc
 });
 
 module.exports = pool;
