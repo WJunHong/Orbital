@@ -618,6 +618,7 @@ const TaskTables = ({ name, listName }) => {
               var todoDaate = new Date(todoDateTime - TZOFFSET);
               var todoEndDaate = new Date(todoEndDateTime - TZOFFSET);
               var todoTime = new Date(todoDaate).setHours(23, 59);
+              var todoDateStartTime = new Date(todoDeadline).getTime();
               return (
                 <>
                   <tr
@@ -693,6 +694,11 @@ const TaskTables = ({ name, listName }) => {
                             showTimeSelectOnly
                             dateFormat="HH:mm"
                             timeCaption="Time"
+                            filterTime={(time) =>
+                              todoDeadlineTime > 0
+                                ? time.getTime() <= todoDateStartTime
+                                : true
+                            }
                           />
                           <span className={styles.middle}>-</span>
                           <DatePicker
@@ -708,8 +714,24 @@ const TaskTables = ({ name, listName }) => {
                             showTimeSelectOnly
                             dateFormat="HH:mm"
                             timeCaption="Time"
-                            minTime={todoDaate}
-                            maxTime={todoTime}
+                            filterTime={(time) => {
+                              if (todoDeadlineTime > 0) {
+                                if (todoDateTime > 0) {
+                                  return (
+                                    time >= todoDaate.getTime() &&
+                                    time <= todoDateStartTime
+                                  );
+                                } else {
+                                  return time <= todoDateStartTime;
+                                }
+                              } else {
+                                if (todoDateTime > 0) {
+                                  return time >= todoDaate.getTime();
+                                } else {
+                                  return true;
+                                }
+                              }
+                            }}
                           />
                         </div>
                       </div>
@@ -909,6 +931,11 @@ const TaskTables = ({ name, listName }) => {
                             maxDate={
                               todo.deadline == null ? null : todoDeadline
                             }
+                            filterTime={(time) =>
+                              todoDeadlineTime > 0
+                                ? time.getTime() <= todoDateStartTime
+                                : true
+                            }
                             minDate={new Date()}
                           />
                           <span className={styles.middle}>-</span>
@@ -935,8 +962,24 @@ const TaskTables = ({ name, listName }) => {
                             minDate={
                               todo.tododate === null ? new Date() : todoDaate
                             }
-                            minTime={todoDaate}
-                            maxTime={todoTime}
+                            filterTime={(time) => {
+                              if (todoDeadlineTime > 0) {
+                                if (todoDateTime > 0) {
+                                  return (
+                                    time >= todoDaate.getTime() &&
+                                    time <= todoDateStartTime
+                                  );
+                                } else {
+                                  return time <= todoDateStartTime;
+                                }
+                              } else {
+                                if (todoDateTime > 0) {
+                                  return time >= todoDaate.getTime();
+                                } else {
+                                  return true;
+                                }
+                              }
+                            }}
                           />
                         </div>
                         <div className="deadlineBox1">
