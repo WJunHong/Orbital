@@ -8,12 +8,14 @@ import TabName from "../TabName";
 import TabBody from "../TabBody";
 import TaskTables from "../TaskTables";
 import app from "../../base";
+import Loading from "../../Loading.js";
 
 /**
  * the main task page or a list page.
  */
 const TaskPage = ({ match }) => {
   const [lists, setLists] = useState([]);
+  const [pending, setPending] = useState(true);
   const getLists = async () => {
     try {
       const user = app.auth().currentUser;
@@ -27,6 +29,7 @@ const TaskPage = ({ match }) => {
       if (jsonData !== null) {
         setLists(jsonData);
       }
+      setPending(false);
     } catch (err) {
       console.error(err);
     }
@@ -34,6 +37,11 @@ const TaskPage = ({ match }) => {
   useEffect(() => {
     getLists();
   }, []);
+
+  if (pending) {
+    return <Background />
+  }
+
   if (match.path === "/lists/:listName") {
     const {
       params: { listName },
