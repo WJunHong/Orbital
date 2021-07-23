@@ -17,7 +17,6 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Routes for todo-list
-//app.use("/api", require("./routes/taskpage"));
 app.use("/todos", require("./routes/taskRoutes"));
 app.use("/subtasks", require("./routes/subtaskRoutes"));
 app.use("/filter", require("./routes/filterTasks"));

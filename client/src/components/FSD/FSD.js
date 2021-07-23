@@ -480,7 +480,7 @@ const FSD = ({ name, todos, listName }) => {
                   setConfirmDialog({
                     isOpen: true,
                     title: "Are you sure to delete this list?",
-                    subTitle: "You can't undo this operation",
+                    subTitle: "All tasks in the list would be deleted. You can't undo this operation.",
                     onConfirm: () => {
                       deleteList();
                     },
