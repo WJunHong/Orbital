@@ -33,21 +33,34 @@ const TaskPage = ({ match }) => {
   };
   useEffect(() => {
     getLists();
-  }, [lists]);
+  }, []);
   if (match.path === "/lists/:listName") {
     const {
       params: { listName },
     } = match;
-    return (
-      <Background>
-        <TabName name={listName} />
-        <TabBody>
-          <TaskTables name={"lists"} listName={listName} />
-          <InputTodo listName={listName} />
-        </TabBody>
-        <div className={styles.bottom}></div>
-      </Background>
-    );
+    if (lists.includes(listName)) { 
+      return (
+        <Background>
+          <TabName name={listName} />
+          <TabBody>
+            <TaskTables name={"lists"} listName={listName} />
+            <InputTodo listName={listName} />
+          </TabBody>
+          <div className={styles.bottom}></div>
+        </Background>
+      );
+    } else {
+      return (
+        <Background>
+          <TabName name={"Main Tasks"} />
+          <TabBody>
+            <TaskTables name={"mt"} listName={"mt"} />
+            <InputTodo />
+          </TabBody>
+          <div className={styles.bottom}></div>
+        </Background>
+      );
+    }
   } else {
     return (
       <Background>

@@ -11,13 +11,26 @@ import userEvent from "@testing-library/user-event";
 import styles from "./FSD.module.css";
 
 describe("A series of tests for filter, sort, delete component", () => {
+  var localStorageMock = (function() {
+  var store = {};
+  return {
+    getItem: function(key) {
+      return store[key];
+    },
+    setItem: function(key, value) {
+      store[key] = value.toString();
+    },
+    clear: function() {
+      store = {};
+    },
+    removeItem: function(key) {
+      delete store[key];
+    }
+  };
+})();
   beforeEach(() => {
     Object.defineProperty(window, "localStorage", {
-      value: {
-        getItem: jest.fn(() => null),
-        setItem: jest.fn(() => null),
-      },
-      writable: true,
+      value: localStorageMock
     });
   });
 
