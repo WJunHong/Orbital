@@ -16,6 +16,7 @@ import Loading from "../../Loading.js";
 const TaskPage = ({ match }) => {
   const [lists, setLists] = useState([]);
   const [pending, setPending] = useState(true);
+
   const getLists = async () => {
     try {
       const user = app.auth().currentUser;
@@ -39,7 +40,7 @@ const TaskPage = ({ match }) => {
   }, []);
 
   if (pending) {
-    return <Background />
+    return <Loading loading={pending} />;
   }
 
   if (match.path === "/lists/:listName") {
@@ -58,6 +59,7 @@ const TaskPage = ({ match }) => {
         </Background>
       );
     } else {
+      window.location="/taskpage"
       return (
         <Background>
           <TabName name={"Main Tasks"} />
