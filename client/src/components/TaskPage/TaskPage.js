@@ -14,6 +14,7 @@ import Loading from "../../Loading.js";
  * the main task page or a list page.
  */
 const TaskPage = ({ match }) => {
+  /*
   const [lists, setLists] = useState([]);
   const [pending, setPending] = useState(true);
 
@@ -42,12 +43,13 @@ const TaskPage = ({ match }) => {
   if (pending) {
     return <Loading loading={pending} />;
   }
+  */
 
   if (match.path === "/lists/:listName") {
     const {
       params: { listName },
     } = match;
-    if (lists.includes(listName)) { 
+    // if (lists.includes(listName)) { 
       return (
         <Background>
           <TabName name={listName} />
@@ -59,7 +61,7 @@ const TaskPage = ({ match }) => {
         </Background>
       );
     } else {
-      window.location="/taskpage"
+      // window.location="/taskpage"
       return (
         <Background>
           <TabName name={"Main Tasks"} />
@@ -71,18 +73,18 @@ const TaskPage = ({ match }) => {
         </Background>
       );
     }
-  } else {
-    return (
-      <Background>
-        <TabName name={"Main Tasks"} />
-        <TabBody>
-          <TaskTables name={"mt"} listName={"mt"} />
-          <InputTodo />
-        </TabBody>
-        <div className={styles.bottom}></div>
-      </Background>
-    );
-  }
+  // } else {
+  //   return (
+  //     <Background>
+  //       <TabName name={"Main Tasks"} />
+  //       <TabBody>
+  //         <TaskTables name={"mt"} listName={"mt"} />
+  //         <InputTodo />
+  //       </TabBody>
+  //       <div className={styles.bottom}></div>
+  //     </Background>
+  //   );
+  // }
 };
 
 export default TaskPage;

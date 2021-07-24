@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import Background from "../Background";
-import profile from "../../meileng.jpeg";
+import profile from "../../avatar-icon.jpg";
 // Firebase
 import app from "../../base";
 import firebase from "firebase";
