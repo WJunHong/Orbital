@@ -480,7 +480,8 @@ const FSD = ({ name, todos, listName }) => {
                   setConfirmDialog({
                     isOpen: true,
                     title: "Are you sure to delete this list?",
-                    subTitle: "All tasks in the list would be deleted. You can't undo this operation.",
+                    subTitle:
+                      "All tasks in the list would be deleted. You can't undo this operation.",
                     onConfirm: () => {
                       deleteList();
                     },
@@ -555,12 +556,18 @@ const FSD = ({ name, todos, listName }) => {
                   selected={
                     deadlineStart == null ? null : new Date(deadlineStart)
                   }
-                  onChange={(date) =>
-                    handleSelect("deadline", date, [date, deadlineEnd], setDS)
+                  onChange={(date) => setDS(date)}
+                  onCalendarClose={() =>
+                    handleSelect(
+                      "deadline",
+                      deadlineStart,
+                      [deadlineStart, deadlineEnd],
+                      setDS
+                    )
                   }
                   dateFormat="dd-MM-yyyy"
                   placeholderText="Start"
-                  className={`${styles.deadlineInput} deadlineStart`}
+                  className={`${styles.deadlineInput} deadlineStartDate`}
                   data-testid="deadlineStart"
                   maxDate={
                     deadlineEnd == null ? undefined : new Date(deadlineEnd)

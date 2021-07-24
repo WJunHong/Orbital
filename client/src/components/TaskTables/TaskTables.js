@@ -396,22 +396,20 @@ const TaskTables = ({ name, listName }) => {
     var filterByDeadline;
     var filterByTodoDate;
     filterByDeadline =
-      todoDeadline >= filterStartDeadline &&
-      todoDeadline < filterEndDeadline;
+      todoDeadline >= filterStartDeadline && todoDeadline < filterEndDeadline;
     filterByTodoDate =
-      todoTodoDate >= filterStartTododate &&
-      todoTodoDate < filterEndTododate;
-      // console.log(todo);
-      // console.log(filterByTodoDate);
-      // console.log("Todo " + todoTodoDate)
-      // console.log(filterStartTododate);
+      todoTodoDate >= filterStartTododate && todoTodoDate < filterEndTododate;
+    // console.log(todo);
+    // console.log(filterByTodoDate);
+    // console.log("Todo " + todoTodoDate)
+    // console.log(filterStartTododate);
     return filterByDeadline || filterByTodoDate;
   };
 
   const properFilterWeek = (todo) => {
     const day = 86400000; // 1 day in ms
     var filterStartDeadline = new Date().getTime() + TZOFFSET + day;
-    var filterEndDeadline = new Date().getTime() + TZOFFSET +  7 * day;
+    var filterEndDeadline = new Date().getTime() + TZOFFSET + 7 * day;
     var filterStartTododate = new Date().getTime() + TZOFFSET + day;
     var filterEndTododate = new Date().getTime() + TZOFFSET + 7 * day;
     var todoDeadline =
@@ -758,7 +756,18 @@ const TaskTables = ({ name, listName }) => {
                               updateAll(todo, "todoenddate", date)
                             }
                             showTimeSelect
-                            showTimeSelectOnly
+                            maxDate={
+                              todo.deadline === null
+                                ? todo.tododate === null
+                                  ? null
+                                  : todoDaate
+                                : todo.tododate === null
+                                ? todoDeadline
+                                : todoDaate
+                            }
+                            minDate={
+                              todo.tododate === null ? new Date() : todoDaate
+                            }
                             dateFormat="HH:mm"
                             timeCaption="Time"
                             filterTime={(time) => {
@@ -1195,11 +1204,15 @@ const TaskTables = ({ name, listName }) => {
                             updateAll(
                               todo,
                               "addToList",
-                              document.getElementById(`moveList${todo.todo_id}`).value
+                              document.getElementById(`moveList${todo.todo_id}`)
+                                .value
                             );
                           }}
                         >
-                          <select className="moveList1" id={`moveList${todo.todo_id}`}>
+                          <select
+                            className="moveList1"
+                            id={`moveList${todo.todo_id}`}
+                          >
                             <option value="">-Select List-</option>
                             {lists
                               .filter((i) =>
@@ -1263,55 +1276,257 @@ const TaskTables = ({ name, listName }) => {
           </tr>
         </thead>
         <tbody>
-          {todos
-            .filter(
-              properFilterToday
-            )
-            .map((todo) => {
-              var todoDeadlineTime = new Date(todo.deadline).getTime();
-              var todoDateTime = new Date(todo.tododate).getTime();
-              var todoEndDateTime = new Date(todo.todoenddate).getTime();
-              var number = todo.todo_id;
-              var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
-              var todoDaate = new Date(todoDateTime - TZOFFSET);
-              var todoEndDaate = new Date(todoEndDateTime - TZOFFSET);
-              var todoTime = new Date(todoDaate).setHours(23, 59);
-              return (
-                <>
-                  <tr
-                    key={todo.todo_id}
-                    className="taskData"
-                    id={`taskData${number}`}
-                  >
-                    <td>
-                      <div className="checkbox">
-                        <Tooltip title="Complete!">
+          {todos.filter(properFilterToday).map((todo) => {
+            var todoDeadlineTime = new Date(todo.deadline).getTime();
+            var todoDateTime = new Date(todo.tododate).getTime();
+            var todoEndDateTime = new Date(todo.todoenddate).getTime();
+            var number = todo.todo_id;
+            var todoDeadline = new Date(todoDeadlineTime - TZOFFSET);
+            var todoDaate = new Date(todoDateTime - TZOFFSET);
+            var todoEndDaate = new Date(todoEndDateTime - TZOFFSET);
+            var todoTime = new Date(todoDaate).setHours(23, 59);
+            return (
+              <>
+                <tr
+                  key={todo.todo_id}
+                  className="taskData"
+                  id={`taskData${number}`}
+                >
+                  <td>
+                    <div className="checkbox">
+                      <Tooltip title="Complete!">
+                        <CheckBoxOutlineBlankOutlinedIcon
+                          onClick={() => updateAll(todo, "completed", true)}
+                        />
+                      </Tooltip>
+                    </div>
+                  </td>
+                  <td className="task_name">
+                    <div
+                      className={`${styles.taskDescrip}`}
+                      contentEditable
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          if (e.target.textContent === "") {
+                            e.target.textContent = todo.description;
+                          } else if (
+                            e.target.textContent === todo.description
+                          ) {
+                            // do nothing
+                          } else {
+                            updateAll(
+                              todo,
+                              "description",
+                              e.target.textContent
+                            );
+
+                            e.target.blur();
+                          }
+                        }
+                      }}
+                      onBlur={(e) => resetDescrip(e, todo)}
+                      suppressContentEditableWarning
+                      spellCheck="false"
+                    >
+                      {todo.description}
+                    </div>
+                    <div className="deadline">
+                      <div className="todo_date">
+                        <AlarmIcon fontSize="small" />
+
+                        <DatePicker
+                          className="todoDateText"
+                          placeholderText="---"
+                          selected={todo.tododate == null ? null : todoDaate}
+                          onChange={(date) => updateAll(todo, "tododate", date)}
+                          dateFormat="dd-MMM"
+                          maxDate={todo.deadline == null ? null : todoDeadline}
+                          minDate={new Date()}
+                        />
+
+                        <DatePicker
+                          className="deadlineTime"
+                          placeholderText="---"
+                          selected={todo.tododate == null ? null : todoDaate}
+                          onChange={(date) => {
+                            updateAll(todo, "tododate", date);
+                          }}
+                          showTimeSelect
+                          showTimeSelectOnly
+                          dateFormat="HH:mm"
+                          timeCaption="Time"
+                        />
+                        <span className={styles.middle}>-</span>
+                        <DatePicker
+                          className="deadlineTime"
+                          placeholderText="---"
+                          selected={
+                            todo.todoenddate == null ? null : todoEndDaate
+                          }
+                          onChange={(date) =>
+                            updateAll(todo, "todoenddate", date)
+                          }
+                          showTimeSelect
+                          showTimeSelectOnly
+                          dateFormat="HH:mm"
+                          timeCaption="Time"
+                          minTime={todoDaate}
+                          maxTime={todoTime}
+                        />
+                      </div>
+                    </div>
+                    <div className="deadline">
+                      <div className="deadlineBox">
+                        <CalendarTodayRoundedIcon fontSize="small" />
+
+                        <DatePicker
+                          className="deadlineDate"
+                          placeholderText="---"
+                          selected={todo.deadline == null ? null : todoDeadline}
+                          onChange={(date) => updateAll(todo, "deadline", date)}
+                          dateFormat="dd-MMM"
+                          minDate={new Date()}
+                        />
+
+                        <DatePicker
+                          className="deadlineTime"
+                          placeholderText="---"
+                          selected={todo.deadline == null ? null : todoDeadline}
+                          onChange={(date) => updateAll(todo, "deadline", date)}
+                          showTimeSelect
+                          showTimeSelectOnly
+                          dateFormat="HH:mm"
+                          timeCaption="Time"
+                        />
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <Tooltip title="Progress">
+                      <div className="progress_value">
+                        {" "}
+                        {todo.progress === 0 ? (
+                          <div />
+                        ) : (
+                          <CircularProgress
+                            variant="determinate"
+                            value={todo.progress}
+                            className="progress"
+                            size={24}
+                            thickness={8}
+                          />
+                        )}
+                        <div>{`${todo.progress}%`}</div>
+                      </div>
+                    </Tooltip>
+                  </td>
+                  <td>
+                    <Tooltip title="Priority">
+                      <div className="priority">
+                        <FlagRoundedIcon
+                          style={{
+                            color:
+                              todo.priority === 1
+                                ? "red"
+                                : todo.priority === 2
+                                ? "rgb(218, 109, 7)"
+                                : todo.priority === 3
+                                ? "rgb(255, 217, 0)"
+                                : todo.priority === 4
+                                ? "rgb(27, 228, 1)"
+                                : "white",
+                          }}
+                          onClick={() => {
+                            updateAll(
+                              todo,
+                              "priority",
+                              (todo.priority % 5) + 1
+                            );
+                          }}
+                        />
+                      </div>
+                    </Tooltip>
+                  </td>
+                  <td>
+                    <div className="deleteTask">
+                      <Tooltip title="Delete Task">
+                        <DeleteRoundedIcon
+                          onClick={() => deleteTodo(todo.todo_id)}
+                        />
+                      </Tooltip>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="dropdown">
+                      <ArrowDropDownRoundedIcon
+                        onClick={(e) => toggleMe(number)}
+                      />
+                    </div>
+                  </td>
+                </tr>
+                {/* Ex
+                  .
+                  ..
+                  .
+                  .
+                  .
+                  .
+                  .
+                  panded row*/}
+
+                <tr
+                  key={todo.todo_id * -1}
+                  className="expandedTaskData hidden"
+                  id={`expandedTaskData${number}`}
+                >
+                  <td>
+                    {/* First row */}
+                    <div className="expandedTaskData1">
+                      {" "}
+                      <div className="checkbox1">
+                        <Tooltip title="Complete Task">
                           <CheckBoxOutlineBlankOutlinedIcon
                             onClick={() => updateAll(todo, "completed", true)}
+                            className={styles.expandedCheck}
                           />
                         </Tooltip>
                       </div>
-                    </td>
-                    <td className="task_name">
                       <div
-                        className={`${styles.taskDescrip}`}
+                        className="taskDescrip1"
                         contentEditable
                         onKeyPress={(e) => {
                           if (e.key === "Enter") {
                             e.preventDefault();
                             if (e.target.textContent === "") {
+                              toast.warn(`Please write something!`, {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: false,
+                                draggable: false,
+                                progress: undefined,
+                              });
                               e.target.textContent = todo.description;
                             } else if (
                               e.target.textContent === todo.description
                             ) {
-                              // do nothing
+                              toast.warn(`Nothing changed bro`, {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: false,
+                                draggable: false,
+                                progress: undefined,
+                              });
                             } else {
                               updateAll(
                                 todo,
                                 "description",
                                 e.target.textContent
                               );
-
                               e.target.blur();
                             }
                           }
@@ -1322,501 +1537,274 @@ const TaskTables = ({ name, listName }) => {
                       >
                         {todo.description}
                       </div>
-                      <div className="deadline">
-                        <div className="todo_date">
-                          <AlarmIcon fontSize="small" />
-
-                          <DatePicker
-                            className="todoDateText"
-                            placeholderText="---"
-                            selected={todo.tododate == null ? null : todoDaate}
-                            onChange={(date) =>
-                              updateAll(todo, "tododate", date)
-                            }
-                            dateFormat="dd-MMM"
-                            maxDate={
-                              todo.deadline == null ? null : todoDeadline
-                            }
-                            minDate={new Date()}
-                          />
-
-                          <DatePicker
-                            className="deadlineTime"
-                            placeholderText="---"
-                            selected={todo.tododate == null ? null : todoDaate}
-                            onChange={(date) => {
-                              updateAll(todo, "tododate", date);
-                            }}
-                            showTimeSelect
-                            showTimeSelectOnly
-                            dateFormat="HH:mm"
-                            timeCaption="Time"
-                          />
-                          <span className={styles.middle}>-</span>
-                          <DatePicker
-                            className="deadlineTime"
-                            placeholderText="---"
-                            selected={
-                              todo.todoenddate == null ? null : todoEndDaate
-                            }
-                            onChange={(date) =>
-                              updateAll(todo, "todoenddate", date)
-                            }
-                            showTimeSelect
-                            showTimeSelectOnly
-                            dateFormat="HH:mm"
-                            timeCaption="Time"
-                            minTime={todoDaate}
-                            maxTime={todoTime}
-                          />
-                        </div>
-                      </div>
-                      <div className="deadline">
-                        <div className="deadlineBox">
-                          <CalendarTodayRoundedIcon fontSize="small" />
-
-                          <DatePicker
-                            className="deadlineDate"
-                            placeholderText="---"
-                            selected={
-                              todo.deadline == null ? null : todoDeadline
-                            }
-                            onChange={(date) =>
-                              updateAll(todo, "deadline", date)
-                            }
-                            dateFormat="dd-MMM"
-                            minDate={new Date()}
-                          />
-
-                          <DatePicker
-                            className="deadlineTime"
-                            placeholderText="---"
-                            selected={
-                              todo.deadline == null ? null : todoDeadline
-                            }
-                            onChange={(date) =>
-                              updateAll(todo, "deadline", date)
-                            }
-                            showTimeSelect
-                            showTimeSelectOnly
-                            dateFormat="HH:mm"
-                            timeCaption="Time"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <Tooltip title="Progress">
-                        <div className="progress_value">
-                          {" "}
-                          {todo.progress === 0 ? (
-                            <div />
-                          ) : (
-                            <CircularProgress
-                              variant="determinate"
-                              value={todo.progress}
-                              className="progress"
-                              size={24}
-                              thickness={8}
-                            />
-                          )}
-                          <div>{`${todo.progress}%`}</div>
-                        </div>
-                      </Tooltip>
-                    </td>
-                    <td>
-                      <Tooltip title="Priority">
-                        <div className="priority">
-                          <FlagRoundedIcon
-                            style={{
-                              color:
-                                todo.priority === 1
-                                  ? "red"
-                                  : todo.priority === 2
-                                  ? "rgb(218, 109, 7)"
-                                  : todo.priority === 3
-                                  ? "rgb(255, 217, 0)"
-                                  : todo.priority === 4
-                                  ? "rgb(27, 228, 1)"
-                                  : "white",
-                            }}
-                            onClick={() => {
-                              updateAll(
-                                todo,
-                                "priority",
-                                (todo.priority % 5) + 1
-                              );
-                            }}
-                          />
-                        </div>
-                      </Tooltip>
-                    </td>
-                    <td>
-                      <div className="deleteTask">
-                        <Tooltip title="Delete Task">
-                          <DeleteRoundedIcon
-                            onClick={() => deleteTodo(todo.todo_id)}
-                          />
-                        </Tooltip>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="dropdown">
+                      <div className="dropdown1">
                         <ArrowDropDownRoundedIcon
+                          className={styles.expandedDropdown}
                           onClick={(e) => toggleMe(number)}
                         />
                       </div>
-                    </td>
-                  </tr>
-                  {/* Ex
-                  .
-                  ..
-                  .
-                  .
-                  .
-                  .
-                  .
-                  panded row*/}
-
-                  <tr
-                    key={todo.todo_id * -1}
-                    className="expandedTaskData hidden"
-                    id={`expandedTaskData${number}`}
-                  >
-                    <td>
-                      {/* First row */}
-                      <div className="expandedTaskData1">
-                        {" "}
-                        <div className="checkbox1">
-                          <Tooltip title="Complete Task">
-                            <CheckBoxOutlineBlankOutlinedIcon
-                              onClick={() => updateAll(todo, "completed", true)}
-                              className={styles.expandedCheck}
-                            />
-                          </Tooltip>
-                        </div>
-                        <div
-                          className="taskDescrip1"
-                          contentEditable
-                          onKeyPress={(e) => {
-                            if (e.key === "Enter") {
-                              e.preventDefault();
-                              if (e.target.textContent === "") {
-                                toast.warn(`Please write something!`, {
-                                  position: "top-right",
-                                  autoClose: 2000,
-                                  hideProgressBar: false,
-                                  closeOnClick: true,
-                                  pauseOnHover: false,
-                                  draggable: false,
-                                  progress: undefined,
-                                });
-                                e.target.textContent = todo.description;
-                              } else if (
-                                e.target.textContent === todo.description
-                              ) {
-                                toast.warn(`Nothing changed bro`, {
-                                  position: "top-right",
-                                  autoClose: 2000,
-                                  hideProgressBar: false,
-                                  closeOnClick: true,
-                                  pauseOnHover: false,
-                                  draggable: false,
-                                  progress: undefined,
-                                });
-                              } else {
-                                updateAll(
-                                  todo,
-                                  "description",
-                                  e.target.textContent
-                                );
-                                e.target.blur();
-                              }
-                            }
-                          }}
-                          onBlur={(e) => resetDescrip(e, todo)}
-                          suppressContentEditableWarning
-                          spellCheck="false"
-                        >
-                          {todo.description}
-                        </div>
-                        <div className="dropdown1">
-                          <ArrowDropDownRoundedIcon
-                            className={styles.expandedDropdown}
-                            onClick={(e) => toggleMe(number)}
-                          />
-                        </div>
-                      </div>
-                      {/* second row */}
-                      <div className="expandedTaskData2">
-                        <div className="todo_date1">
-                          <AlarmIcon
-                            fontSize="small"
-                            className="todoDateIcon1"
-                          />
-                          Todo Date:
-                          <DatePicker
-                            className="todoDateText1"
-                            placeholderText="----"
-                            selected={todo.tododate == null ? null : todoDaate}
-                            showTimeSelect
-                            onChange={(date) =>
-                              updateAll(todo, "tododate", date)
-                            }
-                            dateFormat="dd MMM - HH:mm "
-                            maxDate={
-                              todo.deadline == null ? null : todoDeadline
-                            }
-                            minDate={new Date()}
-                          />
-                          <span className={styles.middle}>-</span>
-                          <DatePicker
-                            className="todoDateText1"
-                            placeholderText="----"
-                            selected={
-                              todo.todoenddate == null ? null : todoEndDaate
-                            }
-                            showTimeSelect
-                            onChange={(date) =>
-                              updateAll(todo, "todoenddate", date)
-                            }
-                            dateFormat="dd MMM - HH:mm "
-                            maxDate={
-                              todo.deadline === null
-                                ? todo.tododate === null
-                                  ? null
-                                  : todoDaate
-                                : todo.tododate === null
-                                ? todoDeadline
+                    </div>
+                    {/* second row */}
+                    <div className="expandedTaskData2">
+                      <div className="todo_date1">
+                        <AlarmIcon fontSize="small" className="todoDateIcon1" />
+                        Todo Date:
+                        <DatePicker
+                          className="todoDateText1"
+                          placeholderText="----"
+                          selected={todo.tododate == null ? null : todoDaate}
+                          showTimeSelect
+                          onChange={(date) => updateAll(todo, "tododate", date)}
+                          dateFormat="dd MMM - HH:mm "
+                          maxDate={todo.deadline == null ? null : todoDeadline}
+                          minDate={new Date()}
+                        />
+                        <span className={styles.middle}>-</span>
+                        <DatePicker
+                          className="todoDateText1"
+                          placeholderText="----"
+                          selected={
+                            todo.todoenddate == null ? null : todoEndDaate
+                          }
+                          showTimeSelect
+                          onChange={(date) =>
+                            updateAll(todo, "todoenddate", date)
+                          }
+                          dateFormat="dd MMM - HH:mm "
+                          maxDate={
+                            todo.deadline === null
+                              ? todo.tododate === null
+                                ? null
                                 : todoDaate
-                            }
-                            minDate={
-                              todo.tododate === null ? new Date() : todoDaate
-                            }
-                            minTime={todoDaate}
-                            maxTime={todoTime}
-                          />
-                        </div>
-                        <div className="deadlineBox1">
-                          <CalendarTodayRoundedIcon
-                            fontSize="small"
-                            className="deadlineIcon1"
-                          />
-                          Deadline:
-                          <DatePicker
-                            className="deadlineDate1"
-                            placeholderText="----"
-                            showTimeSelect
-                            selected={
-                              todo.deadline == null ? null : todoDeadline
-                            }
-                            onChange={(date) =>
-                              updateAll(todo, "deadline", date)
-                            }
-                            dateFormat="dd MMM - HH:mm "
-                            minDate={new Date()}
-                          />
-                        </div>
-                        <div className="progress_value1">
-                          <div className={styles.progressBox}>
-                            Progress:{" "}
-                            <form
-                              onSubmit={(e) => {
-                                e.preventDefault();
-                                const inputValue = document.getElementById(
-                                  `progressInput_${todo.todo_id}`
-                                ).value;
-                                if (
-                                  isNaN(inputValue) ||
-                                  inputValue == "" ||
-                                  inputValue < 0 ||
-                                  inputValue > 100
-                                ) {
-                                  toast.warn(`Invalid progress input!`, {
-                                    position: "top-right",
-                                    autoClose: 2000,
-                                    hideProgressBar: false,
-                                    closeOnClick: true,
-                                    pauseOnHover: false,
-                                    draggable: false,
-                                    progress: undefined,
-                                  });
-                                  document.getElementById(
-                                    `progressInput_${todo.todo_id}`
-                                  ).value = "";
-                                } else {
-                                  updateAll(todo, "progress", progress.number);
-                                }
-                              }}
-                              className={styles.progressInputForm}
-                            >
-                              <input
-                                placeholder={todo.progress}
-                                className={styles.progressInput}
-                                id={`progressInput_${todo.todo_id}`}
-                                type="text"
-                                onChange={(e) => {
-                                  setProgress({
-                                    ...progress,
-                                    number: e.target.value,
-                                  });
-                                }}
-                              />
-                            </form>
-                            %
-                          </div>
-                          <ThemeProvider theme={muiTheme1}>
-                            <Slider todo={todo} updateAll={updateAll} />
-                          </ThemeProvider>
-                        </div>
-                        <div className="priority1">
-                          <FlagRoundedIcon
-                            className="priorityIcon1"
-                            style={{
-                              color:
-                                todo.priority === 1
-                                  ? "red"
-                                  : todo.priority === 2
-                                  ? "rgb(218, 109, 7)"
-                                  : todo.priority === 3
-                                  ? "rgb(255, 217, 0)"
-                                  : todo.priority === 4
-                                  ? "rgb(27, 228, 1)"
-                                  : "white",
-                            }}
-                            onClick={() => {
-                              updateAll(
-                                todo,
-                                "priority",
-                                (todo.priority % 5) + 1
-                              );
-                            }}
-                          />{" "}
-                          Priority
-                          {"  " + todo.priority}
-                        </div>
+                              : todo.tododate === null
+                              ? todoDeadline
+                              : todoDaate
+                          }
+                          minDate={
+                            todo.tododate === null ? new Date() : todoDaate
+                          }
+                          minTime={todoDaate}
+                          maxTime={todoTime}
+                        />
                       </div>
-                      {/* 3rd row */}
-                      <div className="expandedTaskData3">
-                        <div className="properties1">
-                          <div>Properties</div>
+                      <div className="deadlineBox1">
+                        <CalendarTodayRoundedIcon
+                          fontSize="small"
+                          className="deadlineIcon1"
+                        />
+                        Deadline:
+                        <DatePicker
+                          className="deadlineDate1"
+                          placeholderText="----"
+                          showTimeSelect
+                          selected={todo.deadline == null ? null : todoDeadline}
+                          onChange={(date) => updateAll(todo, "deadline", date)}
+                          dateFormat="dd MMM - HH:mm "
+                          minDate={new Date()}
+                        />
+                      </div>
+                      <div className="progress_value1">
+                        <div className={styles.progressBox}>
+                          Progress:{" "}
                           <form
-                            id={`propertyAdd${todo.todo_id}`}
                             onSubmit={(e) => {
                               e.preventDefault();
-                              updateAll(todo, "properties", newProperty.number);
+                              const inputValue = document.getElementById(
+                                `progressInput_${todo.todo_id}`
+                              ).value;
+                              if (
+                                isNaN(inputValue) ||
+                                inputValue == "" ||
+                                inputValue < 0 ||
+                                inputValue > 100
+                              ) {
+                                toast.warn(`Invalid progress input!`, {
+                                  position: "top-right",
+                                  autoClose: 2000,
+                                  hideProgressBar: false,
+                                  closeOnClick: true,
+                                  pauseOnHover: false,
+                                  draggable: false,
+                                  progress: undefined,
+                                });
+                                document.getElementById(
+                                  `progressInput_${todo.todo_id}`
+                                ).value = "";
+                              } else {
+                                updateAll(todo, "progress", progress.number);
+                              }
                             }}
+                            className={styles.progressInputForm}
                           >
                             <input
-                              autoComplete="off"
-                              placeholder="Add property"
-                              className={styles.inputProperty}
+                              placeholder={todo.progress}
+                              className={styles.progressInput}
+                              id={`progressInput_${todo.todo_id}`}
                               type="text"
-                              list={`propertyList${number}`}
-                              id={`propertyInput${number}`}
-                              name={`propertyAdd${todo.todo_id}`}
-                              onChange={(e) =>
-                                setNewProperty({
-                                  ...newProperty,
+                              onChange={(e) => {
+                                setProgress({
+                                  ...progress,
                                   number: e.target.value,
-                                })
-                              }
-                            />
-                            <datalist id={`propertyList${number}`}>
-                              {properties.map((ppty) => (
-                                <option value={ppty} />
-                              ))}
-                            </datalist>
-                          </form>
-                          {todo.properties.map((data) => (
-                            <Chip
-                              label={data}
-                              key={data}
-                              onDelete={(e) => {
-                                e.preventDefault();
-                                updateAll(todo, "propertyDelete", data);
+                                });
                               }}
-                              size="small"
-                              variant="outlined"
-                              className={styles.propertyChip}
-                              deleteIcon={
-                                <CloseIcon className={styles.close} />
-                              }
                             />
-                          ))}
+                          </form>
+                          %
                         </div>
+                        <ThemeProvider theme={muiTheme1}>
+                          <Slider todo={todo} updateAll={updateAll} />
+                        </ThemeProvider>
                       </div>
-                      {/* 4th row */}
-                      <div className="expandedTaskData4">
-                        <ListSubtasks todo={todo} />
+                      <div className="priority1">
+                        <FlagRoundedIcon
+                          className="priorityIcon1"
+                          style={{
+                            color:
+                              todo.priority === 1
+                                ? "red"
+                                : todo.priority === 2
+                                ? "rgb(218, 109, 7)"
+                                : todo.priority === 3
+                                ? "rgb(255, 217, 0)"
+                                : todo.priority === 4
+                                ? "rgb(27, 228, 1)"
+                                : "white",
+                          }}
+                          onClick={() => {
+                            updateAll(
+                              todo,
+                              "priority",
+                              (todo.priority % 5) + 1
+                            );
+                          }}
+                        />{" "}
+                        Priority
+                        {"  " + todo.priority}
                       </div>
-                      {/* 5th row */}
-                      <div className="expandedTaskData5">
-                        <InputSubtasks todo={todo} />
+                    </div>
+                    {/* 3rd row */}
+                    <div className="expandedTaskData3">
+                      <div className="properties1">
+                        <div>Properties</div>
+                        <form
+                          id={`propertyAdd${todo.todo_id}`}
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            updateAll(todo, "properties", newProperty.number);
+                          }}
+                        >
+                          <input
+                            autoComplete="off"
+                            placeholder="Add property"
+                            className={styles.inputProperty}
+                            type="text"
+                            list={`propertyList${number}`}
+                            id={`propertyInput${number}`}
+                            name={`propertyAdd${todo.todo_id}`}
+                            onChange={(e) =>
+                              setNewProperty({
+                                ...newProperty,
+                                number: e.target.value,
+                              })
+                            }
+                          />
+                          <datalist id={`propertyList${number}`}>
+                            {properties.map((ppty) => (
+                              <option value={ppty} />
+                            ))}
+                          </datalist>
+                        </form>
+                        {todo.properties.map((data) => (
+                          <Chip
+                            label={data}
+                            key={data}
+                            onDelete={(e) => {
+                              e.preventDefault();
+                              updateAll(todo, "propertyDelete", data);
+                            }}
+                            size="small"
+                            variant="outlined"
+                            className={styles.propertyChip}
+                            deleteIcon={<CloseIcon className={styles.close} />}
+                          />
+                        ))}
                       </div>
-                      {/* 6th row */}
-                      <div className="expandedTaskData6">
-                        <div className={styles.moveList}>Move to List</div>
+                    </div>
+                    {/* 4th row */}
+                    <div className="expandedTaskData4">
+                      <ListSubtasks todo={todo} />
+                    </div>
+                    {/* 5th row */}
+                    <div className="expandedTaskData5">
+                      <InputSubtasks todo={todo} />
+                    </div>
+                    {/* 6th row */}
+                    <div className="expandedTaskData6">
+                      <div className={styles.moveList}>Move to List</div>
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          updateAll(
+                            todo,
+                            "addToList",
+                            document.getElementById(`moveList${todo.todo_id}`)
+                              .value
+                          );
+                        }}
+                      >
+                        <select
+                          className="moveList1"
+                          id={`moveList${todo.todo_id}`}
+                        >
+                          <option value="">-Select List-</option>
+                          {lists
+                            .filter((i) =>
+                              // If you are in a list, dont include that list in the options
+                              name === "lists" ? i !== listName : true
+                            )
+                            .map((list) => {
+                              return <option value={list}>{list}</option>;
+                            })}
+                        </select>
+                        <input
+                          type="submit"
+                          value="Move"
+                          className="moveListSubmit1"
+                        />
+                      </form>
+                    </div>
+
+                    <div className="deleteTask1">
+                      {name !== "lists" ? (
+                        <div />
+                      ) : (
                         <form
                           onSubmit={(e) => {
                             e.preventDefault();
-                            updateAll(
-                              todo,
-                              "addToList",
-                              document.getElementById(`moveList${todo.todo_id}`).value
-                            );
+                            updateAll(todo, "deleteFromList", listName);
                           }}
                         >
-                          <select className="moveList1" id={`moveList${todo.todo_id}`}>
-                            <option value="">-Select List-</option>
-                            {lists
-                              .filter((i) =>
-                                // If you are in a list, dont include that list in the options
-                                name === "lists" ? i !== listName : true
-                              )
-                              .map((list) => {
-                                return <option value={list}>{list}</option>;
-                              })}
-                          </select>
+                          <RemoveCircleOutlineRoundedIcon />
                           <input
                             type="submit"
-                            value="Move"
-                            className="moveListSubmit1"
+                            value="Delete from list"
+                            className="deleteFromList1"
                           />
                         </form>
-                      </div>
+                      )}
 
-                      <div className="deleteTask1">
-                        {name !== "lists" ? (
-                          <div />
-                        ) : (
-                          <form
-                            onSubmit={(e) => {
-                              e.preventDefault();
-                              updateAll(todo, "deleteFromList", listName);
-                            }}
-                          >
-                            <RemoveCircleOutlineRoundedIcon />
-                            <input
-                              type="submit"
-                              value="Delete from list"
-                              className="deleteFromList1"
-                            />
-                          </form>
-                        )}
-
-                        <div>
-                          Delete Task
-                          <DeleteRoundedIcon
-                            onClick={() => deleteTodo(todo.todo_id)}
-                          />
-                        </div>
+                      <div>
+                        Delete Task
+                        <DeleteRoundedIcon
+                          onClick={() => deleteTodo(todo.todo_id)}
+                        />
                       </div>
-                    </td>
-                  </tr>
-                </>
-              );
-            })}
+                    </div>
+                  </td>
+                </tr>
+              </>
+            );
+          })}
         </tbody>
       </table>
       <ToastContainer />
@@ -1830,7 +1818,7 @@ const TaskTables = ({ name, listName }) => {
         <tbody>
           {todos
             .filter(
-              todo => !properFilterToday(todo) && properFilterWeek(todo)
+              (todo) => !properFilterToday(todo) && properFilterWeek(todo)
             )
             .map((todo) => {
               var todoDeadlineTime = new Date(todo.deadline).getTime();
@@ -2328,11 +2316,15 @@ const TaskTables = ({ name, listName }) => {
                             updateAll(
                               todo,
                               "addToList",
-                              document.getElementById(`moveList${todo.todo_id}`).value
+                              document.getElementById(`moveList${todo.todo_id}`)
+                                .value
                             );
                           }}
                         >
-                          <select className="moveList1" id={`moveList${todo.todo_id}`}>
+                          <select
+                            className="moveList1"
+                            id={`moveList${todo.todo_id}`}
+                          >
                             <option value="">-Select List-</option>
                             {lists
                               .filter((i) =>

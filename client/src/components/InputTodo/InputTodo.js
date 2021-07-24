@@ -52,6 +52,9 @@ const InputToDo = ({ listName, handleSubmit }) => {
     document
       .getElementById("something1")
       .setAttribute("data-placeholder", "e.g. Watch 2040s recording");
+    document
+      .querySelector(`.${styles.priorityOptions}`)
+      .classList.add("hidden");
   };
   /**
    * Function 2: The function that is called when the new task is submitted. Sends data to database and calls resetEverything().
@@ -186,15 +189,6 @@ const InputToDo = ({ listName, handleSubmit }) => {
         document.querySelector(`.${styles.deadlineText}`).style.borderColor =
           "white";
       }
-      toast.success("Deadline added!", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-      });
     }
   };
   /**
@@ -427,6 +421,7 @@ const InputToDo = ({ listName, handleSubmit }) => {
                       document
                         .querySelector(`#endTimeOption`)
                         .classList.toggle("hidden");
+                      setTodoEndDate(null);
                     }}
                   />
                   <DatePicker
@@ -463,6 +458,9 @@ const InputToDo = ({ listName, handleSubmit }) => {
                       placeholderText="Input Endtime"
                       minDate={tododate}
                       maxDate={tododate}
+                      filterTime={(time) =>
+                        tododate === null ? true : time >= tododate.getTime()
+                      }
                       className={`${styles.todoTime}`}
                     />
                   </div>
@@ -489,6 +487,18 @@ const InputToDo = ({ listName, handleSubmit }) => {
                     placeholderText="Input Deadline"
                     minDate={new Date()}
                     className={`${styles.deadlineText}`}
+                    onCalendarClose={() => {
+                      if (deadline !== null)
+                        toast.success("Deadline added!", {
+                          position: "top-right",
+                          autoClose: 2000,
+                          hideProgressBar: false,
+                          closeOnClick: true,
+                          pauseOnHover: false,
+                          draggable: false,
+                          progress: undefined,
+                        });
+                    }}
                   />
                 </label>
               </div>

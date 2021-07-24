@@ -9,45 +9,21 @@ import {
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import styles from "./FSD.module.css";
-import "jest-localstorage-mock";
 
 describe("A series of tests for filter, sort, delete component", () => {
-  var localStorageMock = (function () {
-    var store = {};
-    return {
-      getItem: function (key) {
-        return store[key];
-      },
-      setItem: function (key, value) {
-        store[key] = value.toString();
-      },
-      clear: function () {
-        store = {};
-      },
-      removeItem: function (key) {
-        delete store[key];
-      },
-    };
-  })();
   beforeEach(() => {
-    /*Object.defineProperty(window, "localStorage", {
+    Object.defineProperty(window, "localStorage", {
       value: {
         getItem: jest.fn(() => null),
         setItem: jest.fn(() => null),
       },
       writable: true,
-    });*/
-    localStorage.clear();
-    // and reset all mocks
-    jest.clearAllMocks();
-
-    // clearAllMocks will impact your other mocks too, so you can optionally reset individual mocks instead:
-    localStorage.setItem.mockClear();
+    });
   });
 
   test("Opening the Filter and Sort options", () => {
     act(() => {
-      render(<FSD name={"mt"} />);
+      render(<FSD name={"mt"} listName={"mt"} />);
       const filterButton = screen.getByLabelText("filter");
       const sortButton = screen.getByLabelText("sort");
       fireEvent.click(filterButton);
@@ -73,15 +49,15 @@ describe("A series of tests for filter, sort, delete component", () => {
 
   test("Checking for LocalStorage Filter", () => {
     act(() => {
-      render(<FSD name={"mt"} />);
+      render(<FSD name={"mt"} listName={"mt"} />);
     });
-    expect(localStorage.getItem).toHaveBeenCalledTimes(3);
+    expect(window.localStorage.getItem).toHaveBeenCalledTimes(3);
   });
   test("Creating LocalStorage Filter", () => {
     act(() => {
-      render(<FSD name={"mt"} />);
+      render(<FSD name={"mt"} listName={"mt"} />);
     });
-    expect(localStorage.setItem).toHaveBeenCalledTimes(1);
+    expect(window.localStorage.setItem).toHaveBeenCalledTimes(1);
   });
   test("Check LocalStorage Filter upon clicking priority", () => {
     const filterObj = {
@@ -92,7 +68,7 @@ describe("A series of tests for filter, sort, delete component", () => {
       properties: [],
     };
     act(() => {
-      render(<FSD name={"mt"} />);
+      render(<FSD name={"mt"} listName={"mt"} />);
       const filterButton = screen.getByLabelText("filter");
       const sortButton = screen.getByLabelText("sort");
       fireEvent.click(filterButton);
@@ -104,7 +80,8 @@ describe("A series of tests for filter, sort, delete component", () => {
       "filter-mt/",
       JSON.stringify(filterObj)
     );*/
-    expect(localStorage.__STORE__["filter-mt/"]).toBe(
+    expect(window.localStorage.setItem).toHaveBeenCalledWith(
+      "filter-mt/mt",
       JSON.stringify(filterObj)
     );
     expect(screen.queryByTestId("priority1").style.backgroundColor).toBe(
@@ -116,8 +93,6 @@ describe("A series of tests for filter, sort, delete component", () => {
     expect(screen.queryByTestId("priority3").style.backgroundColor).toBe(
       "rgb(65, 65, 65)"
     );
-    // Set called once at the start of rendering, then in the mock function, then once more in the component
-    expect(localStorage.setItem).toHaveBeenCalledTimes(4);
   });
   test("Check LocalStorage Filter upon resetting priorities", () => {
     const filterObj = {
@@ -128,15 +103,15 @@ describe("A series of tests for filter, sort, delete component", () => {
       properties: [],
     };
     act(() => {
-      render(<FSD name={"mt"} />);
+      render(<FSD name={"mt"} listName={"mt"} />);
       const filterButton = screen.getByLabelText("filter");
 
       fireEvent.click(filterButton);
       fireEvent.click(screen.queryByTestId(`priority2`));
       fireEvent.click(document.querySelector(`.${styles.clearPriority}`));
     });
-    expect(localStorage.setItem).toHaveBeenCalledWith(
-      "filter-mt/",
+    expect(window.localStorage.setItem).toHaveBeenCalledWith(
+      "filter-mt/mt",
       JSON.stringify(filterObj)
     );
     expect(screen.queryByTestId("priority1").style.backgroundColor).toBe(
@@ -149,28 +124,27 @@ describe("A series of tests for filter, sort, delete component", () => {
       "rgb(65, 65, 65)"
     );
     // Set called once at the start of rendering, then in the mock function, then twice more in the component
-    expect(localStorage.setItem).toHaveBeenCalledTimes(4);
+    expect(window.localStorage.setItem).toHaveBeenCalledTimes(4);
   });
   test("Check LocalStorage Filter upon date filter selected", () => {
     const filterObj = {
       priority: [],
-      deadline: [new Date("23 July 2021 00:00:00").toISOString(), null],
+      deadline: [new Date("22 July 2021 16:00:00").toISOString(), null],
       progress: [0, 100],
       todoDate: [null, null],
       properties: [],
     };
-    act(() => {
-      render(<FSD name={"mt"} />);
-      const filterButton = screen.getByLabelText("filter");
-      fireEvent.click(filterButton);
-      fireEvent.click(document.querySelector(`.deadlineStart`));
-      userEvent.type(
-        document.querySelector(`.deadlineStart`),
-        "23-07-2021{enter}"
-      );
-    });
-    expect(localStorage.setItem).toHaveBeenCalledWith(
-      "filter-mt/",
+
+    render(<FSD name={"mt"} listName={"mt"} />);
+    const filterButton = screen.getByLabelText("filter");
+    fireEvent.click(filterButton);
+    fireEvent.click(document.querySelector(`.deadlineStartDate`));
+    userEvent.type(
+      document.querySelector(`.deadlineStartDate`),
+      "23-07-2021{enter}"
+    );
+    expect(window.localStorage.setItem).toHaveBeenCalledWith(
+      "filter-mt/mt",
       JSON.stringify(filterObj)
     );
   });
