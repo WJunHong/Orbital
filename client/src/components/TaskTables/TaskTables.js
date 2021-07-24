@@ -385,10 +385,11 @@ const TaskTables = ({ name, listName }) => {
 
   const properFilterToday = (todo) => {
     const day = 86400000; // 1 day in ms
-    var filterStartDeadline = new Date().getTime() + TZOFFSET;
-    var filterEndDeadline = new Date().getTime() + TZOFFSET + day;
-    var filterStartTododate = new Date().getTime() + TZOFFSET;
-    var filterEndTododate = new Date().getTime() + TZOFFSET + day;
+    var filterStartDeadline = new Date(new Date().setHours(0,0,0,0)).getTime() + TZOFFSET;
+    var filterEndDeadline = new Date(new Date().setHours(23,59,59,0)).getTime() + TZOFFSET;
+    var filterStartTododate = new Date(new Date().setHours(0,0,0, 0)).getTime() + TZOFFSET;
+    var filterEndTododate = new Date(new Date().setHours(23,59,59, 0)).getTime() + TZOFFSET;
+
     var todoDeadline =
       todo.deadline == null ? null : new Date(todo.deadline).getTime();
     var todoTodoDate =
@@ -410,10 +411,10 @@ const TaskTables = ({ name, listName }) => {
 
   const properFilterWeek = (todo) => {
     const day = 86400000; // 1 day in ms
-    var filterStartDeadline = new Date().getTime() + TZOFFSET + day;
-    var filterEndDeadline = new Date().getTime() + TZOFFSET +  7 * day;
-    var filterStartTododate = new Date().getTime() + TZOFFSET + day;
-    var filterEndTododate = new Date().getTime() + TZOFFSET + 7 * day;
+    var filterStartDeadline = new Date(new Date().setHours(0,0,0,0)).getTime() + TZOFFSET + day;
+    var filterEndDeadline = new Date(new Date().setHours(23,59,59,0)).getTime() + TZOFFSET + 6 * day;
+    var filterStartTododate = new Date(new Date().setHours(0,0,0, 0)).getTime() + TZOFFSET + day;
+    var filterEndTododate = new Date(new Date().setHours(23,59,59, 0)).getTime() + TZOFFSET + 6 * day;
     var todoDeadline =
       todo.deadline == null ? null : new Date(todo.deadline).getTime();
     var todoTodoDate =
@@ -1060,7 +1061,7 @@ const TaskTables = ({ name, listName }) => {
                                 ).value;
                                 if (
                                   isNaN(inputValue) ||
-                                  inputValue == "" ||
+                                  inputValue === "" ||
                                   inputValue < 0 ||
                                   inputValue > 100
                                 ) {
@@ -1628,7 +1629,7 @@ const TaskTables = ({ name, listName }) => {
                                 ).value;
                                 if (
                                   isNaN(inputValue) ||
-                                  inputValue == "" ||
+                                  inputValue === "" ||
                                   inputValue < 0 ||
                                   inputValue > 100
                                 ) {
@@ -2193,7 +2194,7 @@ const TaskTables = ({ name, listName }) => {
                                 ).value;
                                 if (
                                   isNaN(inputValue) ||
-                                  inputValue == "" ||
+                                  inputValue === "" ||
                                   inputValue < 0 ||
                                   inputValue > 100
                                 ) {

@@ -12,37 +12,14 @@ import styles from "./FSD.module.css";
 import "jest-localstorage-mock";
 
 describe("A series of tests for filter, sort, delete component", () => {
-  var localStorageMock = (function () {
-    var store = {};
-    return {
-      getItem: function (key) {
-        return store[key];
-      },
-      setItem: function (key, value) {
-        store[key] = value.toString();
-      },
-      clear: function () {
-        store = {};
-      },
-      removeItem: function (key) {
-        delete store[key];
-      },
-    };
-  })();
   beforeEach(() => {
-    /*Object.defineProperty(window, "localStorage", {
+    Object.defineProperty(window, "localStorage", {
       value: {
         getItem: jest.fn(() => null),
         setItem: jest.fn(() => null),
       },
       writable: true,
-    });*/
-    localStorage.clear();
-    // and reset all mocks
-    jest.clearAllMocks();
-
-    // clearAllMocks will impact your other mocks too, so you can optionally reset individual mocks instead:
-    localStorage.setItem.mockClear();
+    });
   });
 
   test("Opening the Filter and Sort options", () => {
