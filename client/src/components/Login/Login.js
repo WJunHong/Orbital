@@ -214,11 +214,13 @@ const Login = ({ history }) => {
                         justify="space-between"
                         alignItems="stretch"
                       >
+                        {/*
                         <Grid item>
                           <a href="#" className={styles.forgetPassword}>
                             Forget Password?
                           </a>
                         </Grid>
+                        */}
                         <Grid item>
                           <span
                             id="invalidEP"
@@ -241,7 +243,9 @@ const Login = ({ history }) => {
                 </form>
               </Grid>
               <Grid item>
+                {/*
                 <GoogleButton />
+                */}
               </Grid>
             </ThemeProvider>
           </Grid>

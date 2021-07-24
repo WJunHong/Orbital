@@ -162,6 +162,9 @@ const InputToDo = ({ listName, handleSubmit }) => {
       ) {
         setTodoDate(null);
         setTodoEndDate(null);
+        document.querySelector(`.${styles.alarmIcon}`).style.color = "white";
+        document.querySelector(`.${styles.todoText}`).style.color = "white";
+        document.querySelector(`.${styles.todoTime}`).style.color = "white";
       }
       const testDate = {
         year: new Date().getFullYear(),
@@ -261,9 +264,7 @@ const InputToDo = ({ listName, handleSubmit }) => {
    * Function 9: Checks the tododate selected. Changes the style if selected day is TODAY. Also checks if the end date is LATER than the start date if value is given.
    */
   const makeTodoDate = () => {
-    if (tododate == null || todoEndDate == null) {
-      document.querySelector(`.alarmIcon`).style.color = "white";
-    } else {
+    if (tododate != null) {
       const today = new Date();
       if (
         today.getFullYear() === tododate.getFullYear() &&
@@ -271,22 +272,8 @@ const InputToDo = ({ listName, handleSubmit }) => {
         today.getDate() === tododate.getDate()
       ) {
         document.querySelector(`.alarmIcon`).style.color = "green";
-      } else {
-        document.querySelector(`.alarmIcon`).style.color = "white";
-      }
-      if (tododate != null && todoEndDate != null) {
-        if (tododate.getTime() > todoEndDate.getTime()) {
-          setTodoEndDate(null);
-          toast.dark("Todo End Date needs to be later than Todo Start Date!", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: false,
-            progress: undefined,
-          });
-        } else {
+        document.querySelector(`.${styles.todoText}`).style.color = "green";
+        if (todoEndDate == null) {
           toast.success("Todo Date added!", {
             position: "top-right",
             autoClose: 2000,
@@ -297,6 +284,49 @@ const InputToDo = ({ listName, handleSubmit }) => {
             progress: undefined,
           });
         }
+      } else {
+        document.querySelector(`.alarmIcon`).style.color = "white";
+        document.querySelector(`.${styles.todoText}`).style.color = "white";
+      }
+    }
+
+    if (todoEndDate != null) {
+      const today = new Date();
+      if (
+        today.getFullYear() === todoEndDate.getFullYear() &&
+        today.getMonth() === todoEndDate.getMonth() &&
+        today.getDate() === todoEndDate.getDate()
+      ) {
+        document.querySelector(`.alarmIcon`).style.color = "green";
+        document.querySelector(`.${styles.todoTime}`).style.color = "green";
+      } else {
+        document.querySelector(`.alarmIcon`).style.color = "white";
+        document.querySelector(`.${styles.todoTime}`).style.color = "white";
+      }
+    }
+
+    if (tododate != null && todoEndDate != null) {
+      if (tododate.getTime() > todoEndDate.getTime()) {
+        setTodoEndDate(null);
+        toast.dark("Todo End Date needs to be later than Todo Start Date!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
+      } else {
+        toast.success("Todo Date added!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
       }
     }
   };

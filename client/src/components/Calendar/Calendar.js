@@ -10,6 +10,7 @@ import { Scheduler, View, Editing } from "devextreme-react/scheduler";
 import { Slider } from 'devextreme-react/slider';
 import CustomStore from "devextreme/data/custom_store";
 import ArrayStore from 'devextreme/data/array_store';
+import notify from 'devextreme/ui/notify';
 
 //
 
@@ -44,7 +45,7 @@ import ArrayStore from 'devextreme/data/array_store';
         "list": null
 }
 */
-
+const TZOFFSET = 28800000;
 const store = new CustomStore({
   key: "todo_id",
   load: async () => {
@@ -63,8 +64,11 @@ const store = new CustomStore({
       });
       const _subtasks = await res.json();
       const newTasks = tasks.map((task) => {
+        const deadlineTime = new Date(task.deadline).getTime();
+        const newDeadline = task.deadline == null ? task.deadline : new Date(deadlineTime - TZOFFSET);
         const obj = {
           ...task,
+          deadline: newDeadline,
           subtasks: _subtasks
             .filter((i) => i[0] === task.todo_id)
             .flatMap((i) => i[1]),
@@ -117,10 +121,9 @@ const store = new CustomStore({
   },
   update: async (key, values) => {
     try {
-      const TZOFFSET = 28800000;
       if (values.deadline !== null) {
         var deadlineTime = new Date(values.deadline).getTime();
-        var deadline = new Date(deadlineTime - TZOFFSET);
+        var deadline = new Date(deadlineTime);
         values.deadline = deadline;
       }
       if (values.tododate !== null) {
@@ -184,7 +187,7 @@ function Calendar() {
     }
   };
 
-  const submitSubtasks = async (e) => {
+  const submitSubtasks = async () => {
     try {
       const body = { subtaskIds };
       await fetch("/subtasks/complete/subtask/true", {
@@ -203,9 +206,46 @@ function Calendar() {
       setSubtaskIds(args.value);
     }
   };
+  
+  const isValidAppointment = (component, appointmentData) => {
+    const startDate = new Date(appointmentData.tododate).getTime();
+    const endDate = new Date(appointmentData.todoenddate).getTime();
+    const deadline = new Date(appointmentData.deadline).getTime();
+    console.log(appointmentData.deadline);
+
+    return (isNaN(deadline)) || deadline === 0|| (startDate <= deadline + TZOFFSET && endDate <= deadline + TZOFFSET) 
+  }
+
+  const onAppointmentUpdating = async (e) => {
+    const isValid = isValidAppointment(e.component, e.newData);
+    if(!isValid) {
+      e.cancel = true;
+      notify('Todo date has to be before Deadline', 'warning', 2000);
+    }
+    if(e.newData.description === "") {
+      e.cancel = true;
+      notify('Description cannot be empty.', 'warning', 2000);
+    }
+    if (!e.cancel) {
+      await submitSubtasks();
+    }
+  }
+
+  const onAppointmentAdding = (e) => {
+    const isValid = isValidAppointment(e.component, e.appointmentData);
+    if(!isValid) {
+      e.cancel = true;
+      notify('Todo date has to be before Deadline', 'warning', 2000);
+    }
+    if(e.appointmentData.description === "") {
+      e.cancel = true;
+      notify('Description cannot be empty.', 'warning', 2000);
+    }
+  }
 
 
   const onAppointmentFormOpening = (data) => {
+    console.log(data);
     data.popup.option("showTitle", true);
     data.popup.option(
       "title",
@@ -240,6 +280,7 @@ function Calendar() {
         dataField: "tododate",
         editorOptions: {
           type: "datetime",
+          displayFormat: "dd/MM/yyyy, hh:mm aa",
           showAnalogClock: false,
           dropDownOptions: {
             position: "right",
@@ -254,6 +295,7 @@ function Calendar() {
         dataField: "todoenddate",
         editorOptions: {
           type: "datetime",
+          displayFormat: "dd/MM/yyyy, hh:mm aa",
           showAnalogClock: false,
           dropDownOptions: {
             position: "right",
@@ -268,6 +310,7 @@ function Calendar() {
         dataField: "deadline",
         editorOptions: {
           type: "datetime",
+          displayFormat: "dd/MM/yyyy, hh:mm aa",
           showAnalogClock: false,
           dropDownOptions: {
             position: "right",
@@ -362,7 +405,8 @@ function Calendar() {
           adaptivityEnabled={true}
           maxAppointmentsPerCell="3"
           onAppointmentFormOpening={onAppointmentFormOpening}
-          onAppointmentUpdating={submitSubtasks}
+          onAppointmentAdding={onAppointmentAdding}
+          onAppointmentUpdating={onAppointmentUpdating}
         >
           <View type="day" startDayHour={0} endDayHour={24} />
           <View type="week" startDayHour={0} endDayHour={24} />
