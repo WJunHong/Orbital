@@ -280,6 +280,7 @@ function Calendar() {
         dataField: "tododate",
         editorOptions: {
           type: "datetime",
+          width: "auto",
           displayFormat: "dd/MM/yyyy, hh:mm aa",
           showAnalogClock: false,
           dropDownOptions: {

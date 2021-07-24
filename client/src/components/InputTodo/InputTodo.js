@@ -158,7 +158,7 @@ const InputToDo = ({ listName, handleSubmit }) => {
     } else {
       // If tododate is now after the deadline, set the tododate to null
       if (tododate == null) {
-      } else if (
+      } else if (  
         deadline.getFullYear() <= tododate.getFullYear() &&
         deadline.getMonth() <= tododate.getMonth() &&
         deadline.getDate() <= tododate.getDate()
