@@ -118,7 +118,7 @@ const TaskTables = ({ name, listName }) => {
         setTodos(jsonData);
       } else if (name === "Ov") {
         document.title = "Tickaholic | Overview";
-        const response = await fetch("/filter/todos", {
+        const response = await fetch("/todos", {
           method: "GET",
           headers: { user_id },
         });
@@ -316,13 +316,13 @@ const TaskTables = ({ name, listName }) => {
         ? null
         : new Date(filter.deadline[1]).getTime() + tzOffset + day;
     var filterStartTododate =
-      filter.deadline[0] == null
+      filter.todoDate[0] == null
         ? null
-        : new Date(filter.deadline[0]).getTime() + tzOffset + day;
+        : new Date(filter.todoDate[0]).getTime() + tzOffset;
     var filterEndTododate =
-      filter.deadline[0] == null
+      filter.todoDate[1] == null
         ? null
-        : new Date(filter.deadline[1]).getTime() + tzOffset;
+        : new Date(filter.todoDate[1]).getTime() + tzOffset + day;
     var todoDeadline =
       todo.deadline == null ? null : new Date(todo.deadline).getTime();
     var todoTodoDate =
@@ -383,6 +383,53 @@ const TaskTables = ({ name, listName }) => {
     return filterMe;
   };
 
+  const properFilterToday = (todo) => {
+    const day = 86400000; // 1 day in ms
+    var filterStartDeadline = new Date().getTime() + TZOFFSET;
+    var filterEndDeadline = new Date().getTime() + TZOFFSET + day;
+    var filterStartTododate = new Date().getTime() + TZOFFSET;
+    var filterEndTododate = new Date().getTime() + TZOFFSET + day;
+    var todoDeadline =
+      todo.deadline == null ? null : new Date(todo.deadline).getTime();
+    var todoTodoDate =
+      todo.tododate == null ? null : new Date(todo.tododate).getTime();
+    var filterByDeadline;
+    var filterByTodoDate;
+    filterByDeadline =
+      todoDeadline >= filterStartDeadline &&
+      todoDeadline < filterEndDeadline;
+    filterByTodoDate =
+      todoTodoDate >= filterStartTododate &&
+      todoTodoDate < filterEndTododate;
+      // console.log(todo);
+      // console.log(filterByTodoDate);
+      // console.log("Todo " + todoTodoDate)
+      // console.log(filterStartTododate);
+    return filterByDeadline || filterByTodoDate;
+  };
+
+  const properFilterWeek = (todo) => {
+    const day = 86400000; // 1 day in ms
+    var filterStartDeadline = new Date().getTime() + TZOFFSET + day;
+    var filterEndDeadline = new Date().getTime() + TZOFFSET +  7 * day;
+    var filterStartTododate = new Date().getTime() + TZOFFSET + day;
+    var filterEndTododate = new Date().getTime() + TZOFFSET + 7 * day;
+    var todoDeadline =
+      todo.deadline == null ? null : new Date(todo.deadline).getTime();
+    var todoTodoDate =
+      todo.tododate == null ? null : new Date(todo.tododate).getTime();
+    var filterByDeadline = true;
+    var filterByTodoDate = true;
+    filterByDeadline =
+      filterByDeadline &&
+      todoDeadline >= filterStartDeadline &&
+      todoDeadline < filterEndDeadline;
+    filterByTodoDate =
+      filterByTodoDate &&
+      todoTodoDate >= filterStartTododate &&
+      todoTodoDate < filterEndTododate;
+    return filterByDeadline || filterByTodoDate;
+  };
   //the todo object, para of the operation, val to be passed in
   /**
    * Function 7: The function which updates a task.
@@ -1148,11 +1195,11 @@ const TaskTables = ({ name, listName }) => {
                             updateAll(
                               todo,
                               "addToList",
-                              document.querySelector(".moveList1").value
+                              document.getElementById(`moveList${todo.todo_id}`).value
                             );
                           }}
                         >
-                          <select className="moveList1">
+                          <select className="moveList1" id={`moveList${todo.todo_id}`}>
                             <option value="">-Select List-</option>
                             {lists
                               .filter((i) =>
@@ -1218,10 +1265,7 @@ const TaskTables = ({ name, listName }) => {
         <tbody>
           {todos
             .filter(
-              (todo) =>
-                todo.deadline !== null &&
-                todo.deadline.substring(0, 10) ===
-                  new Date().toISOString().split("T")[0]
+              properFilterToday
             )
             .map((todo) => {
               var todoDeadlineTime = new Date(todo.deadline).getTime();
@@ -1719,11 +1763,11 @@ const TaskTables = ({ name, listName }) => {
                             updateAll(
                               todo,
                               "addToList",
-                              document.querySelector(".moveList1").value
+                              document.getElementById(`moveList${todo.todo_id}`).value
                             );
                           }}
                         >
-                          <select className="moveList1">
+                          <select className="moveList1" id={`moveList${todo.todo_id}`}>
                             <option value="">-Select List-</option>
                             {lists
                               .filter((i) =>
@@ -1786,10 +1830,7 @@ const TaskTables = ({ name, listName }) => {
         <tbody>
           {todos
             .filter(
-              (todo) =>
-                todo.deadline !== null &&
-                todo.deadline.substring(0, 10) !==
-                  new Date().toISOString().split("T")[0]
+              todo => !properFilterToday(todo) && properFilterWeek(todo)
             )
             .map((todo) => {
               var todoDeadlineTime = new Date(todo.deadline).getTime();
@@ -2287,11 +2328,11 @@ const TaskTables = ({ name, listName }) => {
                             updateAll(
                               todo,
                               "addToList",
-                              document.querySelector(".moveList1").value
+                              document.getElementById(`moveList${todo.todo_id}`).value
                             );
                           }}
                         >
-                          <select className="moveList1">
+                          <select className="moveList1" id={`moveList${todo.todo_id}`}>
                             <option value="">-Select List-</option>
                             {lists
                               .filter((i) =>
