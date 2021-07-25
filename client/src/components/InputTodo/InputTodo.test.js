@@ -79,16 +79,24 @@ describe("Series of tests for inputting a new task", () => {
     fireEvent.click(document.querySelector(".alarmIcon"));
     fireEvent.click(document.querySelector(`.react-datepicker-wrapper`));
     userEvent.type(
-      document.querySelector(`.${styles.todoText}`),
-      "23-07-2021 12:00"
+      screen.getByPlaceholderText("Input Tododate"),
+      "30-11-2021 12:00{enter}"
     );
-    fireEvent.keyDown(document.querySelector(`.${styles.todoText}`), {
-      key: "Enter",
-      code: "Enter",
-    });
     expect(screen.getByPlaceholderText("Input Tododate").value).toBe(
-      "23-07-2021 12:00 AM"
+      "30-11-2021 12:00 AM"
     );
+  });
+  test("Custom input of a date into todo start date with date that has already passed", () => {
+    const { queryByTestId } = render(<InputTodo />);
+    const button = queryByTestId("expand-InputTodo-button");
+    fireEvent.click(button);
+    fireEvent.click(document.querySelector(".alarmIcon"));
+    fireEvent.click(document.querySelector(`.react-datepicker-wrapper`));
+    userEvent.type(
+      screen.getByPlaceholderText("Input Tododate"),
+      "23-07-2021 12:00{enter}"
+    );
+    expect(screen.getByPlaceholderText("Input Tododate").value).toBe("");
   });
   test("Custom input of a date into todo start date with no minutes", () => {
     const { queryByTestId } = render(<InputTodo />);
@@ -98,14 +106,14 @@ describe("Series of tests for inputting a new task", () => {
     fireEvent.click(document.querySelector(`.react-datepicker-wrapper`));
     userEvent.type(
       document.querySelector(`.${styles.todoText}`),
-      "23-07-2021 12"
+      "30-11-2021 12"
     );
     fireEvent.keyDown(document.querySelector(`.${styles.todoText}`), {
       key: "Enter",
       code: "Enter",
     });
     expect(screen.getByPlaceholderText("Input Tododate").value).toBe(
-      "23-07-2021 12:00 AM"
+      "30-11-2021 12:00 AM"
     );
   });
   test("Custom input of a date into todo start date with no time", () => {
@@ -114,13 +122,13 @@ describe("Series of tests for inputting a new task", () => {
     fireEvent.click(button);
     fireEvent.click(document.querySelector(".alarmIcon"));
     fireEvent.click(document.querySelector(`.react-datepicker-wrapper`));
-    userEvent.type(document.querySelector(`.${styles.todoText}`), "23-07-2021");
+    userEvent.type(document.querySelector(`.${styles.todoText}`), "30-11-2021");
     fireEvent.keyDown(document.querySelector(`.${styles.todoText}`), {
       key: "Enter",
       code: "Enter",
     });
     expect(screen.getByPlaceholderText("Input Tododate").value).toBe(
-      "23-07-2021 12:00 AM"
+      "30-11-2021 12:00 AM"
     );
   });
   test("Custom input of a date into todo start date with wrong date", () => {
@@ -129,13 +137,13 @@ describe("Series of tests for inputting a new task", () => {
     fireEvent.click(button);
     fireEvent.click(document.querySelector(".alarmIcon"));
     fireEvent.click(document.querySelector(`.react-datepicker-wrapper`));
-    userEvent.type(document.querySelector(`.${styles.todoText}`), "23-07-202");
+    userEvent.type(document.querySelector(`.${styles.todoText}`), "30-11-202");
     fireEvent.keyDown(document.querySelector(`.${styles.todoText}`), {
       key: "Enter",
       code: "Enter",
     });
     expect(screen.getByPlaceholderText("Input Tododate").value).toBe(
-      "23-07-2021 12:00 AM"
+      "30-11-2021 12:00 AM"
     );
   });
   test("Custom input of a date into todo start date with no year", () => {
@@ -144,13 +152,13 @@ describe("Series of tests for inputting a new task", () => {
     fireEvent.click(button);
     fireEvent.click(document.querySelector(".alarmIcon"));
     fireEvent.click(document.querySelector(`.react-datepicker-wrapper`));
-    userEvent.type(document.querySelector(`.${styles.todoText}`), "23-07");
+    userEvent.type(document.querySelector(`.${styles.todoText}`), "30-11");
     fireEvent.keyDown(document.querySelector(`.${styles.todoText}`), {
       key: "Enter",
       code: "Enter",
     });
     expect(screen.getByPlaceholderText("Input Tododate").value).toBe(
-      "23-07-2021 12:00 AM"
+      "30-11-2021 12:00 AM"
     );
   });
   test("Custom input of a date into todo start date with no month", () => {
@@ -159,13 +167,13 @@ describe("Series of tests for inputting a new task", () => {
     fireEvent.click(button);
     fireEvent.click(document.querySelector(".alarmIcon"));
     fireEvent.click(document.querySelector(`.react-datepicker-wrapper`));
-    userEvent.type(document.querySelector(`.${styles.todoText}`), "23-0");
+    userEvent.type(document.querySelector(`.${styles.todoText}`), "30-0");
     fireEvent.keyDown(document.querySelector(`.${styles.todoText}`), {
       key: "Enter",
       code: "Enter",
     });
     expect(screen.getByPlaceholderText("Input Tododate").value).toBe(
-      "23-07-2021 12:00 AM"
+      "30-07-2021 12:00 AM"
     );
   });
   test("Custom input of a date into todo start date with only day", () => {
@@ -174,27 +182,14 @@ describe("Series of tests for inputting a new task", () => {
     fireEvent.click(button);
     fireEvent.click(document.querySelector(".alarmIcon"));
     fireEvent.click(document.querySelector(`.react-datepicker-wrapper`));
-    userEvent.type(document.querySelector(`.${styles.todoText}`), "23");
+    userEvent.type(document.querySelector(`.${styles.todoText}`), "30");
     fireEvent.keyDown(document.querySelector(`.${styles.todoText}`), {
       key: "Enter",
       code: "Enter",
     });
     expect(screen.getByPlaceholderText("Input Tododate").value).toBe(
-      "23-07-2021 12:00 AM"
+      "30-07-2021 12:00 AM"
     );
-  });
-  test("Custom input of a date into todo start date with past date", () => {
-    const { queryByTestId } = render(<InputTodo />);
-    const button = queryByTestId("expand-InputTodo-button");
-    fireEvent.click(button);
-    fireEvent.click(document.querySelector(".alarmIcon"));
-    fireEvent.click(document.querySelector(`.react-datepicker-wrapper`));
-    userEvent.type(document.querySelector(`.${styles.todoText}`), "21-07");
-    fireEvent.keyDown(document.querySelector(`.${styles.todoText}`), {
-      key: "Enter",
-      code: "Enter",
-    });
-    expect(screen.getByPlaceholderText("Input Tododate").value).toBe("");
   });
   test("Custom input of a date into todo start date with bad time input", () => {
     const { queryByTestId } = render(<InputTodo />);
@@ -204,14 +199,14 @@ describe("Series of tests for inputting a new task", () => {
     fireEvent.click(document.querySelector(`.react-datepicker-wrapper`));
     userEvent.type(
       document.querySelector(`.${styles.todoText}`),
-      "23-07-2021 12:99 CM"
+      "30-11-2021 12:99 CM"
     );
     fireEvent.keyDown(document.querySelector(`.${styles.todoText}`), {
       key: "Enter",
       code: "Enter",
     });
     expect(screen.getByPlaceholderText("Input Tododate").value).toBe(
-      "23-07-2021 12:09 AM"
+      "30-11-2021 12:09 AM"
     );
   });
   test("Custom input of a date into todo start date with invalid string", () => {
@@ -245,13 +240,13 @@ describe("Series of tests for inputting a new task", () => {
     const button = queryByTestId("expand-InputTodo-button");
     fireEvent.click(button);
     fireEvent.click(document.querySelector(`.${styles.deadlineText}`));
-    userEvent.type(screen.getByPlaceholderText("Input Deadline"), "23-07-2021");
+    userEvent.type(screen.getByPlaceholderText("Input Deadline"), "30-12-2021");
     fireEvent.keyDown(document.querySelector(`.${styles.deadlineText}`), {
       key: "Enter",
       code: "Enter",
     });
     expect(screen.getByPlaceholderText("Input Deadline").value).toBe(
-      "23-07-2021 12:00 AM"
+      "30-12-2021 12:00 AM"
     );
   });
   // Unable to manually input end date time for now
