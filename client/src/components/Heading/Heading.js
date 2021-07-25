@@ -105,7 +105,7 @@ const Heading = ({ testUser }) => {
         </nav>
         <div
           id="profileD"
-          className={`${styles.profileDropdown} ${styles.hidden}` data-testid="profileDropdown"}
+          className={`${styles.profileDropdown} ${styles.hidden}`} data-testid="profileDropdown"
         >
           <ul>
             <li className={styles.tabProfile}>

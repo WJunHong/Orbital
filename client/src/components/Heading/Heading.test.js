@@ -1,16 +1,13 @@
-
 import React from "react";
 import Heading from "./Heading"
 import {
   render,
-  act,
-  queryByTestId,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 describe("Test Render Heading", () => {
-  test("Test Timing and Name Display", () => {
-    const testUser = {displayName: "Bob"};
+  const testUser = {displayName: "Bob"};
+  test("Render Timing and Name Display", () => {
     const { queryByTestId } = render(<Heading testUser={testUser}/>);
     const time = new Date().getHours();
     let str = "Good ";
@@ -29,15 +26,15 @@ describe("Test Render Heading", () => {
   });
 
   test("Avator Icon Render", () => {
-    const {queryByTestId} = render(<Heading />);
-    expect(queryByTestId("headingDP")).tobeTruthy();
+    const {queryByTestId} = render(<Heading testUser={testUser}/>);
+    expect(queryByTestId("headingDP")).toBeTruthy();
   })
 
   test("Render Profile Dropdown Menu", () => {
-    const { queryByTestId } = render(<Heading />);
+    const { queryByTestId } = render(<Heading testUser={testUser}/>);
     const displayPicture = queryByTestId("headingDP");
     expect(queryByTestId("profileDropdown").classList.contains("hidden")).toBe(true);
     userEvent.click(displayPicture);
     expect(queryByTestId("profileDropdown").classList.contains("hidden")).toBe(false);
-  })
-})
+  });
+});

@@ -4,7 +4,6 @@ import {
   render,
   fireEvent,
   screen,
-  getByPlaceholderText,
   act,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -65,7 +64,6 @@ describe("Series of tests for inputting a new task", () => {
   test("Clicking on the alarm icon shows the end tododate options", () => {
     const { queryByTestId } = render(<InputTodo />);
     const button = queryByTestId("expand-InputTodo-button");
-    const listItem = queryByTestId("test1");
     fireEvent.click(button);
     fireEvent.click(document.querySelector(".alarmIcon"));
     expect(

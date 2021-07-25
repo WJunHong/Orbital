@@ -229,18 +229,18 @@ const FSD = ({ name, todos, listName }) => {
       const user = app.auth().currentUser;
       const user_id = user.uid;
       // Calls the DELETE task route method
-      const deleteTodos = await fetch(`/todos/${listName}/todos`, {
+      await fetch(`/todos/${listName}/todos`, {
         method: "DELETE",
         headers: { user_id },
       });
 
       // Calls the DELETE subtasks route method
-      const deleteSubtasks = await fetch(`/todos/${listName}/subtasks/`, {
+      await fetch(`/todos/${listName}/subtasks/`, {
         method: "DELETE",
         headers: { user_id },
       });
 
-      const deleteList = await fetch(`/todos/lists/${listName}/`, {
+      await fetch(`/todos/lists/${listName}/`, {
         method: "DELETE",
         headers: { user_id },
       });

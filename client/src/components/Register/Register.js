@@ -297,4 +297,4 @@ const Register = ({ history }) => {
   );
 };
 
-export default withRouter(Register);
+export default Register;
