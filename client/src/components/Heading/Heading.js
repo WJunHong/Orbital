@@ -28,9 +28,9 @@ const theme = createMuiTheme({
  * The Heading component
  * @returns Functional component representing the top bar
  */
-const Heading = () => {
+const Heading = ({ testUser }) => {
   // The current user
-  const user = app.auth().currentUser;
+  const user = app.auth().currentUser || testUser;
   const displayName = user.displayName;
   // Timing of the day
   const [time, setTime] = useState("Morning");
@@ -94,7 +94,7 @@ const Heading = () => {
             </Tooltip>
             */}
           </div>
-          <div className={styles.time}>{`Good ${time} ${
+          <div data-testid="greeting" className={styles.time}>{`Good ${time}${
             displayName == null ? "" : ", " + displayName
           }`}</div>
           <div className={styles.avatarControl}>
@@ -102,13 +102,14 @@ const Heading = () => {
               alt="Mei Leng"
               src={profile}
               className={styles.profile}
+              data-testId="headingDP"
               onClick={(e) => toggleProfile(e)}
             />
           </div>
         </nav>
         <div
           id="profileD"
-          className={`${styles.profileDropdown} ${styles.hidden}`}
+          className={`${styles.profileDropdown} ${styles.hidden}` data-testid="profileDropdown"}
         >
           <ul>
             <li className={styles.tabProfile}>
