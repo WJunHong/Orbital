@@ -21,14 +21,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./TaskTables.module.css";
 import FSD from "../FSD";
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const TZOFFSET = 28800000;
 
-const muiTheme1 = createMuiTheme({
+const muiTheme1 = createTheme({
   overrides: {
     MuiSlider: {
       thumb: {

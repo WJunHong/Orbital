@@ -5,7 +5,7 @@ import app from "../../base";
 // Style imports
 import "../../design/TaskBox.css";
 
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import profile from "../../meileng.jpeg";
 import styles from "./Heading.module.css";
 
@@ -19,7 +19,7 @@ import {
   SettingsRoundedIcon,
 } from "../../design/table_icons";
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     fontFamily: ["Nunito", "sans-serif"].join(","),
   },
