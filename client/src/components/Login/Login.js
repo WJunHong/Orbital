@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback, useContext } from "react";
+import React, { useState, useCallback, useContext } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { withRouter } from "react-router";
 import app from "../../base";
@@ -24,7 +24,7 @@ const theme = createTheme({
  * The login component of the application.
  *
  */
-const Login = ({ history }) => {
+const Login = ({ history, testUser }) => {
   // email field
   const [email, setEmail] = useState("");
   const [email_err, setEE] = useState(false);
@@ -59,7 +59,8 @@ const Login = ({ history }) => {
   const { currentUser } = useContext(AuthContext);
 
   if (currentUser) {
-    return <Redirect to="/" />;
+    history.push("/");
+    // return <Redirect to="/" />;
   }
   /**
    * Function 2: The function that handles the error messages on login failures.
@@ -169,7 +170,7 @@ const Login = ({ history }) => {
                 </Grid>
               </Grid>
               <Grid item>
-                <form onSubmit={SubmitForm}>
+                <form onSubmit={SubmitForm} data-testid="loginForm">
                   <Grid
                     container
                     direction="column"
@@ -189,6 +190,7 @@ const Login = ({ history }) => {
                         variant="outlined"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        data-testid="inputLoginEmail"
                       />
                     </Grid>
                     <Grid item container direction="column">
@@ -204,6 +206,7 @@ const Login = ({ history }) => {
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           type="password"
+                          data-testid="inputLoginPassword"
                         />
                       </Grid>
                       <Grid
@@ -254,4 +257,4 @@ const Login = ({ history }) => {
   );
 };
 
-export default withRouter(Login);
+export default Login;
