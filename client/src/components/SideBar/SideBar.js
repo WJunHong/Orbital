@@ -29,7 +29,9 @@ function SideBar({ match }) {
     } else if (match.path === "/taskpage") {
       document.querySelector(".taskPage").style.backgroundColor = "#121e4f";
       document.querySelector(".taskPage").style.color = "white";
-    } else {
+    } else if (match.path === "/calendar") {
+      document.querySelector(".calendarPage").style.backgroundColor = "#121e4f";
+      document.querySelector(".calendarPage").style.color = "white";
     }
   };
   /**
@@ -164,7 +166,7 @@ function SideBar({ match }) {
           </a>
         </li>
         <li className={styles.calendar}>
-          <a href="/calendar">
+          <a href="/calendar" className="calendarPage">
             <EventNoteIcon className={styles.calendarIcon} />
             <div>Calendar</div>
           </a>
@@ -180,7 +182,7 @@ function SideBar({ match }) {
             var link = "/lists/" + list;
 
             return (
-              <li className={styles.mainTask}>
+              <li className={styles.mainTask} data-testid={list}>
                 <a href={link} className={`SL${list}`}>
                   <ViewListRoundedIcon className={styles.maintaskIcon} />
                   <div>{list}</div>

@@ -27,6 +27,7 @@ const Profile = () => {
   const [emailOld, setEO] = useState("");
   const [password, setPassword] = useState("");
   const [passwordOld, setPO] = useState("");
+  const [photo, setPhoto] = useState(null);
   /**
    * Function 1: The function called when user changes display name.
    * @param {Object} e The event object when submitting name form.
@@ -225,6 +226,7 @@ const Profile = () => {
     removeForm2();
     removeForm1();
   };
+
   return (
     <>
       <Background>
@@ -232,10 +234,11 @@ const Profile = () => {
           <Tooltip title="Edit profile picture" placement="bottom-end">
             <Avatar
               alt="Mei Leng"
-              src={profile}
+              src={user.photoURL === null ? profile : user.photoURL}
               className={styles.profilePic}
             />
           </Tooltip>
+
           <div className={styles.details}>
             <div
               className={styles.displayName}

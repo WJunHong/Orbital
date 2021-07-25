@@ -56,7 +56,7 @@ describe("A series of tests for filter, sort, delete component", () => {
   });
   test("Check LocalStorage Filter upon clicking priority", () => {
     const filterObj = {
-      priority: [1, 2],
+      priority: [2, 1],
       deadline: [null, null],
       progress: [0, 100],
       todoDate: [null, null],
@@ -139,6 +139,56 @@ describe("A series of tests for filter, sort, delete component", () => {
     expect(window.localStorage.setItem).toHaveBeenCalledWith(
       "filter-mt/mt",
       JSON.stringify(filterObj)
+    );
+  });
+  test("Sort options click Alphabetical", () => {
+    const sortObj = { sort: "Alphabetical", direction: "descending" };
+
+    render(<FSD name={"mt"} listName={"mt"} />);
+    const sortButton = screen.getByLabelText("sort");
+    fireEvent.click(sortButton);
+    fireEvent.click(document.querySelector(`#sort-Alphabetical`));
+    expect(window.localStorage.setItem).toHaveBeenCalledWith(
+      "sort-mt/mt",
+      JSON.stringify(sortObj)
+    );
+  });
+  test("Sort options un-click Alphabetical", () => {
+    const sortObj = { sort: "dateAdded", direction: "descending" };
+
+    render(<FSD name={"mt"} listName={"mt"} />);
+    const sortButton = screen.getByLabelText("sort");
+    fireEvent.click(sortButton);
+    fireEvent.click(document.querySelector(`#sort-Alphabetical`));
+    fireEvent.click(document.querySelector(`#sort-Alphabetical`));
+    expect(window.localStorage.setItem).toHaveBeenCalledWith(
+      "sort-mt/mt",
+      JSON.stringify(sortObj)
+    );
+  });
+  test("Sort options click Alphabetical, then click ascending", () => {
+    const sortObj = { sort: "Alphabetical", direction: "ascending" };
+    render(<FSD name={"mt"} listName={"mt"} />);
+    const sortButton = screen.getByLabelText("sort");
+    fireEvent.click(sortButton);
+    fireEvent.click(document.querySelector(`#sort-Alphabetical`));
+    fireEvent.click(document.querySelector(`.${styles.arrowStyle}`));
+    expect(window.localStorage.setItem).toHaveBeenCalledWith(
+      "sort-mt/mt",
+      JSON.stringify(sortObj)
+    );
+  });
+  test("Sort options click, then press reset", () => {
+    const sortObj = { sort: "dateAdded", direction: "descending" };
+    render(<FSD name={"mt"} listName={"mt"} />);
+    const sortButton = screen.getByLabelText("sort");
+    fireEvent.click(sortButton);
+    fireEvent.click(document.querySelector(`#sort-Alphabetical`));
+    fireEvent.click(document.querySelector(`.${styles.arrowStyle}`));
+    fireEvent.click(document.querySelector(`.${styles.clearSortButton}`));
+    expect(window.localStorage.setItem).toHaveBeenCalledWith(
+      "sort-mt/mt",
+      JSON.stringify(sortObj)
     );
   });
 });
