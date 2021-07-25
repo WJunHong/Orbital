@@ -6,17 +6,13 @@ import app from "../../base";
 import "../../design/TaskBox.css";
 
 import { ThemeProvider, createTheme } from "@material-ui/core/styles";
-import profile from "../../meileng.jpeg";
+import profile from "../../avatar-icon.jpg";
 import styles from "./Heading.module.css";
 
 import {
-  Tooltip,
   Avatar,
   FaceRoundedIcon,
   ExitToAppRoundedIcon,
-  HomeRoundedIcon,
-  LocalLibraryRoundedIcon,
-  SettingsRoundedIcon,
 } from "../../design/table_icons";
 
 const theme = createTheme({
@@ -65,8 +61,9 @@ const Heading = () => {
     <>
       <ThemeProvider theme={theme}>
         <nav className={styles.heading}>
-          <a href="/" className={styles.logo}></a>
+          <a href="/home" className={styles.logo}></a>
           <div className={styles.navigation}>
+            {/*
             <a href="/home" className={styles.first}>
               HOME
             </a>
@@ -91,6 +88,7 @@ const Heading = () => {
                 <SettingsRoundedIcon size="small" />
               </a>
             </Tooltip>
+            */}
           </div>
           <div className={styles.time}>{`Good ${time} ${
             displayName == null ? "" : ", " + displayName

@@ -153,6 +153,9 @@ const TaskTables = ({ name, listName }) => {
       if (jsonData !== null) {
         setLists(jsonData);
       }
+      if (name === "lists" && !jsonData.includes(listName)) {
+        window.location = "/taskpage";
+      }
     } catch (err) {
       console.error(err.message);
     }

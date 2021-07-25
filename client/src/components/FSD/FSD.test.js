@@ -65,7 +65,6 @@ describe("A series of tests for filter, sort, delete component", () => {
     act(() => {
       render(<FSD name={"mt"} listName={"mt"} />);
       const filterButton = screen.getByLabelText("filter");
-      const sortButton = screen.getByLabelText("sort");
       fireEvent.click(filterButton);
       fireEvent.click(screen.queryByTestId(`priority2`));
       fireEvent.click(screen.queryByTestId(`priority1`));
