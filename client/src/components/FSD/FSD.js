@@ -14,7 +14,7 @@ import {
   Checkbox,
   Tooltip,
 } from "../../design/table_icons";
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 // Datepicker import
 import DatePicker from "react-datepicker";
@@ -24,7 +24,7 @@ import { withStyles } from "@material-ui/core/styles";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import styles from "./FSD.module.css";
 // MuiThemes
-const muiTheme = createMuiTheme({
+const muiTheme = createTheme({
   overrides: {
     MuiSlider: {
       thumb: {

@@ -7,6 +7,7 @@ import {
   Button,
 } from "../../design/table_icons";
 
+import app from "../../base";
 import fire from "./fire.png";
 import njs from "./njs.png";
 import psl from "./psql.png";
@@ -20,6 +21,7 @@ import git from "./git.png";
 const Home = () => {
   // State of clicking
   const [selection, setSelection] = useState(1);
+  const user = app.auth().currentUser;
   /**
    * Function 1: Styling of clicked option and image shown.
    */
@@ -51,10 +53,16 @@ const Home = () => {
         <div className={styles.heading}>
           <ul>
             <li>
-              <KeyboardReturnRoundedIcon />{" "}
-              <a href="/">
-                <p>Return to Overview</p>
-              </a>
+              {user !== null ? (
+                <>
+                  <KeyboardReturnRoundedIcon />
+                  <a href="/">
+                    <p>Return to Overview</p>
+                  </a>{" "}
+                </>
+              ) : (
+                <div />
+              )}
             </li>
             <li>
               <ExitToAppRoundedIcon className={styles.register} />

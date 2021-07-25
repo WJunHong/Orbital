@@ -12,11 +12,10 @@ import {
   Grid,
   Paper,
 } from "../../design/table_icons";
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import styles from "./Login.module.css";
-import GoogleButton from "react-google-button";
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     fontFamily: ["Nunito", "sans-serif"].join(","),
   },

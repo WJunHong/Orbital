@@ -1,21 +1,16 @@
 import React from "react";
 import FSD from "./FSD";
-import {
-  render,
-  fireEvent,
-  screen,
-  getByPlaceholderText,
-  act,
-} from "@testing-library/react";
+import { render, fireEvent, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import styles from "./FSD.module.css";
 
 describe("A series of tests for filter, sort, delete component", () => {
+  var k = {};
   beforeEach(() => {
     Object.defineProperty(window, "localStorage", {
       value: {
-        getItem: jest.fn(() => null),
-        setItem: jest.fn(() => null),
+        getItem: jest.fn(),
+        setItem: jest.fn(),
       },
       writable: true,
     });
@@ -133,7 +128,6 @@ describe("A series of tests for filter, sort, delete component", () => {
       todoDate: [null, null],
       properties: [],
     };
-
     render(<FSD name={"mt"} listName={"mt"} />);
     const filterButton = screen.getByLabelText("filter");
     fireEvent.click(filterButton);
