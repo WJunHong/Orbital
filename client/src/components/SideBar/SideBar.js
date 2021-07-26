@@ -20,7 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
  * A functional component representing a side bar
  * @returns JSX of a sidebar component
  */
-function SideBar({ match }) {
+function SideBar({ match, testUser }) {
   const [allLists, setAllLists] = useState([]);
   const highlight = () => {
     if (match.path === "/") {
@@ -94,7 +94,7 @@ function SideBar({ match }) {
         });
       } else {
         // Fetches user_id
-        const user = app.auth().currentUser;
+        const user = testUser || app.auth().currentUser;
         const user_id = user.uid;
 
         // Sends a request to create the new task in server
@@ -132,7 +132,7 @@ function SideBar({ match }) {
    */
   const getLists = async () => {
     try {
-      const user = app.auth().currentUser;
+      const user = testUser || app.auth().currentUser;
       const user_id = user.uid;
       const response = await fetch("/todos/lists", {
         method: "GET",

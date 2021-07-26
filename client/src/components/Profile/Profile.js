@@ -231,13 +231,11 @@ const Profile = () => {
     <>
       <Background>
         <div className={styles.topPart}>
-          <Tooltip title="Edit profile picture" placement="bottom-end">
-            <Avatar
-              alt="Mei Leng"
-              src={user.photoURL === null ? profile : user.photoURL}
-              className={styles.profilePic}
-            />
-          </Tooltip>
+          <Avatar
+            alt="Mei Leng"
+            src={user.photoURL === null ? profile : user.photoURL}
+            className={styles.profilePic}
+          />
 
           <div className={styles.details}>
             <div

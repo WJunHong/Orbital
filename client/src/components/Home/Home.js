@@ -98,7 +98,12 @@ const Home = () => {
               >
                 Start Now
               </Button>
-              <Button variant="outlined" className={styles.button2}>
+              <Button
+                variant="outlined"
+                className={styles.button2}
+                href="https://docs.google.com/document/d/1iQQgKhjtYIGrFVNQrUs0oHZr85sqSw9n_SOxQfuN88k/edit#heading=h.86a9cj48dznl"
+                target="_blank"
+              >
                 Learn More
               </Button>
             </div>
@@ -248,7 +253,7 @@ const Home = () => {
               </a>
             </div>
             <div className={styles.version}>
-              <p>Version 1.3</p>
+              <p>Version 1.4</p>
             </div>
           </div>
         </div>

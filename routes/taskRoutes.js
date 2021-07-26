@@ -63,7 +63,6 @@ router.get("/lists", async (req, res) => {
       "SELECT array_agg(list) lists from lists WHERE user_id = $1",
       [user_id]
     );
-
     res.json(lists.rows[0].lists);
   } catch (err) {
     console.error(err.message);

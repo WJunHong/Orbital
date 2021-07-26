@@ -133,7 +133,7 @@ const Login = ({ history, testUser }) => {
           alignItems="center"
         >
           <Grid item xs={3}>
-            <div className={styles.signUpImage}></div>
+            <div className={styles.signUpImage} />
           </Grid>
           <Grid
             item

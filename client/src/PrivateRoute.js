@@ -26,25 +26,27 @@ const PrivateRoute = ({ component: RouteComponent, path, ...rest }) => {
       render={(routeProps) => {
         if (path === "/") {
           if (!!currentUser) {
-            return (<>
-              <Heading />
-              <SideBar {...routeProps} />
-              <RouteComponent {...routeProps} />
-            </>)
+            return (
+              <>
+                <Heading />
+                <SideBar {...routeProps} />
+                <RouteComponent {...routeProps} />
+              </>
+            );
           } else {
-            return (<Redirect to={"/home"} />);
+            return <Redirect to={"/home"} />;
           }
         } else {
           if (!!currentUser) {
             return (
-            <>
-              <Heading />
-              <SideBar {...routeProps} />
-              <RouteComponent {...routeProps} />
-            </>
-            )
+              <>
+                <Heading />
+                <SideBar {...routeProps} />
+                <RouteComponent {...routeProps} />
+              </>
+            );
           } else {
-            return (<Redirect to={"/login"} />);
+            return <Redirect to={"/login"} />;
           }
         }
       }}
