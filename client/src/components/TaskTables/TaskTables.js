@@ -221,7 +221,7 @@ const TaskTables = ({ name, listName }) => {
 
         case "Deadline":
           if (task1.deadline === null && task2.deadline === null) {
-            return 1;
+            return task1.description > task2.description ? 1 : -1;
           } else if (task1.deadline === null) {
             return -1;
           } else if (task2.deadline === null) {
@@ -236,7 +236,7 @@ const TaskTables = ({ name, listName }) => {
 
         case "todoDate":
           if (task1.tododate === null && task2.tododate === null) {
-            return 1;
+            return task1.description > task2.description ? 1 : -1;
           } else if (task1.tododate === null) {
             return -1;
           } else if (task2.tododate === null) {
@@ -274,7 +274,7 @@ const TaskTables = ({ name, listName }) => {
 
         case "Deadline":
           if (task1.deadline === null && task2.deadline === null) {
-            return -1;
+            return task1.description > task2.description ? 1 : -1;
           } else if (task1.deadline === null) {
             return 1;
           } else if (task2.deadline === null) {
@@ -289,7 +289,7 @@ const TaskTables = ({ name, listName }) => {
 
         case "todoDate":
           if (task1.tododate === null && task2.tododate === null) {
-            return -1;
+            return task1.description > task2.description ? 1 : -1;
           } else if (task1.tododate === null) {
             return 1;
           } else if (task2.tododate === null) {
