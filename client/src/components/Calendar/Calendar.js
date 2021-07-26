@@ -336,7 +336,7 @@ function Calendar() {
         dataField: "progress",
         colSpan: 2,
         editorOptions: {
-          value: data.appointmentData.progress,
+          value: data.appointmentData.progress || 0,
           tooltip: {
             enabled: true,
             position: "bottom",
