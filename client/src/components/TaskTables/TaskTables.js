@@ -203,6 +203,9 @@ const TaskTables = ({ name, listName }) => {
     // Sort by descending order
     if (sortStuff.direction === "descending") {
       switch (sortStuff.sort) {
+        case "Progress": {
+          return task2.progress - task1.progress;
+        }
         case "dateAdded":
           return task2.todo_id - task1.todo_id;
 
@@ -217,11 +220,11 @@ const TaskTables = ({ name, listName }) => {
           return task2.priority - task1.priority;
 
         case "Deadline":
-          if (task1.deadline == null && task2.deadline == null) {
+          if (task1.deadline === null && task2.deadline === null) {
             return 1;
-          } else if (task1.deadline == null) {
+          } else if (task1.deadline === null) {
             return -1;
-          } else if (task2.deadline == null) {
+          } else if (task2.deadline === null) {
             return 1;
           } else {
             // Earlier date before later date
@@ -232,11 +235,11 @@ const TaskTables = ({ name, listName }) => {
           }
 
         case "todoDate":
-          if (task1.tododate == null && task2.tododate == null) {
+          if (task1.tododate === null && task2.tododate === null) {
             return 1;
-          } else if (task1.tododate == null) {
+          } else if (task1.tododate === null) {
             return -1;
-          } else if (task2.tododate == null) {
+          } else if (task2.tododate === null) {
             return 1;
           } else {
             // Earlier date before later date
@@ -253,6 +256,9 @@ const TaskTables = ({ name, listName }) => {
     } else {
       // Sort by ascending order
       switch (sortStuff.sort) {
+        case "Progress": {
+          return task1.progress - task2.progress;
+        }
         case "dateAdded":
           return task1.todo_id - task2.todo_id;
 
@@ -267,11 +273,11 @@ const TaskTables = ({ name, listName }) => {
           return task1.priority - task2.priority;
 
         case "Deadline":
-          if (task1.deadline == null && task2.deadline == null) {
+          if (task1.deadline === null && task2.deadline === null) {
             return -1;
-          } else if (task1.deadline == null) {
+          } else if (task1.deadline === null) {
             return 1;
-          } else if (task2.deadline == null) {
+          } else if (task2.deadline === null) {
             return -1;
           } else {
             // Earlier date before later date
@@ -282,11 +288,11 @@ const TaskTables = ({ name, listName }) => {
           }
 
         case "todoDate":
-          if (task1.tododate == null && task2.tododate == null) {
+          if (task1.tododate === null && task2.tododate === null) {
             return -1;
-          } else if (task1.tododate == null) {
+          } else if (task1.tododate === null) {
             return 1;
-          } else if (task2.tododate == null) {
+          } else if (task2.tododate === null) {
             return -1;
           } else {
             // Earlier date before later date
