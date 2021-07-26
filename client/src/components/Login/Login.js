@@ -233,6 +233,7 @@ const Login = ({ history, testUser }) => {
                     </Grid>
                     <Grid item>
                       <Button
+                        id="testLoginButton"
                         className={`${styles.signUpBox} ${styles.button}`}
                         variant="contained"
                         type="submit"

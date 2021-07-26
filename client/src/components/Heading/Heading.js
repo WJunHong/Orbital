@@ -90,7 +90,11 @@ const Heading = ({ testUser }) => {
             </Tooltip>
             */}
           </div>
-          <div data-testid="greeting" className={styles.time}>{`Good ${time}${
+          <div
+            id="greeting"
+            data-testid="greeting"
+            className={styles.time}
+          >{`Good ${time}${
             displayName == null ? "" : ", " + displayName
           }`}</div>
           <div className={styles.avatarControl}>
@@ -105,7 +109,8 @@ const Heading = ({ testUser }) => {
         </nav>
         <div
           id="profileD"
-          className={`${styles.profileDropdown} ${styles.hidden}`} data-testid="profileDropdown"
+          className={`${styles.profileDropdown} ${styles.hidden}`}
+          data-testid="profileDropdown"
         >
           <ul>
             <li className={styles.tabProfile}>
