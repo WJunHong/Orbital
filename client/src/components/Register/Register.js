@@ -50,7 +50,7 @@ const Register = ({ history }) => {
     setEE(false);
     setEL("Email");
     setPE(false);
-    setPL("Password");
+    setPL("Password (at least 6 characters long)");
     setCPE(false);
     setCPL("Confirm Password");
     document.getElementById("signupError").style.display = "none";
@@ -253,7 +253,7 @@ const Register = ({ history }) => {
                         id="password_input"
                         className={styles.signUpBox}
                         label={password_label}
-                        placeholder="Password"
+                        placeholder="Password (at least 6 characters long)"
                         variant="outlined"
                         type="password"
                       />
